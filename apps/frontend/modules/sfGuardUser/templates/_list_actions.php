@@ -1,0 +1,1 @@
+<a class="btn btn-large btn-primary" href="/frontend_dev.php/sf_guard_user/new">Создать</a>

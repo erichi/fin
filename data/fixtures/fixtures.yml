@@ -1,0 +1,359 @@
+
+sfGuardPermission:
+  sfGuardPermission_1:
+    name: admin
+    description: Администратор
+  sfGuardPermission_2:
+    name: director
+    description: Директор
+  sfGuardPermission_3:
+    name: sharer
+    description: Акционер
+  sfGuardPermission_4:
+    name: fm
+    description: 'Финансовый менеджер'
+  sfGuardPermission_5:
+    name: pm
+    description: 'Менеджер проекта'
+
+sfGuardUser:
+  sfGuardUser_1:
+    username: admin
+    password: admin
+    is_active: '1'
+    is_super_admin: '0'
+  sfGuardUser_2:
+    username: test
+    password: test
+    is_active: '1'
+    is_super_admin: '0'
+sfGuardUserPermission:
+  sfGuardUserPermission_1_1:
+    user_id: sfGuardUser_1
+    permission_id: sfGuardPermission_1
+  sfGuardUserPermission_2_2:
+    user_id: sfGuardUser_2
+    permission_id: sfGuardPermission_2
+BusinessUnit:
+  BusinessUnit_1:
+    name: BusinessUnit1
+  BusinessUnit_2:
+    name: BusinessUnit2
+Client:
+  Client_1:
+    name: Аваль
+  Client_2:
+    name: Форум
+ContactPerson:
+  ContactPerson_1:
+    client_id: Client_1
+    name: 'Лариса Ивановна'
+  ContactPerson_2:
+    client_id: Client_1
+    name: 'Иван Петрович'
+  ContactPerson_3:
+    client_id: Client_2
+    name: 'Виктор Федорович'
+  ContactPerson_4:
+    client_id: Client_2
+    name: 'Анна Германовна'
+CurrentExpenses:
+  CurrentExpenses_1:
+    business_unit_id: BusinessUnit_1
+    type: worker
+    name: Василий
+    year: '2011'
+    m1: '10'
+    m2: '0'
+    m3: '20'
+    m4: '0'
+    m5: '300'
+    m6: '0'
+    m7: '0'
+    m8: '45'
+    m9: '0'
+    m10: '10'
+    m11: '0'
+    m12: '0'
+  CurrentExpenses_2:
+    business_unit_id: BusinessUnit_1
+    type: worker
+    name: Иван
+    year: '2011'
+    m1: '11'
+    m2: '0'
+    m3: '0'
+    m4: '11'
+    m5: '0'
+    m6: '545'
+    m7: '0'
+    m8: '0'
+    m9: '32'
+    m10: '0'
+    m11: '12'
+    m12: '45'
+  CurrentExpenses_3:
+    business_unit_id: BusinessUnit_2
+    type: worker
+    name: Алёна
+    year: '2011'
+    m1: '100'
+    m2: '0'
+    m3: '100'
+    m4: '0'
+    m5: '0'
+    m6: '200'
+    m7: '0'
+    m8: '0'
+    m9: '500'
+    m10: '0'
+    m11: '0'
+    m12: '1000'
+  CurrentExpenses_4:
+    business_unit_id: BusinessUnit_2
+    type: tax
+    name: ПДВ
+    year: '2011'
+    m1: '200'
+    m2: '200'
+    m3: '200'
+    m4: '200'
+    m5: '200'
+    m6: '200'
+    m7: '100'
+    m8: '100'
+    m9: '100'
+    m10: '100'
+    m11: '100'
+    m12: '100'
+  CurrentExpenses_5:
+    business_unit_id: BusinessUnit_1
+    type: tax
+    name: НДС
+    year: '2011'
+    m1: '200'
+    m2: '200'
+    m3: '200'
+    m4: '200'
+    m5: '200'
+    m6: '200'
+    m7: '200'
+    m8: '100'
+    m9: '100'
+    m10: '100'
+    m11: '100'
+    m12: '100'
+  CurrentExpenses_6:
+    business_unit_id: BusinessUnit_1
+    type: tax
+    name: ПФ
+    year: '2011'
+    m1: '0'
+    m2: '0'
+    m3: '0'
+    m4: '0'
+    m5: '0'
+    m6: '0'
+    m7: '0'
+    m8: '0'
+    m9: '0'
+    m10: '0'
+    m11: '0'
+    m12: '5550'
+JobOrder:
+  JobOrder_1:
+    business_unit_id: BusinessUnit_1
+    name: JO3164985
+    client_id: Client_1
+    indulgence: '4060'
+  JobOrder_2:
+    business_unit_id: BusinessUnit_1
+    name: JO3164986
+    client_id: Client_2
+    indulgence: '8020'
+  JobOrder_3:
+    business_unit_id: BusinessUnit_2
+    name: JO3164981
+    client_id: Client_1
+    indulgence: '8020'
+IncomePayment:
+  IncomePayment_1:
+    job_order_id: JobOrder_1
+    name: приход1
+    date: '2011-10-17'
+    amount: '200.00'
+    is_confirmed: '0'
+  IncomePayment_2:
+    job_order_id: JobOrder_1
+    name: приход2
+    date: '2011-10-27'
+    amount: '500.00'
+    is_confirmed: '0'
+  IncomePayment_3:
+    job_order_id: JobOrder_2
+    name: платеж1
+    date: '2011-10-19'
+    amount: '200.00'
+    is_confirmed: '0'
+  IncomePayment_4:
+    job_order_id: JobOrder_2
+    name: платеж2
+    date: '2011-10-28'
+    amount: '300.00'
+    is_confirmed: '0'
+  IncomePayment_5:
+    job_order_id: JobOrder_3
+    name: 'payment[name]'
+    date: '2011-10-13'
+    amount: '1222.00'
+    is_confirmed: '0'
+  IncomePayment_6:
+    job_order_id: JobOrder_3
+    name: 'payment[name]'
+    date: '2011-10-28'
+    amount: '333.00'
+    is_confirmed: '0'
+JobOrderManager:
+  JobOrderManager_1_1:
+    job_order_id: JobOrder_1
+    user_id: sfGuardUser_1
+  JobOrderManager_2_1:
+    job_order_id: JobOrder_2
+    user_id: sfGuardUser_1
+  JobOrderManager_2_2:
+    job_order_id: JobOrder_2
+    user_id: sfGuardUser_2
+  JobOrderManager_3_2:
+    job_order_id: JobOrder_3
+    user_id: sfGuardUser_2
+JobType:
+  JobType_1:
+    name: Дизайн
+  JobType_2:
+    name: Маркетинг
+  JobType_3:
+    name: Промоутинг
+Job:
+  Job_1:
+    job_order_id: JobOrder_1
+    name: работа1
+    job_type_id: JobType_1
+    supplier: Степикс
+    amount: '500.00'
+  Job_2:
+    job_order_id: JobOrder_1
+    name: работа2
+    job_type_id: JobType_3
+    supplier: Гараж
+    amount: '300.00'
+  Job_3:
+    job_order_id: JobOrder_2
+    name: тест
+    job_type_id: JobType_2
+    supplier: тест
+    amount: '300.00'
+  Job_4:
+    job_order_id: JobOrder_3
+    name: 'job[name]'
+    job_type_id: JobType_1
+    supplier: 'job[supplier]'
+    amount: '432.00'
+JobPayment:
+  JobPayment_1:
+    job_id: Job_1
+    name: платеж1
+    date: '2011-10-18'
+    amount: '150.00'
+    filename: ''
+    is_confirmed: '0'
+  JobPayment_2:
+    job_id: Job_1
+    name: платеж2
+    date: '2011-10-21'
+    amount: '250.00'
+    filename: ''
+    is_confirmed: '0'
+  JobPayment_3:
+    job_id: Job_1
+    name: платеж3
+    date: '2011-10-28'
+    amount: '100.00'
+    filename: ''
+    is_confirmed: '0'
+  JobPayment_4:
+    job_id: Job_2
+    name: 'вся сумма'
+    date: '2011-10-31'
+    amount: '300.00'
+    filename: ''
+    is_confirmed: '0'
+  JobPayment_5:
+    job_id: Job_3
+    name: тест
+    date: '2011-10-26'
+    amount: '100.00'
+    filename: ''
+    is_confirmed: '0'
+  JobPayment_6:
+    job_id: Job_3
+    name: 'job_payment[name]'
+    date: '2011-10-27'
+    amount: '50.00'
+    filename: ''
+    is_confirmed: '0'
+  JobPayment_7:
+    job_id: Job_3
+    name: 'job_payment[name]'
+    date: '2011-10-31'
+    amount: '150.00'
+    filename: ''
+    is_confirmed: '0'
+  JobPayment_8:
+    job_id: Job_4
+    name: 'job_payment[name]'
+    date: '2011-10-13'
+    amount: '444.00'
+    filename: ''
+    is_confirmed: '0'
+Plan:
+  Plan_1:
+    name: 'План 100'
+    budget: '100500'
+    amount: '200000'
+  Plan_2:
+    name: 'Super Plan2'
+    budget: '43'
+    amount: '43'
+  Plan_3:
+    name: 'План 200'
+    budget: '100500'
+    amount: '222'
+sfGuardUserProfile:
+  sfGuardUserProfile_1:
+    user_id: sfGuardUser_1
+    email: example@example.com
+    first_name: Andriy
+    last_name: Leshchuk
+    address: Lviv
+    phone: '123'
+    bio: dsfads
+  sfGuardUserProfile_2:
+    user_id: sfGuardUser_2
+    email: ale@stepix.lc
+    first_name: test
+    last_name: test
+    address: '1102'
+    phone: '123'
+    bio: testtesttesttesttesttesttesttest
+    business_unit_id: BusinessUnit_1
+Tender:
+  Tender_1:
+    name: ЛукОйл
+    budget: '1000000'
+    amount: '100500'
+    status: new
+  Tender_2:
+    name: ТНК
+    budget: '1200000'
+    amount: '990000'
+    status: new

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file source-language="EN" target-language="ru" datatype="plaintext" original="messages" date="2011-10-14T11:10:14Z" product-name="messages">
+    <header/>
+    <body>
+      <trans-unit>
+        <source>Edit Job order</source>
+        <target/>
+      </trans-unit>
+      <trans-unit>
+        <source>New Job order</source>
+        <target/>
+      </trans-unit>
+      <trans-unit>
+        <source>Request</source>
+        <target/>
+      </trans-unit>
+      <trans-unit>
+        <source>User list</source>
+        <target>Список пользователей</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Editing User "%%username%%"</source>
+        <target>Редактирование пользователя "%%username%%"</target>
+      </trans-unit>
+      <trans-unit>
+        <source>New User</source>
+        <target>Новый пользователь</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Password</source>
+        <target>Пароль</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Password (again)</source>
+        <target>Пароль (повторите)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Required.</source>
+        <target>Обязательное поле.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>First name</source>
+        <target>Имя</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Last name</source>
+        <target>Фамилия</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Phone</source>
+        <target>Телефон</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Is active</source>
+        <target>Активный</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Address</source>
+        <target>Адрес</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Bio</source>
+        <target>О пользователе</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Permissions and groups</source>
+        <target>Права и групы</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Groups</source>
+        <target>Група</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Permissions</source>
+        <target>Права</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Remember</source>
+        <target>Запомнить</target>
+      </trans-unit>
+      <trans-unit>
+        <source>The username and/or password is invalid.</source>
+        <target>Имя пользователя и/или пароль не правильны.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>An object with the same "name" already exist.</source>
+        <target>Объект с таким именем уже существует.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>January</source>
+        <target>Январь</target>
+      </trans-unit>
+      <trans-unit>
+        <source>February</source>
+        <target>Февраль</target>
+      </trans-unit>
+      <trans-unit>
+        <source>March</source>
+        <target>Март</target>
+      </trans-unit>
+      <trans-unit>
+        <source>April</source>
+        <target>Апрель</target>
+      </trans-unit>
+      <trans-unit>
+        <source>May</source>
+        <target>Май</target>
+      </trans-unit>
+      <trans-unit>
+        <source>June</source>
+        <target>Июнь</target>
+      </trans-unit>
+      <trans-unit>
+        <source>July</source>
+        <target>Июль</target>
+      </trans-unit>
+      <trans-unit>
+        <source>August</source>
+        <target>Август</target>
+      </trans-unit>
+      <trans-unit>
+        <source>September</source>
+        <target>Сентябрь</target>
+      </trans-unit>
+      <trans-unit>
+        <source>October</source>
+        <target>Октябрь</target>
+      </trans-unit>
+      <trans-unit>
+        <source>November</source>
+        <target>Ноябрь</target>
+      </trans-unit>
+      <trans-unit>
+        <source>December</source>
+        <target>Декабрь</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You don't have the required permission to access this page.</source>
+        <target>У вас не достаточно прав для просмотра этой страницы.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

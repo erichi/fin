@@ -1,0 +1,27 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           JobOrder
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              JobOrder
+    plural:                JobOrders
+    route_prefix:          job_order
+    with_propel_route:     1
+    actions_base_class:    sfActions
+
+    config:
+      actions:
+        _new:         { credentials: [[admin, director, fm]] }
+      fields:  ~
+      list:    
+        display:      [=name, business_unit, client]
+        object_actions:
+          show:       { label: Просмотр, action: show, credentials: [[admin, director, pm, fm]] }
+          _edit:      { credentials: [[admin, director, pm, fm]] }
+          _delete:    { credentials: [[admin]] }
+      filter:  ~
+      form:    ~
+      edit:    ~
+      new:     ~

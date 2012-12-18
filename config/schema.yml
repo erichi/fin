@@ -1,0 +1,108 @@
+propel:
+  sf_guard_user_profile:
+    _attributes:  { phpName: sfGuardUserProfile }
+    id:           ~
+    user_id:      { type: integer, required: true, foreignTable: sf_guard_user, foreignReference: id, onDelete: cascade }
+    email:        { type: varchar(255), required: true }
+    first_name:   { type: varchar(50), required: true }
+    last_name:    { type: varchar(50), required: true }
+    address:      { type: varchar(255), required: true }
+    phone:        { type: integer }
+    bio:          { type: longvarchar }
+    business_unit_id: { type: integer, foreignTable: business_unit, foreignReference: id, onDelete: setnull }
+    
+  client:                                               #name of client firm
+    id:           ~
+    name:         { type: varchar(50), required: true }
+  contact_person:                                        #in client firm
+    id:           ~
+    client_id:    { type: integer, required: true, foreignTable: client, foreignReference: id, onDelete: cascade }
+    name:         { type: varchar(50), required: true }
+    
+  business_unit:
+    id:           ~
+    name:         { type: varchar(50), required: true }
+    plan:         { type: decimal, size: 10, scale: 2, required: true }
+    
+  job_order_manager:      #JO - User
+    job_order_id: { type: integer, primaryKey: true, required: true, foreignTable: job_order, foreignReference: id, onDelete: cascade }
+    user_id:      { type: integer, primaryKey: true, required: true, foreignTable: sf_guard_user, foreignReference: id, onDelete: cascade }
+    
+  job_order:
+    id:           ~
+    business_unit_id: { type: integer, required: true, foreignTable: business_unit, foreignReference: id }
+    name:         { type: varchar(50), required: true, index: unique }
+    client_id:    { type: integer, foreignTable: client, foreignReference: id }
+    indulgence:   { type: varchar(10) }
+    
+  income_payment:
+    id:           ~
+    job_order_id: { type: integer, required: true, foreignTable: job_order, foreignReference: id, onDelete: cascade }
+    name:         { type: varchar(255), required: true }
+    date:         { type: date, required: true }
+    amount:       { type: decimal, size: 10, scale: 2, required: true }
+    is_confirmed: { type: boolean, default: 0 }
+  
+  job_type:
+    id:           ~
+    name:         { type: varchar(20), required: true }
+  
+  job:
+    id:           ~
+    job_order_id: { type: integer, foreignTable: job_order, foreignReference: id, onDelete: cascade }
+    name:         { type: varchar(255), required: true }
+    job_type_id:  { type: integer, required: true, foreignTable: job_type, foreignReference: id }
+    supplier:     { type: varchar(100), required: true }
+    amount:       { type: decimal, size: 10, scale: 2, required: true }  
+          
+  job_payment:       #outcome payment
+    id:           ~
+    job_id:       { type: integer, required: true, foreignTable: job, foreignReference: id, onDelete: cascade }
+    name:         { type: varchar(100), required: true }
+    date:         { type: date, required: true }
+    amount:       { type: decimal, size: 10, scale: 2, required: true }
+    filename:     { type: varchar(255) }
+    is_confirmed: { type: boolean, default: 0 }
+    
+  tender:
+    id:           ~
+    name:         { type: varchar(100), required: true }
+    budget:       { type: integer }
+    amount:       { type: integer }
+    status:       { type: varchar(4), default: new }
+    job_order_id: ~  
+    business_unit_id: { type: integer, foreignTable: business_unit, foreignReference: id, onDelete: setnull }
+#    margin:       { type: integer }
+#    interest_circulation:   {type: integer }
+#    interest_plan:          { type: integer }
+#    receipt:                { type: integer }
+#    expenditure:            { type: integer }
+#    debit:            { type: integer }
+#    credit:           { type: integer }
+#    balance:          { type: integer }
+
+  plan:
+    id:           ~
+    name:         { type: varchar(100), required: true }
+    budget:       { type: integer }
+    amount:       { type: integer }
+    job_order_id: { type: integer, foreignTable: job_order, foreignReference: id, onDelete: setnull }  
+    business_unit_id: { type: integer, foreignTable: business_unit, foreignReference: id, onDelete: setnull }
+    
+  current_expenses:
+    id:           ~
+    business_unit_id:  { type: integer, foreignTable: business_unit, foreignReference: id, onDelete: cascade }  
+    expences_type_id:  { type: integer, foreignTable: expences_type, foreignReference: id, onDelete: cascade } 
+    name:         { type: varchar(100), required: true }
+
+  regular_payment:
+    id:           ~
+    current_expenses_id:  { type: integer, foreignTable: current_expenses, foreignReference: id, onDelete: cascade }  
+    amount:       { type: integer }
+    is_confirmed: { type: boolean, default: 0 }
+    month:        { type: varchar(10), required: true }
+    
+  expences_type: 
+    id:           ~
+    code:         { type: varchar(100), required: true }
+    name:         { type: varchar(100), required: true }

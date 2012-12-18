@@ -1,0 +1,106 @@
+business_unit_stats:
+  url: /bu_stats
+  param: { module: business_unit, action: buStats }
+
+savefile:
+  url: /savefile
+  param: { module: business_unit, action: saveFile }
+
+loadexp:
+  url: /loadexp
+  param: { module: business_unit, action: loadExp }
+
+confirmexp:
+  url: /confirmexp
+  param: { module: business_unit, action: confirmExp }
+  
+
+current_expenses:
+  class: sfPropelRouteCollection
+  options:
+    model:                CurrentExpenses
+    module:               current_expenses
+    prefix_path:          /current_expenses
+    column:               id
+    with_wildcard_routes: true
+
+plan:
+  class: sfPropelRouteCollection
+  options:
+    model:                Plan
+    module:               plan
+    prefix_path:          /plan
+    column:               id
+    with_wildcard_routes: true
+
+project_report:
+  url: /project-report
+  param: { module: business_unit, action: projectReport }
+cashflow:
+  url: /cashflow
+  param: { module: business_unit, action: cashflow }
+bu_current_expenses:
+  url: /current-expenses
+  param: { module: business_unit, action: currentExpenses }
+
+job_order:
+  class: sfPropelRouteCollection
+  options:
+    model:                JobOrder
+    module:               job_order
+    prefix_path:          /job_order
+    column:               id
+    with_wildcard_routes: true
+
+tender:
+  class: sfPropelRouteCollection
+  options:
+    model:                Tender
+    module:               tender
+    prefix_path:          /tender
+    column:               id
+    with_wildcard_routes: true
+
+job_type:
+  class: sfPropelRouteCollection
+  options:
+    model:                JobType
+    module:               job_type
+    prefix_path:          /job_type
+    column:               id
+    with_wildcard_routes: true
+
+client:
+  class: sfPropelRouteCollection
+  options:
+    model:                Client
+    module:               client
+    prefix_path:          /client
+    column:               id
+    with_wildcard_routes: true
+
+business_unit:
+  class: sfPropelRouteCollection
+  options:
+    model:                BusinessUnit
+    module:               business_unit
+    prefix_path:          /business_unit
+    column:               id
+    with_wildcard_routes: true
+
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/10-Routing
+
+# default rules
+homepage:
+  url:   /
+  param: { module: index, action: index }
+
+# generic rules
+# please, remove them by adding more specific rules
+default_index:
+  url:   /:module
+  param: { action: index }
+
+default:
+  url:   /:module/:action/*

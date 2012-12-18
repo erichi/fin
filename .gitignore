@@ -1,0 +1,7 @@
+log/*
+cache/*
+web/uploads/*
+config/databases.yml
+config/propel.ini
+data/sql/*
+.DS_Store

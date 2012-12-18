@@ -1,0 +1,23 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           JobType
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              JobType
+    plural:                JobTypes
+    route_prefix:          job_type
+    with_propel_route:     1
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  ~
+      list:    
+        display: [id, =name]
+      filter:  
+        class: false
+      form:    ~
+      edit:    ~
+      new:     ~

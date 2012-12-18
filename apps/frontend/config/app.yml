@@ -1,0 +1,15 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/11-App
+
+# default values
+all:
+  sitename: Finsys
+  
+  sf_guard_extra_plugin:
+    mail_from:        noreply@example.org
+    name_from:        Finsys
+    subject_confirm:  Подтверждение пароля
+    subject_complete: Request complete
+    subject_request:  Request to reset password
+    subject_success:  Password reset successfully
+    reset_type:       set # set to `ask` for asking (see above)

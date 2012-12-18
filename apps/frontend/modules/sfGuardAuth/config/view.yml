@@ -1,0 +1,8 @@
+default:
+  metas:
+    title: %app_sitename% - Admin
+
+signinSuccess:
+  metas:
+    title: %app_sitename% - Login
+  

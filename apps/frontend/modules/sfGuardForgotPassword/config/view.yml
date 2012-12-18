@@ -1,0 +1,3 @@
+all:
+  metas:
+    title: %app_sitename% - Reset Password

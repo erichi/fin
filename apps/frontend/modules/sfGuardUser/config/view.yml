@@ -1,0 +1,11 @@
+indexSuccess:
+  metas:
+    title: %app_sitename% - Users
+    
+editSuccess:
+  metas:
+    title: %app_sitename% - Edit User
+
+newSuccess:
+  metas:
+    title: %app_sitename% - Create User
