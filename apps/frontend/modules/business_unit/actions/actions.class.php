@@ -54,8 +54,121 @@ class business_unitActions extends autoBusiness_unitActions
 		$this->expenses = CurrentExpensesPeer::retrieveByBU($this->business_unit_id, new Criteria());
 		$this->expence_types = ExpencesTypePeer::doSelect(new Criteria());
 	}
+
+	protected function createDateRangeArray($strDateFrom,$strDateTo)
+	{
+	    // takes two dates formatted as YYYY-MM-DD and creates an
+	    // inclusive array of the dates between the from and to dates.
 	
-	public function executeCashflow(sfWebRequest $request)
+	    // could test validity of dates here but I'm already doing
+	    // that in the main script
+	
+	    $aryRange=array();
+	
+	    $iDateFrom=mktime(1,0,0,substr($strDateFrom,5,2),     substr($strDateFrom,8,2),substr($strDateFrom,0,4));
+	    $iDateTo=mktime(1,0,0,substr($strDateTo,5,2),     substr($strDateTo,8,2),substr($strDateTo,0,4));
+	
+	    if ($iDateTo>=$iDateFrom)
+	    {
+	        array_push($aryRange,date('Y-m-d',$iDateFrom)); // first entry
+	        while ($iDateFrom<$iDateTo)
+	        {
+	            $iDateFrom+=86400; // add 24 hours
+	            if(date('N',$iDateFrom) != 6 && date('N',$iDateFrom) != 7)
+	            	array_push($aryRange,date('Y-m-d',$iDateFrom));
+	        }
+	    }
+	    return $aryRange;
+	}
+
+	public function executeCashflow(sfWebRequest $request) {
+
+		$bu_id = $request->getParameter('id');
+
+		$jos = JobOrderPeer::retrieveByBU($bu_id);
+
+		$jo_payments = array();
+		$dates = array();
+
+		foreach ($jos as $jo) {
+			$ins = IncomePaymentPeer::retrieveByJobOrderId($jo->getId());
+			foreach ($ins as $in) {
+				$jo_payments[$jo->getId()][$in->getDate()]['in'][] = $in->getAmount();
+				$dates[] = $in->getDate();
+			}
+			$outs = JobPaymentPeer::retrieveByJobId($jo->getId());
+			foreach ($outs as $out) {
+				$jo_payments[$jo->getId()][$out->getDate()]['out'][] = $out->getAmount();
+				$dates[] = $out->getDate();
+			}
+		}
+
+		$currents = array();
+		$ces = CurrentExpensesPeer::retrieveByBU($bu_id);
+
+		foreach ($ces as $ce) {
+			$payments = RegularPaymentPeer::getByCE($ce->getId());
+			foreach ($payments as $p) {
+				$date = explode('-', $p->getMonth());
+				$date = date('Y-m-d', mktime('0', '0', '0', $date[1], date('t', mktime('1', '1', '1', $date[1], '1', $date[0])), $date[0]));
+				$dates[] = $date;
+					$currents[$ce->getExpencesTypeId()][$date]['out'][] = $p->getAmount();	
+			}
+			
+		}
+
+		$range = $this->createDateRangeArray($dates[0], $dates[count($dates)-1]);
+		$mask = array();
+
+		foreach ($range as $r) {
+			$mask[$r] = array();
+		}
+
+		$jo_labels_arr = array();
+		$ce_labels_arr = array();
+
+		$jos_label = JobOrderPeer::doSelect(new Criteria());
+		foreach ($jos_label as $l) {
+			$jo_labels_arr[$l->getId()] = $l->getName();
+		}
+
+		$ce_label = ExpencesTypePeer::doSelect(new Criteria());
+		foreach ($ce_label as $l) {
+			$ce_labels_arr[$l->getId()] = $l->getName();
+		}
+
+		$result = array();
+		$i = 0;
+		foreach ($jos as $jo) {
+			$result[$i]['name'] = $jo_labels_arr[$jo->getId()];
+			$result[$i]['dates'] = array_merge($mask, $jo_payments[$jo->getId()]);
+			$i++;
+
+		}
+		foreach ($ces as $ce) {
+			$result[$i]['name'] = $ce_labels_arr[$ce->getExpencesTypeId()];
+			$result[$i]['dates'] = array_merge($mask, $currents[$ce->getExpencesTypeId()]);
+			$i++;
+
+		}
+
+
+
+
+		//sort($dates);
+		//echo 'Begin: '.$dates[0].'<br />';
+		//echo 'End: '.$dates[count($dates)-1].'<br />';
+		//print_r($dates);
+		//print_r($result);
+		$this->range = $range;
+		$this->result = $result;
+		//exit;
+
+
+	}
+
+	
+	public function executeCashflowNew(sfWebRequest $request)
 	{
 		if ($this->getUser()->hasCredential('admin')) {
 			$this->business_unit_id = $request->getParameter('id');

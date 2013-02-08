@@ -29,5 +29,12 @@ class RegularPaymentPeer extends BaseRegularPaymentPeer {
 			return false;
 		}
 	}
+
+	public static function getByCE($curr_exp_id)
+	{
+		$c = new Criteria();
+		$c->add(self::CURRENT_EXPENSES_ID, $curr_exp_id);
+		return self::doSelect($c);
+	}
 	
 } // RegularPaymentPeer

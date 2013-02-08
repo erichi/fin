@@ -14,7 +14,7 @@ default:
 
   stylesheets:    [/css/bootstrap.css, /css/bootstrap-responsive.css]
 
-  javascripts:    [http://code.jquery.com/jquery.min.js, /js/bootstrap.js]
+  javascripts:    [/js/jquery-1.4.4.min.js, /js/bootstrap.js]
 
   has_layout:     true
   layout:         layout

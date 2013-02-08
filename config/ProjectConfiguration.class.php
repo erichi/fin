@@ -1,6 +1,6 @@
 <?php
 
-require_once '/usr/home/ftpaccess/crm.buzzaar.ru/symfony/symfony-1.4.16/lib/autoload/sfCoreAutoload.class.php';
+require_once '/Applications/MAMP/htdocs/sf/lib/autoload/sfCoreAutoload.class.php';
 sfCoreAutoload::register();
 
 class ProjectConfiguration extends sfProjectConfiguration
