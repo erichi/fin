@@ -55,15 +55,19 @@
                                     <?php if(isset($date['in'])): ?>
                                     <ul class="income_payments">
                                         <?php foreach ($date['in'] as $amount): ?>
-                                        <li><?php echo $amount; ?></li>
+                                        <?php if($amount != 0):?>
+                                            <li><?php echo $amount; ?></li>
+                                        <?php endif; ?>
                                         <?php endforeach; ?>
                                     </ul>
                                     <?php endif; ?>
                                     <?php if(isset($date['out'])): ?>
                                     <ul class="outcome_payments">
-                                        <?php foreach ($date['out'] as $amount): ?>
-                                        <li><?php echo $amount; ?></li>
+                                        <?php $amount = 0; ?>
+                                        <?php foreach ($date['out'] as $a): ?>
+                                        <?php $amount += $a; ?>
                                         <?php endforeach; ?>
+                                        <li><?php echo $amount; ?></li>
                                     </ul>
                                     <?php endif; ?>
                                 </td>

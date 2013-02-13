@@ -110,13 +110,13 @@ class business_unitActions extends autoBusiness_unitActions
 			$payments = RegularPaymentPeer::getByCE($ce->getId());
 			foreach ($payments as $p) {
 				$date = explode('-', $p->getMonth());
-				$date = date('Y-m-d', mktime('0', '0', '0', $date[1], date('t', mktime('1', '1', '1', $date[1], '1', $date[0])), $date[0]));
+				$date = date('Y-m-d', strtotime($p->getMonth().'-01 last friday'));
 				$dates[] = $date;
 					$currents[$ce->getExpencesTypeId()][$date]['out'][] = $p->getAmount();	
 			}
 			
 		}
-
+		sort($dates);
 		$range = $this->createDateRangeArray($dates[0], $dates[count($dates)-1]);
 		$mask = array();
 
@@ -139,29 +139,29 @@ class business_unitActions extends autoBusiness_unitActions
 
 		$result = array();
 		$i = 0;
+
+		//echo 'MASK: '.count($mask);
+
 		foreach ($jos as $jo) {
 			$result[$i]['name'] = $jo_labels_arr[$jo->getId()];
 			$result[$i]['dates'] = array_merge($mask, $jo_payments[$jo->getId()]);
+			//echo 'JO: '.count($result[$i]['dates']);
 			$i++;
 
 		}
 		foreach ($ces as $ce) {
 			$result[$i]['name'] = $ce_labels_arr[$ce->getExpencesTypeId()];
 			$result[$i]['dates'] = array_merge($mask, $currents[$ce->getExpencesTypeId()]);
+			//echo 'CE: '.count($result[$i]['dates']);
 			$i++;
 
 		}
 
+		//exit;
 
-
-
-		//sort($dates);
-		//echo 'Begin: '.$dates[0].'<br />';
-		//echo 'End: '.$dates[count($dates)-1].'<br />';
-		//print_r($dates);
-		//print_r($result);
 		$this->range = $range;
 		$this->result = $result;
+
 		//exit;
 
 
