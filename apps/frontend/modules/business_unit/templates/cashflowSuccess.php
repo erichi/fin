@@ -83,10 +83,3 @@
         </div>
     </div>
 </div>
-<?php /*
-
-<script type="text/javascript">
-    var cashflow_index_url = "<?php echo url_for('business_unit/cashflow?id='.$business_unit_id.'&date='.$date) ?>";
-    var approve_income_payment_url = "<?php echo url_for('business_unit/approveIncomePayment') ?>";
-    var approve_outcome_payment_url = "<?php echo url_for('business_unit/approveOutcomePayment') ?>";
-</script> */ ?>
