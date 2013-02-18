@@ -10,6 +10,18 @@
 		<ul class="dropdown-menu">
 			<li><?php echo link_to('Список', '@business_unit') ?></li>
 			<li><?php echo link_to('Показатели по всем BU', '@business_unit_stats') ?></li>
+			<li class="divider"></li>
+			<?php foreach ($bus as $bu): ?>
+			<li class="dropdown-submenu">
+    			<a tabindex="-1" href="#"><?php echo $bu->getName(); ?></a>
+    			<ul class="dropdown-menu">
+            <li><a tabindex="-1" href="/business_unit/projectReport?id=<?php echo $bu->getId(); ?>">Отчет по проектам</a></li>
+            <li><a tabindex="-1" href="/business_unit/currentExpenses?id=<?php echo $bu->getId(); ?>">Текущие расходы</a></li>
+            <li><a tabindex="-1" href="/business_unit/cashflow?id=<?php echo $bu->getId(); ?>">Cashflow</a></li>
+
+    			</ul>
+  			</li>
+  			<?php endforeach; ?>
     	</ul>
     	</li>
 		<li class="dropdown">

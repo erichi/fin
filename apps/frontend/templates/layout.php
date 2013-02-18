@@ -62,7 +62,7 @@
           <div class="nav-collapse">
             <ul class="nav">
     <?php if($sf_user->isAuthenticated() ): ?>
-      <?php include_partial('content/menu')?>
+      <?php include_component('content', 'menu')?>
     <?php endif; ?>
 
             </ul>
