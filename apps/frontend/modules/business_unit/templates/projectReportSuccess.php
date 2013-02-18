@@ -91,8 +91,8 @@
           <a class="btn btn-mini" href="#">Результат</a>
           <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="<?php echo 'job_order/new?tender_id='.$tender->getId().'&return_to_pr='.$business_unit->getId(); ?>"><i class="icon-thumbs-up"></i> Выигран</a></li>
-            <li><a href="<?php echo 'business_unit/loseTender?tender_id='.$tender->getId().'&bu_id='.$business_unit->getId(); ?>"><i class="icon-thumbs-down"></i> Проигран</a></li>
+            <li><a href="<?php echo '/job_order/new?tender_id='.$tender->getId().'&return_to_pr='.$business_unit->getId(); ?>"><i class="icon-thumbs-up"></i> Выигран</a></li>
+            <li><a href="<?php echo '/business_unit/loseTender?tender_id='.$tender->getId().'&bu_id='.$business_unit->getId(); ?>"><i class="icon-thumbs-down"></i> Проигран</a></li>
           </ul>
         </div>
 						</td>

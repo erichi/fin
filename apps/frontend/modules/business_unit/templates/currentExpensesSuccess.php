@@ -6,7 +6,6 @@
 
 <div id="sf_admin_container" class="current_expenses">
 	<h1>Текущие расходы</h1>
-	<p><a href="javascript:;" id="recount_link">пересчет</a></p>
 	<div id="sf_admin_content">
 		
 		<div id="current_expenses_taxes">
