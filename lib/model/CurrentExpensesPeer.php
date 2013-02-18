@@ -20,6 +20,7 @@ class CurrentExpensesPeer extends BaseCurrentExpensesPeer
 			$c = new Criteria();
 		}
 		$c->add(parent::BUSINESS_UNIT_ID, $id);
+		$c->addDescendingOrderByColumn(parent::EXPENCES_TYPE_ID);
 		
 		return parent::doSelect($c);
 	}

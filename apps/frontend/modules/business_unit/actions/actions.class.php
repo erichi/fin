@@ -150,7 +150,7 @@ class business_unitActions extends autoBusiness_unitActions
 
 		}
 		foreach ($ces as $ce) {
-			$result[$i]['name'] = $ce_labels_arr[$ce->getExpencesTypeId()];
+			$result[$i]['name'] = $ce_labels_arr[$ce->getExpencesTypeId()].' / '.$ce->getName();
 			$result[$i]['dates'] = array_merge($mask, $currents[$ce->getExpencesTypeId()]);
 			//echo 'CE: '.count($result[$i]['dates']);
 			$i++;
