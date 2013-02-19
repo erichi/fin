@@ -83,3 +83,21 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    function IsNumeric(input)
+    {
+        return (input - 0) == input && input.length > 0;
+    }
+    
+    $(document).ready(function(){
+        $('.outcome_payments, .income_payments').each(function(){
+            if(IsNumeric($(this).text()) && $(this).text() != 0) {
+                $(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
+            }
+        });
+
+    });
+
+</script>

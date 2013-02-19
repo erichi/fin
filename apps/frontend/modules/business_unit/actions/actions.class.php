@@ -75,7 +75,7 @@ class business_unitActions extends autoBusiness_unitActions
 	        {
 	            $iDateFrom+=86400; // add 24 hours
 	            if(date('N',$iDateFrom) != 6 && date('N',$iDateFrom) != 7)
-	            	array_push($aryRange,date('Y-m-d',$iDateFrom));
+	            	array_push($aryRange,date('d.m.Y',$iDateFrom));
 	        }
 	    }
 	    return $aryRange;
