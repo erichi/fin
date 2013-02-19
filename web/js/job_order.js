@@ -180,27 +180,7 @@ function addNewClient()
 	  }
 	});
 }
-//function addIncomePayment()
-//{
-//	var name = $('#payment_name').val();
-//	var date = $('#payment_date').val();
-//	var amount = $('#payment_amount').val();
-//
-//  var payment_tr = '<tr id="ip_'+ ip_cnt +'"><td>'+
-//	  '<input type="hidden" name="jo[income_payment]['+ ip_cnt +'][name]" value="'+ name +'" />'+
-//		'<input type="hidden" name="jo[income_payment]['+ ip_cnt +'][amount]" value="'+ amount +'" />'+
-//		'<input type="hidden" name="jo[income_payment]['+ ip_cnt +'][date]" value="'+ date +'" />'+
-//		'<input type="hidden" name="jo[income_payment]['+ ip_cnt +'][is_confirmed]" value="0" />'+
-//		'</td><td>'+ name +'</td><td>'+ amount +'</td><td>'+ date +'</td></tr>';
-//	
-//  $('#income_payment_table').append(payment_tr);
-//  //clear input fields
-//	$('#payment_name').val('');
-//	$('#payment_date').val('');
-//	$('#payment_amount').val('');
-//	
-//  ip_cnt++;
-//}
+
 function addIncomePayment()
 {
 	var name = $('#payment_name').val();
@@ -213,7 +193,7 @@ function addIncomePayment()
 		'<input type="hidden" name="jo[income_payment]['+ ip_cnt +'][date]" value="'+ date +'" />'+
 		'<input type="hidden" name="jo[income_payment]['+ ip_cnt +'][is_confirmed]" value="0" />'+
 		'</td><td>'+ name +'</td><td>'+ amount +'</td><td>'+ date +'</td><td></td>'+
-		'<td><button type="button" class="btn btn-mini delete_btn" onclick="deleteIncomePayment('+ip_cnt+')" style="margin-top:5px;"><i class="icon-trash icon-black"> </i>удалить</button> </td></tr>';
+		'<td><button type="button" class="btn btn-mini delete_btn" onclick="deleteIncomePayment('+ip_cnt+')" style="margin-top:5px;">удалить</button> </td></tr>';
  
   $('#income_payment_table').append(payment_tr);
   //clear input fields
@@ -325,14 +305,14 @@ function addJobPayment()
 	var amount 		= $('#job_payment_amount').val();
 	var file 			= $('#job_payment_file').val();
 	if (file) {
-		var file_link = 'http://'+document.domain+'/uploads/'+ file;
+		var file_link = '/uploads/files/'+ file;
 		var links = '<a href="'+ file_link +'" target="_blank">скачать</a>';
 	} else {
 		var links = '<a href="#" onclick="uploadJobPayment('+jp_cnt+','+job_id+');return false;">загрузить</a>';
 	}
 
-
-   ajaxFileUpload();
+	console.log(file);
+   ajaxFileUpload('job_payment_file');
 
   var payment_tr = '<tr id="jp_'+ jp_cnt +'"><td>'+
 	  '<input type="hidden" name="jo[outcome_payment]['+ job_id +'][job_payment]['+ jp_cnt +'][name]" value="'+ name +'" />'+
@@ -360,14 +340,14 @@ function editaddJobPayment(obj,job)
 	var amount 		= $('#job_payment_amount').val();
 	var file 			= $('#job_payment_file').val();
 	if (file) {
-		var file_link = 'http://'+document.domain+'/uploads/'+ file;
+		var file_link = '/uploads/files/'+ file;
 		var links = '<a href="'+ file_link +'" target="_blank">скачать</a>';
 	} else {
 		var links = '<a href="#" onclick="uploadJobPayment();return false;">загрузить</a>';
 	}
 
 
-   ajaxFileUpload();
+   ajaxFileUpload('job_payment_file');
 
 
    $('input[name="jo[outcome_payment]['+job+'][job_payment]['+obj+'][name]"]').val(name);
@@ -482,7 +462,7 @@ function newJobPaymentDialog()
 			"Сохранить": function() {
 				if (validateNewJobPayment()) {
 					if ($('#job_payment_file').val()) {
-						ajaxFileUpload();
+						ajaxFileUpload('job_payment_file');
 					}
 					addJobPayment();
 					$(this).dialog("close");
@@ -504,12 +484,14 @@ function editJobPaymentDialog(i,job_id)
 				if (validateNewJobPayment()) {
 					if ($('#job_payment_file').val()) {
 				
+						
 						var file = $('#job_payment_file').val();
-						var file_link = 'http://'+document.domain+'/uploads/'+ file;
+						console.log(file);
+						var file_link = '/uploads/files/'+ file;
 			            var file_downloads = '<a href='+file_link+' target="_blank">скачать</a>';
 			            $('#job_'+job_id+' #jp_'+i+' .job_payment_download a').remove();
 			            $('#job_'+job_id+' #jp_'+i+' .job_payment_download').append(file_downloads);
-						ajaxFileUpload();
+						ajaxFileUpload('job_payment_file');
 					}
 					editaddJobPayment(i,job_id);
 					$(this).dialog("close");
@@ -529,7 +511,7 @@ function newJobPaymentFileDialog(i,id)
 		buttons: {
 			"Сохранить": function() {
 		            var file = $('#job_payment_file_after').val();
-		            var file_link = 'http://'+document.domain+'/uploads/'+ file;
+		            var file_link = '/uploads/files/'+ file;
 		            var file_downloads = '<a href='+file_link+' target="_blank">скачать</a>';
 		            $('#job_'+id+' #jp_'+i+' .job_payment_download a').remove();
 		            $('#job_'+id+' #jp_'+i+' .job_payment_download').append(file_downloads);
@@ -598,6 +580,9 @@ function editJobPayment(id,job_id)
   
    name =$('#job_'+job_id +' #jp_'+id +' .job_payment_name').text();
    amount =$('#job_'+job_id +' #jp_'+id +' .job_payment_amount').text();
+   amount = amount.replace(' ', '');
+   amount = amount.replace(',', '.');
+
    date = $('#job_'+job_id +' #jp_'+id +' .job_payment_date').text();
   
    $('#job_payment_name').val(name);
@@ -712,16 +697,7 @@ function validateNewJobPayment()
 
 function ajaxFileUpload(field_id)
 {
-  /*
-      prepareing ajax file upload
-      url: the url of script file handling the uploaded files
-                  fileElementId: the file type of input element id and it will be the index of  $_FILES Array()
-      dataType: it support json, xml
-      secureuri:use secure protocol
-      success: call back function when the ajax complete
-      error: callback function when the ajax failed
-     
-          */
+
   $.ajaxFileUpload
   (
     {
