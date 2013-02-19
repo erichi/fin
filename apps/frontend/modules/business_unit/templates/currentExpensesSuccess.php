@@ -5,7 +5,9 @@
 <?php use_javascript('current_expenses.js') ?>
 
 <div id="sf_admin_container" class="current_expenses">
+	<div class="page-header">
 	<h1>Текущие расходы</h1>
+	</div>
 	<div id="sf_admin_content">
 		
 		<div id="current_expenses_taxes">
@@ -82,4 +84,18 @@
 	var save_field_data_url = "<?php echo url_for('current_expenses/saveTypedData') ?>";
 	var new_row_url = "<?php echo url_for('current_expenses/addNewRow') ?>";
 	var current_expenses_url = "<?php echo url_for('business_unit/currentExpenses?id='.$business_unit_id) ?>";
+
+	function IsNumeric(input)
+	{
+    	return (input - 0) == input && input.length > 0;
+	}
+
+	$(document).ready(function(){
+		$('td').each(function(){
+
+			if(IsNumeric($(this).text()) && $(this).text() != 0)
+				$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
+		});
+	});
+
 </script>

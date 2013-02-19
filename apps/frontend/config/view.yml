@@ -14,7 +14,7 @@ default:
 
   stylesheets:    [/css/bootstrap.css, /css/bootstrap-responsive.css]
 
-  javascripts:    [/js/jquery-1.4.4.min.js, /js/bootstrap.js]
+  javascripts:    [/js/jquery-1.4.4.min.js, /js/bootstrap.js, /js/jshashtable-2.1.js, /js/jquery.numberformatter-1.2.3.js]
 
   has_layout:     true
   layout:         layout

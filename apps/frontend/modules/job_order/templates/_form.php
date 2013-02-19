@@ -105,13 +105,13 @@
 	    					<td>
 	    					  <input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][name]" value="<?php echo  $income_payment->getName() ?>" />
 									<input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][amount]" value="<?php echo  $income_payment->getAmount() ?>" id="jo_income_payment_amount_<?php echo  $ip_cnt ?>" />
-									<input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][date]" value="<?php echo  $income_payment->getDate() ?>" />
+									<input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][date]" value="<?php echo  $income_payment->getDate('d.m.Y') ?>" />
 									<input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][is_confirmed]" value="<?php echo  $income_payment->getIsConfirmed() ?>" />
 								</td>
 	    					
 	    					<td class ="income_paymen_name"><?= $income_payment->getName() ?></td>
 	    					<td class ="income_paymen_amount"><?= $income_payment->getAmount() ?></td>
-	    					<td class ="income_paymen_date"><?= $income_payment->getDate() ?></td>
+	    					<td class ="income_paymen_date"><?= $income_payment->getDate('d.m.Y') ?></td>
 	    					<td><button type="button" class="btn btn-mini" onclick="editIncomePayment(<?php echo $ip_cnt?>)" style="margin-top:5px;"><i class="icon-pencil icon-black"></i> редактировать</button> </td>
 	    					<td><button type="button" class="btn btn-mini" onclick="deleteIncomePayment(<?php echo $ip_cnt?>)" style="margin-top:5px;"><i class="icon-trash icon-black"></i> удалить</button> </td>
 	    				</tr>
@@ -164,13 +164,13 @@
 	    							<tr id="jp_<?php echo  $jp_cnt ?>">
 	    								<td>
 	    									<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][name]" value="<?php echo  $job_payment->getName() ?>" />
-												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][date]" value="<?php echo  $job_payment->getDate() ?>" />
+												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][date]" value="<?php echo  $job_payment->getDate('d.m.Y') ?>" />
 												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][amount]" value="<?php echo  $job_payment->getAmount() ?>" />
 												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][file]" value="<?php echo  $job_payment->getFilename() ?>" />
 												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][is_confirmed]" value="<?php echo  $job_payment->getIsConfirmed() ?>" />
 											</td>
 	    								<td class="job_payment_name"><?= $job_payment->getName() ?></td>
-	    								<td class="job_payment_date"><?= $job_payment->getDate() ?></td>
+	    								<td class="job_payment_date"><?= $job_payment->getDate('d.m.Y') ?></td>
 	    								<td class="job_payment_amount"><?= $job_payment->getAmount() ?></td>
 	    								<?php if ($job_payment->getFilename()):?>
 	    								<td class="job_payment_download"><a href="<?php echo  $file_link ?>" target="_blank">скачать</a></td>
@@ -178,7 +178,7 @@
 	    						     	<td class="job_payment_download"><a href="#" onclick="uploadJobPayment(<?php echo $jp_cnt.','.$job_cnt?>);return false;">загрузить</a></td>
 	    						     	<?php endif;?>
 	    								
-	    						 		<td style="padding-left: 0; padding-right: 0;"><button type="button" class="btn btn-mini" onclick="editJobPayment(<?php echo $jp_cnt.','.$job_cnt?>)" ><i class="icon-pencil icon-black"></i> редактировать</button> </td>
+	    						 		<td style="padding-left: 0; padding-right: 0;"><button type="button" class="btn btn-mini" onclick="editJobPayment(<?php echo $jp_cnt.','.$job_cnt?>)" >редактировать</button> </td>
 	    					            <td style="padding-right: 0;"><button type="button" class="btn btn-mini" onclick="deleteJobPayment(<?php echo $jp_cnt.','.$job_cnt?>)" ><i class="icon-trash icon-black"></i> удалить</button> </td>
 	    						  </tr>
 	    						  
@@ -197,219 +197,6 @@
     		
     	</div>
     </div>
-    <?php /*
-    <br />
-    <fieldset id="manager" >
-    <p style="font-size: 19px;">Менеджер</p>
-      <div>  
-      
-      
-      <br />
-		    <select>
-	        <option value=""></option>
-	        <?php foreach ($all_managers as $manager): ?>
-	        	<option value="<?php echo $manager->getId()?>"><?php echo $manager->getProfile()->getLastName().' '.$manager->getProfile()->getFirstName() ?></option>
-	        <?php endforeach; ?>
-		    </select>
-		    <button type="button" onclick="addManager()">Выбрать</button>
-		  </div>
-		  <table class="optional">
-		  	<?php if ($jo_managers) {
-		  		foreach ($jo_managers as $jo_manager): ?>
-			  	<tr id="manager_<?php echo  $jo_manager->getId() ?>">
-			  		<td><input type="hidden" name="jo[manager][<?php echo  $jo_manager->getId() ?>]" value="<?php echo  $jo_manager->getId() ?>" /><?php echo $jo_manager->getProfile()->getLastName().' '.$jo_manager->getProfile()->getFirstName() ?></td>
-			  		<td><? if(!$sf_user->hasCredential('pm')): ?><a href="#" onclick="deleteOptionalField('manager_<?php echo  $jo_manager->getId() ?>'); return false;">удалить</a><? endif; ?></td>
-			    </tr>
-		  	<?php endforeach;
-		  	} ?>
-		  </table>
-    </fieldset>
-    <fieldset id="client">
-    <p style="font-size: 19px;">Клиент</p>
-      <div>  
-      <br />
-      	<?php echo $form['client_id']?>
-		  	<input type="text" name="client[new]" id="client_new" /> 
-		    <button type="button" onclick="addNewClient()">добавить</button> 
-		  </div>
-		  <table class="optional"></table>
-		  <div>
-		  	<input type="text" name="client[contact_person]" id="client_contact_person" /> 
-		    <button type="button" onclick="addClientContactPerson()">добавить</button> 
-		  </div>
-    </fieldset>
-    
-    <div class="clear"></div>
-    <br />
-    <fieldset id="income_payment">
-    	<p style="font-size: 19px;">Входящие платежи</p>
-    	<br />
-    	<div id="income_payment_list">
-	    	<table>
-	    		<tr><th class="hidden_fields"></th><th>Платеж</th><th>Сумма</th><th>Дата</th></tr>
-	    		<?php if($income_payments){
-	    			$ip_cnt = 1;
-	    			foreach ($income_payments as $income_payment): ?>
-	    				<tr id="ip_<?php echo  $ip_cnt ?>">
-	    					<td>
-	    					  <input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][name]" value="<?php echo  $income_payment->getName() ?>" />
-									<input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][amount]" value="<?php echo  $income_payment->getAmount() ?>" id="jo_income_payment_amount_<?php echo  $ip_cnt ?>" />
-									<input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][date]" value="<?php echo  $income_payment->getDate() ?>" />
-									<input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][is_confirmed]" value="<?php echo  $income_payment->getIsConfirmed() ?>" />
-								</td>
-	    					<td><?php echo  $income_payment->getName() ?></td>
-	    					<td><?php echo  $income_payment->getAmount() ?></td>
-	    					<td><?php echo  $income_payment->getDate() ?></td>
-	    				</tr>
-	    		<?php $ip_cnt++; 
-	    			endforeach;
-	    		} ?>
-	    	</table>
-		    <button type="button" onclick="newIncomePayment()" style="margin-top:20px;">new payment</button> 
-    	</div>
-    	<div style="float:left;">
-    		<p>Total budget: <span id="ip_total_budget"></span></p>
-    		<p>Indulgence: <?php echo  $form['indulgence'] ?> </p>
-    		<p>Net profit: <span id="ip_net_profit"></span></p>
-    		<p>Margin: <span id="ip_margin"></span>%</p>
-    	</div>
-    	<div class="clear"></div>
-    	
-			<div class="dialog" id="dialog_income_payment">				<!--Dialog box Income Payment-->
-					<table>
-						<tr>
-							<td><label for="payment_name">Название платежа:</label></td>
-							<td><input type="text" name="payment[name]" id="payment_name"></td>
-						</tr>
-						<tr>
-							<td><label for="payment_date">Дата:</label></td>
-							<td><input type="text" name="payment[date]" id="payment_date"></td>
-						</tr>
-						<tr>
-							<td><label for="payment_amount">Сумма:</label></td>
-							<td><input type="text" name="payment[amount]" id="payment_amount"></td>
-						</tr>
-					</table>
-			</div>												<!--End Dialog box-->
-    </fieldset>    
-    <br />
-    <fieldset id="outcome_payment">
-      <p style="font-size: 19px;">Описание и оценка работ</p>
-      <br />
-	    <div id="outcome_payment_list">
-		    <table id="job_list">
-		    	<tr>
-		    		<th class="hidden_fields"></th>
-		    		<th>JOB DESCRIPTION<br/>&#38; ESTIMATION</th>
-		    		<th>Job name</th>
-		    		<th>Supplier</th>
-		    		<th>Total sum</th>
-		    		<th>Payments</th>
-		    	</tr>
-    		<?php if($jobs){
-    			$job_cnt = 1;
-    			foreach ($jobs as $job): ?>
-    				<tr id="job_<?php echo  $job_cnt ?>">
-    					<td>
-    						<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][name]" value="<?php echo  $job->getName() ?>" />
-								<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_type]" value="<?php echo  $job->getJobType()->getId() ?>" />
-								<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][supplier]" value="<?php echo  $job->getSupplier() ?>" />
-								<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][amount]" value="<?php echo  $job->getAmount() ?>" id="jo_outcome_payment_amount_<?php echo  $job_cnt ?>"  />
-    					</td>
-    					<td><?php echo  $job->getJobType()->getName() ?></td>
-    					<td><?php echo  $job->getName() ?></td>
-    					<td><?php echo  $job->getSupplier() ?></td>
-    					<td><?php echo  $job->getAmount() ?></td>
-    					<td class="job_payments">
-    						<a href="#" onclick="newJobPayment('<?php echo  $job_cnt ?>');return false;">new payment</a>
-    						<table><?php if($job->getJobPayments()){
-    							$jp_cnt = 1;
-    							$count_jp = count($job->getJobPayments());
-	    						foreach ($job->getJobPayments() as $job_payment): ?>
-	    						<?php $file_link = $job_payment->getFilename() ? 'http://'.$sf_request->getHost().'/uploads/'.$job_payment->getFilename() : '#' ?>
-	    							<tr id="jp_<?php echo  $jp_cnt ?>">
-	    								<td>
-	    									<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][name]" value="<?php echo  $job_payment->getName() ?>" />
-												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][date]" value="<?php echo  $job_payment->getDate() ?>" />
-												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][amount]" value="<?php echo  $job_payment->getAmount() ?>" />
-												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][file]" value="<?php echo  $job_payment->getFilename() ?>" />
-												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][is_confirmed]" value="<?php echo  $job_payment->getIsConfirmed() ?>" />
-											</td>
-	    								<td><?php echo  $job_payment->getName() ?></td>
-	    								<td><?php echo  $job_payment->getDate() ?></td>
-	    								<td><?php echo  $job_payment->getAmount() ?></td>
-	    								<td class="job_payment_download"><a href="<?php echo  $file_link ?>" target="_blank">скачать</a>/<a href="#" onclick="uploadJobPayment();return false;">загрузить</a></td>
-	    						  </tr>
-					    		<?php $jp_cnt++; 
-					    		endforeach;
-					    		} ?>	</table>
-				    	</td>
-    				</tr>
-    		<?php $job_cnt++;
-    		 endforeach;
-    		} ?>
-		    </table>
-	    	<button type="button" onclick="newJob()" style="margin-top:20px;">new job</button>
-      </div>
-*/ ?>	
-<?php /*
-    			<div class="dialog" id="dialog_new_job">																						<!--Dialog box Job-->
-    					<table>
-    						<tr>
-    							<td><label for="job_job_type">Тип работы:</label></td>
-    							<td><select name="job[job_type]" id="job_job_type">
-    								<option value=""></option>
-    								<?php foreach ($job_types as $job_type): ?>
-    									<option value="<?php echo  $job_type->getId() ?>"><?php echo  $job_type->getName() ?></option>
-    								<?php endforeach; ?>
-    							</select></td>
-    						</tr>
-    						<tr>
-    							<td><label for="job_name">Название работы:</label></td>
-    							<td><input type="text" name="job[name]" id="job_name"></td>
-    						</tr>
-    						<tr>
-    							<td><label for="job_supplier">Подрядчик:</label></td>
-    							<td><input type="text" name="job[supplier]" id="job_supplier"></td>
-    						</tr>
-    						<tr>
-    							<td><label for="job_amount">Общая стоимость:</label></td>
-    							<td><input type="text" name="job[amount]" id="job_amount"></td>
-    						</tr>
-    					</table>
-    			</div>*/ ?>												<!--End Dialog box-->
-<?php /*        
-    <div class="dialog" id="dialog_job_payment">																					<!--Dialog box Job Payment-->
-		    <table>
-			    <tr>
-				    <td><label for="job_payment_name">Название платежа:</label></td>
-        		<td><input type="text" name="job_payment[name]" id="job_payment_name"></td>
-          </tr>
-        	<tr>
-    				<td><label for="job_payment_date">Дата:</label></td>
-        		<td><input type="text" name="job_payment[date]" id="job_payment_date"></td>
-        	</tr>
-        	<tr>
-    				<td><label for="job_payment_amount">Сумма:</label></td>
-        		<td><input type="text" name="job_payment[amount]" id="job_payment_amount"></td>
-        	</tr>
-        	<tr>
-    				<td><label for="job_payment_file">Файл:</label></td>
-        		<td><input type="file" name="fileToUpload" id="job_payment_file"></td>
-        	</tr>
-        </table>
-    </div>		*/ ?>										<!--End Dialog box-->
-
-<?php /*
-    <div class="dialog" id="dialog_job_payment_file">																					<!--Dialog box Job Payment-->
-		    <table>
-        	<tr>
-    				<td><label for="job_payment_file">Файл:</label></td>
-        		<td><input type="file" name="fileToUpload" id="job_payment_file"></td>
-        	</tr>
-        </table>
-    </div>	*/ ?>											<!--End Dialog box-->
-
     			<div class="dialog" id="dialog_new_job">																						<!--Dialog box Job-->
     					<table>
     						<tr>
@@ -502,6 +289,26 @@
 	ip_cnt = <?php echo count($income_payments) ?>+1;
 	job_cnt = <?php echo count($jobs) ?>+1;
 	jp_cnt = <?php echo isset($count_jp) ? $count_jp : '0' ?>+1;
+
+	function IsNumeric(input)
+	{
+    	return (input - 0) == input && input.length > 0;
+	}
+	
+	$(document).ready(function(){
+		$('.income_paymen_amount').each(function(){
+
+			if(IsNumeric($(this).text()) && $(this).text() != 0)
+				$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
+
+		});
+		$('td').each(function(){
+
+			if(IsNumeric($(this).text()) && $(this).text() != 0)
+				$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
+		});
+
+	});
 
 </script>
 
