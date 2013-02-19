@@ -130,7 +130,7 @@ class job_orderActions extends autoJob_orderActions
   {
   	$jo = $request->getParameter('jo');			//save custom fields in JO
 
-  	if ($jo['manager']) {
+  	if (isset($jo['manager'])) {
 	  	foreach ($jo['manager'] as $manager_id) {									//save JO managers
 	  		$job_order_manager = new JobOrderManager();
 		  	$job_order_manager->setUserId($manager_id);
@@ -159,8 +159,13 @@ class job_orderActions extends autoJob_orderActions
 	  		$job->setAmount($op['amount']);
 	  		$job->save($con);
 	  		if ($op['job_payment']) {
-		  		foreach ($op['job_payment'] as $op_jp) {									//save JO Outcome Payments(payments for concrete job)
-		  			$job_payment = new JobPayment();
+		  		foreach ($op['job_payment'] as $op_jp) {
+
+          	//save JO Outcome Payments(payments for concrete job)
+		  			
+            $op_jp['file'] = str_replace('C:\fakepath\\', '', $op_jp['file']);
+
+            $job_payment = new JobPayment();
 		  			$job_payment->setJob($job);
 		  			$job_payment->setName($op_jp['name']);
 		  			$job_payment->setDate($op_jp['date']);
@@ -275,11 +280,10 @@ class job_orderActions extends autoJob_orderActions
   		$error = 'No file was uploaded..';
   	}else
   	{
-  		move_uploaded_file($_FILES['fileToUpload']['tmp_name'], sfConfig::get('sf_upload_dir').DIRECTORY_SEPARATOR.$_FILES['fileToUpload']['name']);
+  		move_uploaded_file($_FILES['fileToUpload']['tmp_name'], sfConfig::get('upload_files_dir').DIRECTORY_SEPARATOR.$_FILES['fileToUpload']['name']);
   		// what after successfully uploaded file???
   		
-  		$msg .= " File Name: " . $_FILES['fileToUpload']['name'] . ", ";
-  		$msg .= " File Size: " . @filesize($_FILES['fileToUpload']['tmp_name']);
+  		$msg .= $_FILES['fileToUpload']['name'];
   		//for security reason, we force to remove all uploaded file
   		@unlink($_FILES['fileToUpload']);
   	}

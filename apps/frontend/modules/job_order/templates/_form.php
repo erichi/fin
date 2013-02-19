@@ -97,7 +97,7 @@
     	<h4>Входящие платежи</h4><br />
 
 	    	<table id="income_payment_table" class="table" style="margin-bottom: 0px;">
-	    		<tr><th class="hidden_fields"></th><th>Платеж</th><th>Сумма</th><th>Дата</th></tr>
+	    		<tr><th class="hidden_fields"></th><th>Платеж</th><th>Сумма</th><th>Дата</th><th></th><th></th></tr>
 	    		<?php if($income_payments){
 	    			$ip_cnt = 1;
 	    			foreach ($income_payments as $income_payment): ?>
@@ -160,7 +160,7 @@
     							$jp_cnt = 1;
     							$count_jp = count($job->getJobPayments());
 	    						foreach ($job->getJobPayments() as $job_payment): ?>
-	    						<?php $file_link = $job_payment->getFilename() ? 'http://'.$sf_request->getHost().'/uploads/'.$job_payment->getFilename() : '#' ?>
+	    						<?php $file_link = $job_payment->getFilename() ? 'http://'.$sf_request->getHost().'/uploads/files/'.$job_payment->getFilename() : '#' ?>
 	    							<tr id="jp_<?php echo  $jp_cnt ?>">
 	    								<td>
 	    									<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][name]" value="<?php echo  $job_payment->getName() ?>" />
@@ -179,7 +179,7 @@
 	    						     	<?php endif;?>
 	    								
 	    						 		<td style="padding-left: 0; padding-right: 0;"><button type="button" class="btn btn-mini" onclick="editJobPayment(<?php echo $jp_cnt.','.$job_cnt?>)" >редактировать</button> </td>
-	    					            <td style="padding-right: 0;"><button type="button" class="btn btn-mini" onclick="deleteJobPayment(<?php echo $jp_cnt.','.$job_cnt?>)" ><i class="icon-trash icon-black"></i> удалить</button> </td>
+	    					            <td style="padding-right: 0;"><button type="button" class="btn btn-mini" onclick="deleteJobPayment(<?php echo $jp_cnt.','.$job_cnt?>)" >удалить</button> </td>
 	    						  </tr>
 	    						  
 					    		<?php $jp_cnt++; 
