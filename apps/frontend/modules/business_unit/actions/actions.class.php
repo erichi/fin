@@ -160,8 +160,9 @@ class business_unitActions extends autoBusiness_unitActions
 		$this->range = $range;
 
 		//echo count($range).'<br />';
-		$k =0 ;
-		foreach ($result as $res) {
+		//$k =0 ;
+		$sum_res = array();
+		foreach ($result as $key => $res) {
 			$sum_count_in = 0;
 			$sum_count_out = 0;
 			foreach ($res['dates'] as $date) {
@@ -180,15 +181,19 @@ class business_unitActions extends autoBusiness_unitActions
 					
 				}
 			}
-			$res['dates']['sum'] = array('in' => $sum_count_in, 'out' => $sum_count_out);
-			$k++; 
+			$res['dates']['sum'] = array('in' => array($sum_count_in), 'out' => array($sum_count_out));
+			$sum_res[$key] = $res;
+			//$k++; 
 			//if($k == 3) {
 			//	print_r($res['dates']).'<br />';
 			//	exit;
 			//}
 		}
+		unlink($result);
 		//exit;
-		$this->result = $result;
+		//print_r($sum_res);
+		//exit;
+		$this->result = $sum_res;
 
 
 	}
