@@ -37,10 +37,14 @@ $(function () {
     // Build edge columns
     $('#first-col').find('tbody').append(
         buildEdgeCells(table.find('tr').find('td:first'))
+    ).end().find('thead').append(
+        buildEdgeCells(table.find('tr').find('th:first'))
     );
 
     $('#last-col').find('tbody').append(
         buildEdgeCells(table.find('tr').find('td:last'))
+    ).end().find('thead').append(
+        buildEdgeCells(table.find('tr').find('th:first'))
     );
 
     $('.table tbody').find('tr').hover(

@@ -18,20 +18,12 @@
 
         <div class="clearfix">
             <table id="first-col" class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
+                <thead></thead>
                 <tbody></tbody>
             </table>
 
             <table id="last-col" class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
+                <thead></thead>
                 <tbody></tbody>
             </table>
 
