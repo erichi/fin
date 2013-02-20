@@ -182,10 +182,10 @@ class business_unitActions extends autoBusiness_unitActions
 			}
 			$res['dates']['sum'] = array('in' => $sum_count_in, 'out' => $sum_count_out);
 			$k++; 
-			if($k == 3) {
-				print_r($res['dates']).'<br />';
-				exit;
-			}
+			//if($k == 3) {
+			//	print_r($res['dates']).'<br />';
+			//	exit;
+			//}
 		}
 		//exit;
 		$this->result = $result;
