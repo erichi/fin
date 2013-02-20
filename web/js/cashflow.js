@@ -14,7 +14,7 @@ $(function () {
         });
 
         $.each(colCells, function (i, cell) {
-            var row = '<tr><td style="height: ' + cell.height + 'px;">' + cell.text + '</td></tr>'
+            var row = '<tr><td style="height: ' + cell.height + 'px;">' + (cell.text || '&nbsp;') + '</td></tr>'
             newColRows.push(row)
         });
 
@@ -44,7 +44,7 @@ $(function () {
     $('#last-col').find('tbody').append(
         buildEdgeCells(table.find('tr').find('td:last'))
     ).end().find('thead').append(
-        buildEdgeCells(table.find('tr').find('th:first'))
+        buildEdgeCells(table.find('tr').find('th:last'))
     );
 
     $('.table tbody').find('tr').hover(
