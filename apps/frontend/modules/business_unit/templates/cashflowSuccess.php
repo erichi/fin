@@ -52,6 +52,7 @@
                                 <?php foreach ($res['dates'] as $date): ?>
                                 <?php if(!empty($date)):?>
                                 <td>
+                                    &nbsp;
                                     <?php if(isset($date['in'])): ?>
                                     <ul class="income_payments">
                                         <?php foreach ($date['in'] as $amount): ?>

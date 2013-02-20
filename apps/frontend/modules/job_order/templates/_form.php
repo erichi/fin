@@ -79,16 +79,18 @@
     	<h4>Компания клиент</h4><br />
     	<div class="well" id="client">
       		<?php echo $form['client_id']->render(); ?>
-      		<br /><a href="javascript:;">Новая компания клиент</a>
+      		<br /><a href="javascript:;" id="new_client_link">Новая компания клиент</a>
       		<div id="client_org_block">
 		  		<input type="text" name="client[new]" id="client_new" /> 
 		    	<button type="button" onclick="addNewClient()">добавить</button> 
 		    </div>
+		    <?php /*
 		  <br /><br /><table id="client_table" class="table table-condensed"></table>
 		  <div id="client_fio_block">
 		  	<input type="text" name="client[contact_person]" id="client_contact_person" /> 
 		    <button type="button" onclick="addClientContactPerson()">добавить</button> 
-		  </div>
+		  </div> */
+		  ?>
 	    </div>
     </div>
     </div>

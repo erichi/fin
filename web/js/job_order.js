@@ -10,10 +10,15 @@ float_reg = /^[0-9]*\.?[0-9]+$/;					// regular expression to match float format
 $(document).ready(function(){
 	
 	$('#client_org_block').hide();
-	$('#client_fio_block').hide();	
+	//$('#client_fio_block').hide();	
+
+	$('#new_client_link').click(function(){
+		$('#client_org_block').show();
+		//$('#client_fio_block').show();	
+	});
 
 	$('#client_new').watermark('Новый клиент');
-	$('#client_contact_person').watermark('ФИО клиента');
+	//$('#client_contact_person').watermark('ФИО клиента');
 	recountBudget();
 
 	var all_clients = $.parseJSON(clients);						//get all clients and contact persons from DB
@@ -49,7 +54,6 @@ function addManager()
 {
 	var manager_id = $('#manager option:selected').val();
 	var manager_val = $('#manager option:selected').text();
-	console.log(manager_id + ' -- ' + manager_val);
 	var field_id = 'manager_'+ manager_id; 
 	if (!manager_id) {
 		alert('Выберите менеджера.');
@@ -311,7 +315,6 @@ function addJobPayment()
 		var links = '<a href="#" onclick="uploadJobPayment('+jp_cnt+','+job_id+');return false;">загрузить</a>';
 	}
 
-	console.log(file);
    ajaxFileUpload('job_payment_file');
 
   var payment_tr = '<tr id="jp_'+ jp_cnt +'"><td>'+
@@ -486,7 +489,6 @@ function editJobPaymentDialog(i,job_id)
 				
 						
 						var file = $('#job_payment_file').val();
-						console.log(file);
 						var file_link = '/uploads/files/'+ file;
 			            var file_downloads = '<a href='+file_link+' target="_blank">скачать</a>';
 			            $('#job_'+job_id+' #jp_'+i+' .job_payment_download a').remove();
@@ -707,7 +709,6 @@ function ajaxFileUpload(field_id)
       dataType: 'json',
       success: function (data, status)				// what I must do on Success????
       {
-      	console.log('upload success');
         if(typeof(data.error) != 'undefined')
         {
           if(data.error != '')
@@ -721,7 +722,6 @@ function ajaxFileUpload(field_id)
       },
       error: function (data, status, e)
       {
-      	console.log('upload error');
           alert(e);
       }
     }
