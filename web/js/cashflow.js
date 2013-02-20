@@ -6,7 +6,7 @@ $(function () {
 
         cells.each(function (i, el) {
             colCells.push({
-                text: $(el).text(),
+                text: $(el).html(),
                 height: $.browser.opera ? $(el).outerHeight() : $(el).height()
             });
 
@@ -25,6 +25,8 @@ $(function () {
         wrap = viewport.find('.scrollable-table'),
         table = wrap.find('table'),
         cells = table.find('thead').find('th'),
+        firstCol = $('#first-col'),
+        lastCol = $('#last-col'),
         totalWidth = 0;
 
     // Set proper table width
@@ -35,17 +37,31 @@ $(function () {
     wrap.width(totalWidth);
 
     // Build edge columns
-    $('#first-col').find('tbody').append(
+    firstCol.find('tbody').append(
         buildEdgeCells(table.find('tr').find('td:first'))
     ).end().find('thead').append(
         buildEdgeCells(table.find('tr').find('th:first'))
     );
 
-    $('#last-col').find('tbody').append(
+    lastCol.find('tbody').append(
         buildEdgeCells(table.find('tr').find('td:last'))
     ).end().find('thead').append(
         buildEdgeCells(table.find('tr').find('th:last'))
     );
+
+    // Normalize table cells height
+    table.find('tr').each(function(i, row) {
+        var index = $(row).index(),
+            $cells = $.merge(firstCol, lastCol,  table).find('tbody tr').eq(index).find('td:first'),
+            heights = $cells.map(function () {
+                return $(this).outerHeight();
+            }).get(),
+            maxHeight = Math.max.apply(null, heights);
+
+        firstCol.find('tbody tr').eq(index).find('td:first').height(maxHeight);
+        table.find('tbody tr').eq(index).find('td:first').height(maxHeight);
+        lastCol.find('tbody tr').eq(index).find('td:first').height(maxHeight);
+    });
 
     $('.table tbody').find('tr').hover(
         function() {

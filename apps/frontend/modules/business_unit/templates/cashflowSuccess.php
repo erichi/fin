@@ -17,12 +17,12 @@
         </form>
 
         <div class="clearfix">
-            <table id="first-col" class="table table-bordered">
+            <table id="first-col" class="table table-bordered col-table">
                 <thead></thead>
                 <tbody></tbody>
             </table>
 
-            <table id="last-col" class="table table-bordered">
+            <table id="last-col" class="table table-bordered col-table">
                 <thead></thead>
                 <tbody></tbody>
             </table>
