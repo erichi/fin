@@ -75,7 +75,7 @@ class business_unitActions extends autoBusiness_unitActions
 	        {
 	            $iDateFrom+=86400; // add 24 hours
 	            if(date('N',$iDateFrom) != 6 && date('N',$iDateFrom) != 7)
-	            	array_push($aryRange,date('d.m.Y',$iDateFrom));
+	            	array_push($aryRange,date('Y-m-d',$iDateFrom));
 	        }
 	    }
 	    return $aryRange;
@@ -112,12 +112,15 @@ class business_unitActions extends autoBusiness_unitActions
 				$date = explode('-', $p->getMonth());
 				$date = date('Y-m-d', strtotime($p->getMonth().'-01 last friday'));
 				$dates[] = $date;
-					$currents[$ce->getExpencesTypeId()][$date]['out'][] = $p->getAmount();	
+				$currents[$ce->getExpencesTypeId()][$date]['out'][] = $p->getAmount();	
 			}
 			
 		}
 		sort($dates);
+
+
 		$range = $this->createDateRangeArray($dates[0], $dates[count($dates)-1]);
+
 		$mask = array();
 
 		foreach ($range as $r) {
@@ -140,19 +143,14 @@ class business_unitActions extends autoBusiness_unitActions
 		$result = array();
 		$i = 0;
 
-		//echo 'MASK: '.count($mask);
-
 		foreach ($jos as $jo) {
 			$result[$i]['name'] = $jo_labels_arr[$jo->getId()];
 			$result[$i]['dates'] = array_merge($mask, $jo_payments[$jo->getId()]);
-			//echo 'JO: '.count($result[$i]['dates']);
 			$i++;
-
 		}
 		foreach ($ces as $ce) {
 			$result[$i]['name'] = $ce_labels_arr[$ce->getExpencesTypeId()].' / '.$ce->getName();
 			$result[$i]['dates'] = array_merge($mask, $currents[$ce->getExpencesTypeId()]);
-			//echo 'CE: '.count($result[$i]['dates']);
 			$i++;
 
 		}
@@ -160,9 +158,37 @@ class business_unitActions extends autoBusiness_unitActions
 		//exit;
 
 		$this->range = $range;
-		$this->result = $result;
 
+		//echo count($range).'<br />';
+		$k =0 ;
+		foreach ($result as $res) {
+			$sum_count_in = 0;
+			$sum_count_out = 0;
+			foreach ($res['dates'] as $date) {
+				if(isset($date['in'])) {
+
+					foreach ($date['in'] as $amount) {
+						$sum_count_in += $amount;
+					}
+					
+				}
+				if(isset($date['out'])) {
+
+					foreach ($date['out'] as $amount) {
+						$sum_count_out += $amount;
+					}
+					
+				}
+			}
+			$res['dates']['sum'] = array('in' => $sum_count_in, 'out' => $sum_count_out);
+			$k++; 
+			if($k == 3) {
+				print_r($res['dates']).'<br />';
+				exit;
+			}
+		}
 		//exit;
+		$this->result = $result;
 
 
 	}
