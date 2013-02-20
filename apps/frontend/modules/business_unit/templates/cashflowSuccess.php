@@ -32,9 +32,11 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th><strong>Наименование</strong></th>
                                 <?php foreach ($range as $r): ?>
                                 <th id="<?php echo $r; ?>"><?php echo $r; ?></th>
                                 <?php endforeach; ?>
+                                <th><strong>Сумма</strong></th>
                             </tr>
                         </thead>
                         <tbody>
