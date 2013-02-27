@@ -138,7 +138,7 @@ class job_orderActions extends autoJob_orderActions
 		  	$job_order_manager->save($con);
 	  	}
   	}
-  	if ($jo['income_payment']) {
+  	if (isset($jo['income_payment'])) {
 	  	foreach ($jo['income_payment'] as $ip) {									//save JO Income Payments
 	  		$income_payment = new IncomePayment();
 	  		$income_payment->setJobOrder($JobOrder);
@@ -149,7 +149,7 @@ class job_orderActions extends autoJob_orderActions
 	  		$income_payment->save($con);
 	  	}
   	}
-  	if ($jo['outcome_payment']) {
+  	if (isset($jo['outcome_payment'])) {
   		foreach ($jo['outcome_payment'] as $op) {									//save JO Outcome Payments(by Job)
 	  		$job = new Job();
 	  		$job->setJobOrder($JobOrder);
