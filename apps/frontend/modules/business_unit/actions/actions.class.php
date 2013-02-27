@@ -148,9 +148,9 @@ class business_unitActions extends autoBusiness_unitActions
 			$result[$i]['dates'] = array_merge($mask, $jo_payments[$jo->getId()]);
 			$i++;
 		}
-		foreach ($ces as $ce) {
-			$result[$i]['name'] = $ce_labels_arr[$ce->getExpencesTypeId()].' / '.$ce->getName();
-			$result[$i]['dates'] = array_merge($mask, $currents[$ce->getExpencesTypeId()]);
+		foreach ($currents as $type => $ce) {
+			$result[$i]['name'] = $ce_labels_arr[$type];
+			$result[$i]['dates'] = array_merge($mask, $ce);
 			$i++;
 
 		}
@@ -189,6 +189,33 @@ class business_unitActions extends autoBusiness_unitActions
 			//	exit;
 			//}
 		}
+		$vert_sum = array();
+
+		foreach ($sum_res[0]['dates'] as $date => $value) {
+
+			$in_sum = 0;
+			$out_sum = 0;
+
+			for($i=0; $i<count($sum_res); $i++) {
+				//print_r($sum_res[$i]['dates'][$date]['in']); exit;
+				if(count($sum_res[$i]['dates'][$date]['in']) !=0) {
+					//print_r($sum_res[$i]['dates'][$date]['in']);
+					foreach ($sum_res[$i]['dates'][$date]['in'] as $amount) {
+						$in_sum += $amount;
+					}
+				}
+				if(count($sum_res[$i]['dates'][$date]['out']) !=0) {
+					foreach ($sum_res[$i]['dates'][$date]['out'] as $amount) {
+						$out_sum += $amount;
+					}
+				}
+			}
+
+			$vert_sum[$date] = array('in' => array($in_sum), 'out' => array($out_sum));
+		}
+//		exit;
+
+		$sum_res[] = array('name' => 'Сумма', 'dates' => $vert_sum);
 		unlink($result);
 		//exit;
 		//print_r($sum_res);
