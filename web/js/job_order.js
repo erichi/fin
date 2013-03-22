@@ -10,6 +10,7 @@ float_reg = /^[1-9][0-9]{0,2}(?: ?[0-9]{3}){0,3}\,[0-9]{2}$/;
 
 //float_reg = /^[0-9]*\.?[0-9]+$/;					// regular expression to match float format
 
+
 $(document).ready(function(){
 	
 	$('#client_org_block').hide();
