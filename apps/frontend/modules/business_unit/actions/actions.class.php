@@ -29,8 +29,12 @@ class business_unitActions extends autoBusiness_unitActions
 		}
 		$this->business_unit = BusinessUnitPeer::retrieveByPK($business_unit_id);
 		$this->job_orders = JobOrderPeer::retrieveByBU($business_unit_id);
-		$this->tenders = TenderPeer::doSelect(new Criteria());
-		$this->plans = PlanPeer::doSelect(new Criteria());
+		$c = new Criteria();
+		$c->Add(TenderPeer::BUSINESS_UNIT_ID, $business_unit_id);
+		$this->tenders = TenderPeer::doSelect($c);
+		$c = new Criteria();
+		$c->Add(PlanPeer::BUSINESS_UNIT_ID, $business_unit_id);
+		$this->plans = PlanPeer::doSelect($c);
 	}
 	
 	public function executeLoseTender(sfWebRequest $request)
