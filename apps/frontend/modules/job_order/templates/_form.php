@@ -4,6 +4,7 @@
 <?php use_javascript('jquery.watermark.min.js') ?>
 <?php use_javascript('jquery-ui-1.8.16.custom.min.js') ?>
 <?php use_javascript('job_order.js') ?>
+<?php use_javascript('inputmask.js') ?>
 <?php use_javascript('jquery.ui.datepicker-ru.js')?>
 <?php use_javascript('ajaxfileupload.js') ?>
 

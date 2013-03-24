@@ -572,6 +572,8 @@ function newJobPayment(id)
    $('#job_payment_name').val('');
    $('#job_payment_date').val('');
    $('#job_payment_amount').val('');
+   $('#job_payment_amount').inputmask('999 999 999,99', { numericInput: true });
+
    
 }
 function editJobPayment(id,job_id)
