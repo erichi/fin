@@ -212,10 +212,7 @@ function editaddIncomePayment(obj)
 	var name = $('#payment_name').val();
 	var date = $('#payment_date').val();
 	var amount = $('#payment_amount').val();
-    /*set change from format xxx xxx,xx to xxxxxx.xx*/
-    amount = amount.replace(',', '.');
-    amount = amount.replace(' ', '');
-	$('input[name="jo[income_payment]['+ obj +'][name]"]').val(name);
+    $('input[name="jo[income_payment]['+ obj +'][name]"]').val(name);
 	$('input[name="jo[income_payment]['+ obj +'][amount]"]').val(amount);
 	$('input[name="jo[income_payment]['+ obj +'][date]"]').val(date);
 	$('input[name="jo[income_payment]['+ obj +'][is_confirmed]"]').val(0);
