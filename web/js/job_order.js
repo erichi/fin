@@ -5,11 +5,7 @@ var job_cnt = 1;
 var op_cnt = 1;
 var man_cnt = 1;
 date_reg = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/; 			// regular expression to match date format
-
-float_reg = /^[1-9][0-9]{0,2}(?: ?[0-9]{3}){0,3}\,[0-9]{2}$/;
-
-//float_reg = /^[0-9]*\.?[0-9]+$/;					// regular expression to match float format
-
+float_reg = /^[1-9][0-9]{0,2}(?: ?[0-9]{3}){0,3}\,[0-9]{2}$/;                  // regular expression to match float format
 
 $(document).ready(function(){
 	
