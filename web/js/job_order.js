@@ -307,8 +307,9 @@ function addJobPayment()
 	var name 			= $('#job_payment_name').val();
 	var date 			= $('#job_payment_date').val();
 	var amount 		= $('#job_payment_amount').val();
-	var file 			= $('#job_payment_file').val();
-	if (file) {
+    /*trim string from fakepath for webkit (chrome, safari)*/
+    var file 			= $('#job_payment_file').val().replace(/^C:\\fakepath\\/i, '');
+    if (file) {
 		var file_link = '/uploads/files/'+ file;
 		var links = '<a href="'+ file_link +'" target="_blank">скачать</a>';
 	} else {
@@ -464,10 +465,10 @@ function newJobPaymentDialog()
 		buttons: {
 			"Сохранить": function() {
 				if (validateNewJobPayment()) {
-					if ($('#job_payment_file').val()) {
+                    addJobPayment();
+                    if ($('#job_payment_file').val()) {
 						ajaxFileUpload('job_payment_file');
 					}
-					addJobPayment();
 					$(this).dialog("close");
 					$('tr#job_id_new_payment').remove();
 				}
