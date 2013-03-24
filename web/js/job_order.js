@@ -212,6 +212,8 @@ function editaddIncomePayment(obj)
 	var name = $('#payment_name').val();
 	var date = $('#payment_date').val();
 	var amount = $('#payment_amount').val();
+    amount = amount.replace(' ', '');
+    amount = amount.replace(',', '.');
     $('input[name="jo[income_payment]['+ obj +'][name]"]').val(name);
 	$('input[name="jo[income_payment]['+ obj +'][amount]"]').val(amount);
 	$('input[name="jo[income_payment]['+ obj +'][date]"]').val(date);
@@ -249,6 +251,9 @@ function addJob()
 	var name 			= $('#job_name').val();
 	var supplier 	= $('#job_supplier').val();
 	var amount 		= $('#job_amount').val();
+    amount = amount.replace(' ', '');
+    amount = amount.replace(',', '.')
+
 
 	var payment_tr = '<tr id="job_'+ job_cnt +'"><td>'+
 	  '<input type="hidden" name="jo[outcome_payment]['+ job_cnt +'][name]" value="'+ name +'" />'+
@@ -307,6 +312,8 @@ function addJobPayment()
 	var name 			= $('#job_payment_name').val();
 	var date 			= $('#job_payment_date').val();
 	var amount 		= $('#job_payment_amount').val();
+    amount = amount.replace(' ', '');
+    amount = amount.replace(',', '.')
     /*trim string from fakepath for webkit (chrome, safari)*/
     var file 			= $('#job_payment_file').val().replace(/^C:\\fakepath\\/i, '');
     if (file) {
