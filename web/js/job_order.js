@@ -193,7 +193,7 @@ function addIncomePayment()
 	
   var payment_tr = '<tr id="ip_'+ ip_cnt +'"><td>'+
 	  '<input type="hidden" name="jo[income_payment]['+ ip_cnt +'][name]" value="'+ name +'" />'+
-		'<input type="hidden" name="jo[income_payment]['+ ip_cnt +'][amount]" value="'+ amount +'" />'+
+		'<input type="hidden" name="jo[income_payment]['+ ip_cnt +'][amount]" value="'+ stringToValue(amount) +'" />'+
 		'<input type="hidden" name="jo[income_payment]['+ ip_cnt +'][date]" value="'+ date +'" />'+
 		'<input type="hidden" name="jo[income_payment]['+ ip_cnt +'][is_confirmed]" value="0" />'+
 		'</td><td>'+ name +'</td><td>'+ amount +'</td><td>'+ date +'</td><td></td>'+
@@ -212,17 +212,14 @@ function editaddIncomePayment(obj)
 	var name = $('#payment_name').val();
 	var date = $('#payment_date').val();
 	var amount = $('#payment_amount').val();
-    amount = amount.replace(' ', '');
-    amount = amount.replace(',', '.');
-    $('input[name="jo[income_payment]['+ obj +'][name]"]').val(name);
-	$('input[name="jo[income_payment]['+ obj +'][amount]"]').val(amount);
-	$('input[name="jo[income_payment]['+ obj +'][date]"]').val(date);
-	$('input[name="jo[income_payment]['+ obj +'][is_confirmed]"]').val(0);
-	$('#ip_'+obj +' .income_paymen_name').text(name);
+    $('#ip_'+obj +' .income_paymen_name').text(name);
 	$('#ip_'+obj +' .income_paymen_amount').text(amount);
 	$('#ip_'+obj +' .income_paymen_date').text(date);
-	
-	
+
+    $('input[name="jo[income_payment]['+ obj +'][name]"]').val(name);
+    $('input[name="jo[income_payment]['+ obj +'][amount]"]').val(stringToValue(amount));
+    $('input[name="jo[income_payment]['+ obj +'][date]"]').val(date);
+    $('input[name="jo[income_payment]['+ obj +'][is_confirmed]"]').val(0);
 }
 function recountBudget()
 {
@@ -251,15 +248,12 @@ function addJob()
 	var name 			= $('#job_name').val();
 	var supplier 	= $('#job_supplier').val();
 	var amount 		= $('#job_amount').val();
-    amount = amount.replace(' ', '');
-    amount = amount.replace(',', '.')
-
 
 	var payment_tr = '<tr id="job_'+ job_cnt +'"><td>'+
 	  '<input type="hidden" name="jo[outcome_payment]['+ job_cnt +'][name]" value="'+ name +'" />'+
 		'<input type="hidden" name="jo[outcome_payment]['+ job_cnt +'][job_type]" value="'+ job_type_id +'" />'+
 		'<input type="hidden" name="jo[outcome_payment]['+ job_cnt +'][supplier]" value="'+ supplier +'" />'+
-		'<input type="hidden" name="jo[outcome_payment]['+ job_cnt +'][amount]" value="'+ amount +'" />'+
+		'<input type="hidden" name="jo[outcome_payment]['+ job_cnt +'][amount]" value="'+ stringToValue(amount) +'" />'+
 		'</td><td>'+ job_type +'</td><td>'+ name +'</td><td>'+ supplier +'</td><td>'+ amount +'</td>'+
 			'<td class="job_payments"><a class="btn btn-mini btn-info" onclick="newJobPayment(\''+ job_cnt +'\');return false;"><i class="icon-plus icon-white"></i> добавить счет</a><table></table></td></tr>';
 	
@@ -312,8 +306,6 @@ function addJobPayment()
 	var name 			= $('#job_payment_name').val();
 	var date 			= $('#job_payment_date').val();
 	var amount 		= $('#job_payment_amount').val();
-    amount = amount.replace(' ', '');
-    amount = amount.replace(',', '.')
     /*trim string from fakepath for webkit (chrome, safari)*/
     var file 			= $('#job_payment_file').val().replace(/^C:\\fakepath\\/i, '');
     if (file) {
@@ -328,7 +320,7 @@ function addJobPayment()
   var payment_tr = '<tr id="jp_'+ jp_cnt +'"><td>'+
 	  '<input type="hidden" name="jo[outcome_payment]['+ job_id +'][job_payment]['+ jp_cnt +'][name]" value="'+ name +'" />'+
 		'<input type="hidden" name="jo[outcome_payment]['+ job_id +'][job_payment]['+ jp_cnt +'][date]" value="'+ date +'" />'+
-	  '<input type="hidden" name="jo[outcome_payment]['+ job_id +'][job_payment]['+ jp_cnt +'][amount]" value="'+ amount +'" />'+
+	  '<input type="hidden" name="jo[outcome_payment]['+ job_id +'][job_payment]['+ jp_cnt +'][amount]" value="'+ stringToValue(amount) +'" />'+
 		'<input type="hidden" name="jo[outcome_payment]['+ job_id +'][job_payment]['+ jp_cnt +'][file]" value="'+ file +'" />'+
 		'<input type="hidden" name="jo[outcome_payment]['+ job_id +'][job_payment]['+ jp_cnt +'][is_confirmed]" value="0" />'+
 		'</td><td>'+ name +'</td><td>'+ date +'</td><td>'+ amount +'</td><td class="job_payment_download">'+links+'</td>'+
@@ -363,7 +355,7 @@ function editaddJobPayment(obj,job)
 
    $('input[name="jo[outcome_payment]['+job+'][job_payment]['+obj+'][name]"]').val(name);
    $('input[name="jo[outcome_payment]['+job+'][job_payment]['+obj+'][date]"]').val(date);
-   $('input[name="jo[outcome_payment]['+job+'][job_payment]['+obj+'][amount]"]').val(amount);
+   $('input[name="jo[outcome_payment]['+job+'][job_payment]['+obj+'][amount]"]').val(stringToValue(amount));
    $('input[name="jo[outcome_payment]['+job+'][job_payment]['+obj+'][file]"]').val(file);
    $('input[name="jo[outcome_payment]['+job+'][job_payment]['+obj+'][is_confirmed]"]').val(0);
    
@@ -590,8 +582,6 @@ function editJobPayment(id,job_id)
   
    name =$('#job_'+job_id +' #jp_'+id +' .job_payment_name').text();
    amount =$('#job_'+job_id +' #jp_'+id +' .job_payment_amount').text();
-   amount = amount.replace(' ', '');
-   amount = amount.replace(',', '.');
 
    date = $('#job_'+job_id +' #jp_'+id +' .job_payment_date').text();
   
@@ -737,4 +727,11 @@ function ajaxFileUpload(field_id)
  
   return false;
 
-}  
+}
+
+/*to convert string amount to correct value*/
+stringToValue = function(amount) {
+    amount = amount.replace(' ', '');
+    amount = amount.replace(',', '.');
+    return amount;
+}
