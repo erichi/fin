@@ -213,7 +213,8 @@ function editaddIncomePayment(obj)
 {
     var name = $('#payment_name').val();
     var date = $('#payment_date').val();
-    var amount = $('#payment_amount').val().replace('_','');
+    var amount = $('#payment_amount').val().replace(/_/g,'');
+    a = stringToValue(amount);
     $('#ip_'+obj +' .income_paymen_name').text(name);
     $('#ip_'+obj +' .income_paymen_amount').text(amount);
     $('#ip_'+obj +' .income_paymen_date').text(date);
@@ -250,6 +251,7 @@ function addJob()
     var name 			= $('#job_name').val();
     var supplier 	= $('#job_supplier').val();
     var amount 		= $('#job_amount').val().replace(/_/g,'');
+    a = stringToValue(amount);
 
     var payment_tr = '<tr id="job_'+ job_cnt +'"><td>'+
         '<input type="hidden" name="jo[outcome_payment]['+ job_cnt +'][name]" value="'+ name +'" />'+
@@ -646,7 +648,7 @@ function validateIncomePayment()
         $('#payment_amount').focus();
         return false;
     }
-    $('#payment_amount').val($('#payment_amount').val().replace('_',''));
+    //$('#payment_amount').val($('#payment_amount').val().replace(/_/g,''));
     return true;
 }
 
@@ -675,7 +677,7 @@ function validateNewJob()
         $('#job_amount').focus();
         return false;
     }
-    $('#job_amount').val($('#job_amount').val().replace('_',''));
+    //$('#job_amount').val($('#job_amount').val().replace(/_/g,''));
     return true;
 }
 
@@ -700,7 +702,7 @@ function validateNewJobPayment()
         $('#job_payment_amount').focus();
         return false;
     }
-    $('#job_payment_amount').val($('#job_payment_amount').val().replace('_',''));
+    //$('#job_payment_amount').val($('#job_payment_amount').val().replace(/_/g,''));
     return true;
 }
 
@@ -741,7 +743,7 @@ function ajaxFileUpload(field_id)
 
 /*to convert string amount to correct value*/
 stringToValue = function(amount) {
-    amount = amount.replace(' ', '');
+    amount = amount.replace(/ /g, '');
     amount = amount.replace(',', '.');
     return amount;
 }
