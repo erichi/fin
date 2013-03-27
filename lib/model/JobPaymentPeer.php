@@ -17,9 +17,22 @@ class JobPaymentPeer extends BaseJobPaymentPeer
 	public static function retrieveByJobId($id)
 	{
 		$c = new Criteria();
-		$c->add(self::JOB_ID, $id);
+		$c->add(JobPeer::JOB_ORDER_ID, $id);
+		$jobs = JobPeer::doSelect($c);
 		
-		return self::doSelect($c);
+		$outs = array();
+		foreach($jobs as $j) {
+		
+			$c = new Criteria();
+			$c->add(self::JOB_ID, $j->getId());
+			$tmp_outs = self::doSelect($c);
+			foreach($tmp_outs as $o) 
+				$outs[] = $o;
+		
+		}
+		
+		
+		return $outs;
 	}
 
 } // JobPaymentPeer

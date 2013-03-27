@@ -196,7 +196,7 @@ abstract class BaseRegularPayment extends BaseObject  implements Persistent {
 	public function setAmount($v)
 	{
 		if ($v !== null) {
-			$v = (int) $v;
+			$v = (float) $v;
 		}
 
 		if ($this->amount !== $v) {

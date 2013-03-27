@@ -3,6 +3,7 @@
 <?php use_javascript('jquery-ui-1.8.16.custom.min.js') ?>
 <?php use_javascript('jquery.jeditable.mini.js') ?>
 <?php use_javascript('current_expenses.js') ?>
+<?php use_javascript('inputmask.js') ?>
 
 <div id="sf_admin_container" class="current_expenses">
 	<div class="page-header">
@@ -94,7 +95,8 @@
 		$('td').each(function(){
 
 			if(IsNumeric($(this).text()) && $(this).text() != 0)
-				$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
+				//$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
+				$(this).find("input[type=checkbox]").hide();
 		});
 	});
 

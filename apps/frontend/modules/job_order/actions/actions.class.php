@@ -125,6 +125,20 @@ class job_orderActions extends autoJob_orderActions
     }
   }
   
+  public function executeDelete(sfWebRequest $request)
+  {
+    
+	//$request->checkCSRFProtection();
+
+    $this->dispatcher->notify(new sfEvent($this, 'admin.delete_object', array('object' => $this->getRoute()->getObject())));
+
+    $this->getRoute()->getObject()->delete();
+
+    $this->getUser()->setFlash('notice', 'The item was deleted successfully.');
+
+    $this->redirect('@job_order');
+  }
+  
   
   protected function saveJobOrder($JobOrder, $request, $con)
   {

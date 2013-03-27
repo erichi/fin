@@ -51,21 +51,19 @@ $(function() {
 		event			: "dblclick.editable",
 		id:  'editinput',
 		loadurl         : "/frontend_dev.php/loadexp",
-    	loaddata: function(){
-    		obj = $.parseJSON($(this).attr('data'));
+		loaddata: function(){
+			obj = $.parseJSON($(this).attr('data'));
     		return { id: obj.id }
-    	},
+		},
     	submit 		: "OK",
     	onsubmit	: function(){
-    	    
-    		if (isNaN($('[name="value"]').val())) {
+    	    if (isNaN($('[name="value"]').val())) {
       		alert("Значение должно быть числом! Введенно значение: "+$('[name="value"]').val()+"");
       		return false;
     		}
     	},
     	submitdata: function(){
     		obj = $.parseJSON($(this).attr('data'));
-    		console.log(obj.id);
     		return { id: obj.id }
     	},
     	callback : function(value, settings) {
@@ -75,7 +73,7 @@ $(function() {
 
 	$('#tax_dialog').dialog({
 		autoOpen: false, minWidth: 440,	modal: true, resizable: false, draggable: false,
-		title:	"Добавить трату",
+		title:	"Добавить расходы",
 		buttons: {
 			"Сохранить": function() {
 				if ($.trim($('#ce_tax_name').val())) {
@@ -95,23 +93,29 @@ function recount()
 {
     var types = [ 'salary', 'rent', 'tax', 'co', 'ooe', 'loan', 'fin' ];
     $.each(types, function(){
-    	var type = this.concat();
+		var type = this.concat();
     	$('td:regex(desc,^'+type+'_0_\\d{2}_\\d{4}$)').each(function(){
-    		
-    		var desc_regexp = $(this).attr('desc').split(type+'_0').join(type+'_[^0]');
+    		var desc_regexp = $(this).attr('desc').split(type+'_0').join(type+'_[^0]{1}[0-9]*');
     		var amount = 0;
     		$('td:regex(desc,^'+desc_regexp+'$)').each(function(){
-    			var value = parseInt($.trim($(this).html()));
+				var value = parseInt($.trim($(this).html()));
+				if (isNaN(value)) {
+					value = 0;
+				}
     			amount += value;
     		});
-    		var type_sum_attr = desc_regexp.split(type+'_[^0]').join(type+'_0');
+			var type_sum_attr = desc_regexp.split(type+'_[^0]{1}[0-9]*').join(type+'_0');
     		$('[desc="'+type_sum_attr+'"]').html(amount);
     		
     	});		
 
     	var amount_all = 0;
     	$('td:regex(desc,^'+type+'_0_\\d{2}_\\d{4}$)').each(function(){
-    		amount_all += parseInt($.trim($(this).html()));
+    		var value = parseInt($.trim($(this).html()));
+			if (isNaN(value)) {
+				value = 0;
+			}
+			amount_all += value;
     	});	
     	$('[desc="'+type+'_all"]').html(amount_all);
 
@@ -123,6 +127,9 @@ function recount()
     	$.each(types, function(){
     		var type = this.concat();
     		var value = parseInt($.trim($('[desc="'+type+'_0'+desc_attr+'"]').html()));
+			if (isNaN(value)) {
+				value = 0;
+			}
     		col_summ += value;
     	});
     	$('[desc="col_sum'+desc_attr+'"]').html(col_summ);
@@ -132,11 +139,14 @@ function recount()
     $.each(types, function(){
     	var type = this.concat();
     	var value = parseInt($.trim($('[desc="'+type+'_all"]').html()));
+		if (isNaN(value)) {
+			value = 0;
+		}
     	sum_of_types += value;
     	
     	var cnt = 0;
     	var ex_sum = 0;
-    	$('td:regex(desc,^'+type+'_[^0]_\\d{2}_\\d{4}$)').each(function(){
+    	$('td:regex(desc,^'+type+'_[^0]{1}[0-9]*_\\d{2}_\\d{4}$)').each(function(){
     		cnt++;
     		var sp = $(this).attr('desc').split('_');
     		var ex_id = sp[1];
@@ -148,7 +158,11 @@ function recount()
     		}
     		else
     		{
-    			ex_sum += parseInt($.trim($(this).html()));
+    			var value = parseInt($.trim($(this).html()));
+				if (isNaN(value)) {
+					value = 0;
+				}
+				ex_sum += value;
     		}
     	});	
     });
@@ -162,7 +176,7 @@ function addTaxRow(tax_name, tax_type)
 	  url: new_row_url,
 	  data: "type="+tax_type+"&name=" + tax_name +"&business_unit_id="+business_unit_id,
 	  success: function(html){
-	  	window.location = current_expenses_url;
+	  	location.reload();
 	  }
 	});
 }

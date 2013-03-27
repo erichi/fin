@@ -16,14 +16,13 @@ class current_expensesActions extends autoCurrent_expensesActions
 	public function executeSaveTypedData(sfWebRequest $request)
 	{
 		$this->forward404Unless($request->isXmlHttpRequest()); 
-		
 		$month_value = $request->getParameter('value');
-		
 		$ce = RegularPaymentPeer::retrieveByPK($request->getParameter('id'));
 		$ce->setAmount($month_value);
 		$ce->save();
 		
-		return $this->renderText($month_value);
+		return $this->renderText($ce->getAmount());
+
 	}
 	
 	public function executeAddNewRow(sfWebRequest $request)
@@ -37,6 +36,6 @@ class current_expensesActions extends autoCurrent_expensesActions
 		$ce->save();
 		
 		return $this->renderText($ce->getId());
-		//return $this->redirect('business_unit/currentExpenses?id=1');
+		//return $this->redirect('business_unit/currentExpenses?id='.$request->getParameter('business_unit_id'));
 	}
 }
