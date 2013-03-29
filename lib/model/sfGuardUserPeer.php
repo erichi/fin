@@ -26,10 +26,10 @@ class sfGuardUserPeer extends PluginsfGuardUserPeer
 		$crit1->addOr($crit2) ;
 		$c->add($crit1) ;
 		$c->add(self::IS_ACTIVE, $isActive);
-	
+
 		return self::doSelectOne($c);
 	}
-	
+
 	public static function doSelectJoinProfile(Criteria $criteria, PropelPDO $con = null)
 	{
 		if (!$criteria) {
@@ -38,35 +38,21 @@ class sfGuardUserPeer extends PluginsfGuardUserPeer
 		$criteria->addJoin(sfGuardUserPeer::ID, sfGuardUserProfilePeer::USER_ID, Criteria::LEFT_JOIN);
 		return sfGuardUserPeer::doSelect($criteria, $con);
 	}
-	
+
 	public static function doSelectJoManagers($jo)
 	{
 		$c = new Criteria();
 		$c->addJoin(JobOrderManagerPeer::USER_ID,sfGuardUserPeer::ID, Criteria::LEFT_JOIN);
 		$c->add(JobOrderManagerPeer::JOB_ORDER_ID, $jo->getId());
-		
+
 		return self::doSelectJoinProfile($c);
 	}
-	
-	public function getUnitManagers($unit_id) {
-		
-		$all_users = self::doSelectJoinProfile(new Criteria());
-		$return = array();
-		foreach($all_users as $user) {
-			if($user->getBusinessUnitId() == $unit_id && $user->hasPermission('pm'))
-				$return[] = $user;
-		}
-		return $return;
-	}
 
-	public function getManagers($unit_id) {
-		
-		$all_users = self::doSelectJoinProfile(new Criteria());
-		$return = array();
-		foreach($all_users as $user) {
-			if($user->hasPermission('pm'))
-				$return[] = $user;
-		}
-		return $return;
+	public static function retrieveByPermission($permission){
+		$criteria = new Criteria();
+		$criteria->addJoin(sfGuardUserPeer::ID, sfGuardUserPermissionPeer::USER_ID, Criteria::LEFT_JOIN);
+		$criteria->addJoin(sfGuardUserPermissionPeer::PERMISSION_ID,sfGuardPermissionPeer::ID, Criteria::LEFT_JOIN);
+		$criteria->add(sfGuardPermissionPeer::NAME, $permission, Criteria::EQUAL);
+		return sfGuardUserPeer::doSelect($criteria);
 	}
 }

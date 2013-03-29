@@ -18,17 +18,18 @@ class job_orderActions extends autoJob_orderActions
 		if ($request->hasParameter('return_to_pr')) {
 			$this->getUser()->setAttribute('return_to_pr', $request->getParameter('return_to_pr'));
 		}
-		
+
 		parent::executeNew($request);
 
 		$this->clients = $this->getClientsArray();
-    $this->all_managers = sfGuardUserPeer::getManagers();
-    $this->jo_managers = null;
-    $this->job_types = JobTypePeer::doSelect(new Criteria());
-    $this->income_payments = null;
-    $this->jobs	= null;
+
+	    $this->all_managers = sfGuardUserPeer::retrieveByPermission('pm');
+	    $this->jo_managers = null;
+	    $this->job_types = JobTypePeer::doSelect(new Criteria());
+	    $this->income_payments = null;
+	    $this->jobs	= null;
 	}
-  
+
   public function executeEdit(sfWebRequest $request)
   {
   	if ($this->getUser()->hasCredential('pm')) {
@@ -38,28 +39,28 @@ class job_orderActions extends autoJob_orderActions
   		$this->forward404Unless($this->getRoute()->getObject()->getBusinessUnitId() == $this->getUser()->getProfile()->getBusinessUnitId());
   	}
   	parent::executeEdit($request);
-  	
+
   	$this->clients = $this->getClientsArray();
-  	$this->all_managers = sfGuardUserPeer::doSelectJoinProfile(new Criteria());
+  	$this->all_managers = sfGuardUserPeer::retrieveByPermission('pm');
     $this->jo_managers = sfGuardUserPeer::doSelectJoManagers($this->JobOrder);
   	$this->job_types = JobTypePeer::doSelect(new Criteria());
   	$this->income_payments = IncomePaymentPeer::retrieveByJobOrderId($this->JobOrder->getId());
   	$this->jobs = JobPeer::retrieveByJobOrderId($this->JobOrder->getId());
   }
-  
+
   public function executeAddNewClient(sfWebRequest $request)
   {
-  	$this->forward404Unless($request->isXmlHttpRequest()); 
-  	
+  	$this->forward404Unless($request->isXmlHttpRequest());
+
 		$client = new Client();
 		$client->setName($request->getParameter('client_name'));
 		$client->save();
-		
+
 		$clients = $this->getClientsArray(null, $client->getId());
-				
-    return $this->renderText($clients); 	
+
+    return $this->renderText($clients);
   }
-  
+
   protected function getClientsArray(Criteria $c = null, $new_client_id = null)
   {
   	$client_data = array();
@@ -75,12 +76,12 @@ class job_orderActions extends autoJob_orderActions
 		  	$client_data['db'][] = array('id' => $client->getId(), 'name' => $client->getName(), 'contact_persons' => $contact_persons);
 	  	}
   	}
-  	if ($new_client_id) {  		
+  	if ($new_client_id) {
   		$client_data['added'] = array('id' => $new_client_id);
   	}
   	return json_encode($client_data);
   }
-  
+
 
 	protected function processForm(sfWebRequest $request, sfForm $form)
   {
@@ -100,9 +101,9 @@ class job_orderActions extends autoJob_orderActions
       	$con->rollback();
       	throw $e;
       }
-      
+
       $this->dispatcher->notify(new sfEvent($this, 'admin.save_object', array('object' => $JobOrder)));
-      
+
       if ($this->getUser()->hasAttribute('return_to_pr')) {	     																	 //redirect if create JO from ProjectReport
 	      $this->redirect('@project_report?id='.$this->getUser()->getAttribute('return_to_pr'));
       }
@@ -124,10 +125,10 @@ class job_orderActions extends autoJob_orderActions
       $this->getUser()->setFlash('error', 'The item has not been saved due to some errors.', false);
     }
   }
-  
+
   public function executeDelete(sfWebRequest $request)
   {
-    
+
 	//$request->checkCSRFProtection();
 
     $this->dispatcher->notify(new sfEvent($this, 'admin.delete_object', array('object' => $this->getRoute()->getObject())));
@@ -135,15 +136,15 @@ class job_orderActions extends autoJob_orderActions
     $c = new Criteria();
     $c->add(TenderPeer::JOB_ORDER_ID, $this->getRoute()->getObject()->getId());
     $del = TenderPeer::doDelete($c);
-    
+
     $this->getRoute()->getObject()->delete();
 
     $this->getUser()->setFlash('notice', 'The item was deleted successfully.');
 
     $this->redirect('@job_order');
   }
-  
-  
+
+
   protected function saveJobOrder($JobOrder, $request, $con)
   {
   	$jo = $request->getParameter('jo');			//save custom fields in JO
@@ -180,7 +181,7 @@ class job_orderActions extends autoJob_orderActions
 		  		foreach ($op['job_payment'] as $op_jp) {
 
           	//save JO Outcome Payments(payments for concrete job)
-		  			
+
             $op_jp['file'] = str_replace('C:\fakepath\\', '', $op_jp['file']);
 
             $job_payment = new JobPayment();
@@ -195,7 +196,7 @@ class job_orderActions extends autoJob_orderActions
 	  		}
 	  	}
   	}
-  	
+
   	if (isset($jo['tender_id'])) {																	// update Tender to status = won
   		$tender = TenderPeer::retrieveByPK($jo['tender_id']);
   		$tender->setName($JobOrder->getName());
@@ -203,7 +204,7 @@ class job_orderActions extends autoJob_orderActions
   		$tender->setJobOrder($JobOrder);
   		$tender->save();
   	}
-  	
+
   	if (isset($jo['plan_id'])) {																			// update Plan to real JO
   		$plan = PlanPeer::retrieveByPK($jo['plan_id']);
   		$plan->setName($JobOrder->getName());
@@ -222,38 +223,38 @@ class job_orderActions extends autoJob_orderActions
   		$ip->delete($con);
   	}
   }
-  
+
   public function executeGetClients(sfWebRequest $request)
   {
   	$this->forward404Unless($request->isXmlHttpRequest());
   	$clients = $this->getClientsArray(null, $request->getParameter('client_id'));
   	return $this->renderText($clients);
   }
-  
+
   public function executeCreateContactPerson(sfWebRequest $request)
   {
     $this->forward404Unless($request->isXmlHttpRequest());
-    
+
     $contact_person = new ContactPerson();
     $contact_person->setClientId($request->getParameter('client_id'));
     $contact_person->setName($request->getParameter('cp_name'));
     $contact_person->save();
-    
+
     $clients = $this->getClientsArray(null, $request->getParameter('client_id'));
     return $this->renderText($clients);
   }
-	
+
   public function executeDeleteContactPerson(sfWebRequest $request)
   {
     $this->forward404Unless($request->isXmlHttpRequest());
-    
+
     $contact_person = ContactPersonPeer::retrieveByPK($request->getParameter('cp_id'));
     $contact_person->delete();
-    
+
     $clients = $this->getClientsArray(null, $request->getParameter('client_id'));
     return $this->renderText($clients);
   }
-  
+
   public function executeUploadFile()
   {
   	//$this->forward404Unless($request->isXmlHttpRequest());
@@ -266,7 +267,7 @@ class job_orderActions extends autoJob_orderActions
   	{
   		switch($_FILES[$fileElementName]['error'])
   		{
-  	
+
   			case '1':
   				$error = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
   				break;
@@ -279,7 +280,7 @@ class job_orderActions extends autoJob_orderActions
   			case '4':
   				$error = 'No file was uploaded.';
   				break;
-  	
+
   			case '6':
   				$error = 'Missing a temporary folder';
   				break;
@@ -300,7 +301,7 @@ class job_orderActions extends autoJob_orderActions
   	{
   		move_uploaded_file($_FILES['fileToUpload']['tmp_name'], sfConfig::get('upload_files_dir').DIRECTORY_SEPARATOR.$_FILES['fileToUpload']['name']);
   		// what after successfully uploaded file???
-  		
+
   		$msg .= $_FILES['fileToUpload']['name'];
   		//for security reason, we force to remove all uploaded file
   		@unlink($_FILES['fileToUpload']);
@@ -309,7 +310,7 @@ class job_orderActions extends autoJob_orderActions
   	$text = 'file upload.....';
   	return $this->renderText($status);
   }
-  
+
   protected function buildCriteria()											// form list of JO
   {
   	$c = parent::buildCriteria();
@@ -322,10 +323,10 @@ class job_orderActions extends autoJob_orderActions
   	if ($this->getUser()->hasCredential('director')) {
   		$c->add(JobOrderPeer::BUSINESS_UNIT_ID, $this->getUser()->getGuardUser()->getProfile()->getBusinessUnitId());
   	}
-  	
+
   	return $c;
   }
-  
+
   public function executeShow(sfWebRequest $request)
   {
   	$this->JobOrder = $this->getRoute()->getObject();
@@ -338,7 +339,7 @@ class job_orderActions extends autoJob_orderActions
   	$this->managers = sfGuardUserPeer::doSelectJoManagers($this->JobOrder);
   	$this->income_payments = IncomePaymentPeer::retrieveByJobOrderId($this->JobOrder->getId());
   	$this->jobs = JobPeer::retrieveByJobOrderId($this->JobOrder->getId());
-  	
+
   	$total_budget = 0;
   	if ($this->income_payments) {																							//count total budget
 			foreach ($this->income_payments as $ip) {
@@ -351,7 +352,7 @@ class job_orderActions extends autoJob_orderActions
   			$sum_op += $job->getAmount();
   		}
   	}
-		$this->total_budget = round($total_budget, 2);  	
+		$this->total_budget = round($total_budget, 2);
   	$this->net_profit = round($total_budget - $sum_op, 2);
   	$this->margin = round(($this->net_profit / $this->total_budget) * 100, 2);
   }
