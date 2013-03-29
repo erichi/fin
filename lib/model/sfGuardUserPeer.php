@@ -47,4 +47,26 @@ class sfGuardUserPeer extends PluginsfGuardUserPeer
 		
 		return self::doSelectJoinProfile($c);
 	}
+	
+	public function getUnitManagers($unit_id) {
+		
+		$all_users = self::doSelectJoinProfile(new Criteria());
+		$return = array();
+		foreach($all_users as $user) {
+			if($user->getBusinessUnitId() == $unit_id && $user->hasPermission('pm'))
+				$return[] = $user;
+		}
+		return $return;
+	}
+
+	public function getManagers($unit_id) {
+		
+		$all_users = self::doSelectJoinProfile(new Criteria());
+		$return = array();
+		foreach($all_users as $user) {
+			if($user->hasPermission('pm'))
+				$return[] = $user;
+		}
+		return $return;
+	}
 }

@@ -14,4 +14,19 @@
  */
 class BusinessUnitPeer extends BaseBusinessUnitPeer {
 
+	public static function getBusByUser($user) {
+
+		$c = new Criteria();
+		
+		if($user->hasCredential('director')) {
+			
+			$c->add(self::ID, $user->getGuardUser()->getProfile()->getBusinessUnitId());
+			
+		}
+		
+		return self::doSelect($c);
+
+	
+	}
+
 } // BusinessUnitPeer

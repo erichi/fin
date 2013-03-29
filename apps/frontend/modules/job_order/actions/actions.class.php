@@ -22,7 +22,7 @@ class job_orderActions extends autoJob_orderActions
 		parent::executeNew($request);
 
 		$this->clients = $this->getClientsArray();
-    $this->all_managers = sfGuardUserPeer::doSelectJoinProfile(new Criteria());
+    $this->all_managers = sfGuardUserPeer::getManagers();
     $this->jo_managers = null;
     $this->job_types = JobTypePeer::doSelect(new Criteria());
     $this->income_payments = null;
@@ -132,6 +132,10 @@ class job_orderActions extends autoJob_orderActions
 
     $this->dispatcher->notify(new sfEvent($this, 'admin.delete_object', array('object' => $this->getRoute()->getObject())));
 
+    $c = new Criteria();
+    $c->add(TenderPeer::JOB_ORDER_ID, $this->getRoute()->getObject()->getId());
+    $del = TenderPeer::doDelete($c);
+    
     $this->getRoute()->getObject()->delete();
 
     $this->getUser()->setFlash('notice', 'The item was deleted successfully.');
@@ -172,7 +176,7 @@ class job_orderActions extends autoJob_orderActions
 	  		$job->setSupplier($op['supplier']);
 	  		$job->setAmount($op['amount']);
 	  		$job->save($con);
-	  		if ($op['job_payment']) {
+	  		if (isset($op['job_payment'])) {
 		  		foreach ($op['job_payment'] as $op_jp) {
 
           	//save JO Outcome Payments(payments for concrete job)
@@ -309,13 +313,14 @@ class job_orderActions extends autoJob_orderActions
   protected function buildCriteria()											// form list of JO
   {
   	$c = parent::buildCriteria();
-  	$bu_id = $this->getUser()->getProfile()->getBusinessUnitId();
-  	if (!$this->getUser()->hasCredential('admin')) {
-  		$c->add(JobOrderPeer::BUSINESS_UNIT_ID, $bu_id);
-  	}
+
   	if ($this->getUser()->hasCredential('pm')) {
   		$c->addJoin(JobOrderPeer::ID, JobOrderManagerPeer::JOB_ORDER_ID, Criteria::LEFT_JOIN);
   		$c->add(JobOrderManagerPeer::USER_ID, $this->getUser()->getGuardUser()->getId());
+  	}
+
+  	if ($this->getUser()->hasCredential('director')) {
+  		$c->add(JobOrderPeer::BUSINESS_UNIT_ID, $this->getUser()->getGuardUser()->getProfile()->getBusinessUnitId());
   	}
   	
   	return $c;

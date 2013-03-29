@@ -1,4 +1,4 @@
-/*$.expr[':'].regex = function(elem, index, match) {
+$.expr[':'].regex = function(elem, index, match) {
     var matchParams = match[3].split(','),
         validLabels = /^(data|css):/,
         attr = {
@@ -209,7 +209,7 @@ function showTaxes()
 		$(this).css('visibility', 'visible');
 	});
 }
-*/
+/*
 $.expr[':'].regex = function(elem, index, match) {
     var matchParams = match[3].split(','),
         validLabels = /^(data|css):/,
@@ -405,3 +405,4 @@ function showTaxes()
         $(this).css('visibility', 'visible');
     });
 }
+*/

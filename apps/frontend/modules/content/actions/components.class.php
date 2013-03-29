@@ -4,7 +4,7 @@ class contentComponents extends sfComponents
 {
 	public function executeMenu()
 	{
-		$this->bus = BusinessUnitPeer::doSelect(new Criteria());
+		$this->bus = BusinessUnitPeer::getBusByUser($this->getUser());
 	}
 	
 }
