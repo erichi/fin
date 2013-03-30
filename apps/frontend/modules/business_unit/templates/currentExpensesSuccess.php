@@ -10,7 +10,7 @@
 	<h1>Текущие расходы</h1>
 	</div>
 	<div id="sf_admin_content">
-		
+
 		<div id="current_expenses_taxes">
 							<!-- Taxes -->
 
@@ -22,7 +22,7 @@
 					<?php endfor; ?>
 					<th>Итого</th>
 				</tr>
-				
+
 				<?php foreach($expence_types as $key => $et): ?>
 					<tr class="tax_main_<?php echo $key?>">
 						<td style="background-color: #e7f4ff;"><a class="expand" href="javascript:;">развернуть</a></td>
@@ -42,9 +42,9 @@
 								<?php include_partial('business_unit/regular_expence', array('mp' => $ce->getMonthPayment($i))); ?>
 								</td>
 								<?php endfor; ?>
-								<td desc="<?php echo $ce->getExpencesType()->getCode();?>_<?php echo $ce->getId(); ?>_0"></td>				
+								<td desc="<?php echo $ce->getExpencesType()->getCode();?>_<?php echo $ce->getId(); ?>_0"></td>
 							</tr>
-						
+
 						<?php endif; ?>
 					<?php endforeach; ?>
 				<?php endforeach; ?>
@@ -57,7 +57,7 @@
 
 					<td id="tax_sum_month_all"></td>
 				</tr>
-				
+
 			</table>
 			<div><a href="#" onclick="$('#tax_dialog').dialog('open');return false;" class="btn btn-primary">Новая строка</a></div>
 		</div>
@@ -91,14 +91,14 @@
     	return (input - 0) == input && input.length > 0;
 	}
 
-	$(document).ready(function(){
+/*	$(document).ready(function(){
 		$('td').each(function(){
 
 			if(IsNumeric($(this).text()) && $(this).text() != 0)
 				//$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
-				$(this).find("input[type=checkbox]").hide();
+				//$(this).find("input[type=checkbox]").hide();
 		});
-	});
+	}); */
 
 <?php /*
 <?php //use_stylesheet('default.css') ?>
