@@ -1,0 +1,1 @@
+ALTER TABLE `sf_guard_user_profile` CHANGE `phone` `phone` VARCHAR(50);

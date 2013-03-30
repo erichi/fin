@@ -7,7 +7,7 @@ propel:
     first_name:   { type: varchar(50), required: true }
     last_name:    { type: varchar(50), required: true }
     address:      { type: varchar(255), required: true }
-    phone:        { type: integer }
+    phone:        { type: varchar(50) }
     bio:          { type: longvarchar }
     business_unit_id: { type: integer, foreignTable: business_unit, foreignReference: id, onDelete: setnull }
     

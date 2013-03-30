@@ -7,7 +7,7 @@
  *
  * @package    Finsys
  * @subpackage form
- * @author     Stepix
+ * @author     Eric Usmanov
  */
 abstract class BasesfGuardUserProfileForm extends BaseFormPropel
 {
@@ -32,7 +32,7 @@ abstract class BasesfGuardUserProfileForm extends BaseFormPropel
       'first_name'       => new sfValidatorString(array('max_length' => 50)),
       'last_name'        => new sfValidatorString(array('max_length' => 50)),
       'address'          => new sfValidatorString(array('max_length' => 255)),
-      'phone'            => new sfValidatorInteger(array('min' => -2147483648, 'max' => 2147483647, 'required' => false)),
+      'phone'            => new sfValidatorString(array('max_length' => 50, 'required' => false)),
       'bio'              => new sfValidatorString(array('required' => false)),
       'business_unit_id' => new sfValidatorPropelChoice(array('model' => 'BusinessUnit', 'column' => 'id', 'required' => false)),
     ));

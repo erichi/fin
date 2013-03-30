@@ -56,7 +56,7 @@ abstract class BasesfGuardUserProfile extends BaseObject  implements Persistent 
 
 	/**
 	 * The value for the phone field.
-	 * @var        int
+	 * @var        string
 	 */
 	protected $phone;
 
@@ -163,7 +163,7 @@ abstract class BasesfGuardUserProfile extends BaseObject  implements Persistent 
 	/**
 	 * Get the [phone] column value.
 	 * 
-	 * @return     int
+	 * @return     string
 	 */
 	public function getPhone()
 	{
@@ -317,13 +317,13 @@ abstract class BasesfGuardUserProfile extends BaseObject  implements Persistent 
 	/**
 	 * Set the value of [phone] column.
 	 * 
-	 * @param      int $v new value
+	 * @param      string $v new value
 	 * @return     sfGuardUserProfile The current object (for fluent API support)
 	 */
 	public function setPhone($v)
 	{
 		if ($v !== null) {
-			$v = (int) $v;
+			$v = (string) $v;
 		}
 
 		if ($this->phone !== $v) {
@@ -416,7 +416,7 @@ abstract class BasesfGuardUserProfile extends BaseObject  implements Persistent 
 			$this->first_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->last_name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
 			$this->address = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->phone = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+			$this->phone = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
 			$this->bio = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
 			$this->business_unit_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
 			$this->resetModified();
