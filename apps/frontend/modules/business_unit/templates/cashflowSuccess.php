@@ -57,11 +57,17 @@
                                     <?php endif; ?>
                                     <?php if(isset($date['out'])): ?>
                                     <ul class="outcome_payments">
-                                        <?php $amount = 0; ?>
-                                        <?php foreach ($date['out'] as $a): ?>
-                                        <?php $amount += $a; ?>
+                                        <?php foreach ($date['out'] as $amount): ?>
+                                        <li>
+                                        <?php
+                                         	if(!empty($amount[1])){
+                                         		echo '<a href="http://'.$sf_request->getHost().'/uploads/files/'.$amount[1].'">скачать</a> ';
+                                         	}
+                                         	echo $amount[0];
+                                        ?>
+                                        </li>
                                         <?php endforeach; ?>
-                                        <li><?php echo $amount; ?></li>
+
                                     </ul>
                                     <?php endif; ?>
                                 </td>
@@ -84,7 +90,7 @@
     {
         return (input - 0) == input && input.length > 0;
     }
-    
+
     $(document).ready(function(){
         $('.outcome_payments, .income_payments').each(function(){
             if(IsNumeric($(this).text()) && $(this).text() != 0) {
