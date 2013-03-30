@@ -258,8 +258,13 @@ function addJob()
 		'<input type="hidden" name="jo[outcome_payment]['+ job_cnt +'][job_type]" value="'+ job_type_id +'" />'+
 		'<input type="hidden" name="jo[outcome_payment]['+ job_cnt +'][supplier]" value="'+ supplier +'" />'+
 		'<input type="hidden" name="jo[outcome_payment]['+ job_cnt +'][amount]" value="'+ stringToValue(amount) +'" />'+
-		'</td><td>'+ job_type +'</td><td>'+ name +'</td><td>'+ supplier +'</td><td>'+ amount +'</td>'+
-			'<td class="job_payments"><a class="btn btn-mini btn-info" onclick="newJobPayment(\''+ job_cnt +'\');return false;"><i class="icon-plus icon-white"></i> добавить счет</a><table></table></td></tr>';
+		'</td><td class="job_type_name">'+ job_type +'</td>'+
+		'<td class="job_name">'+ name +'</td>'+
+		'<td class="job_supplier">'+ supplier +'</td>'+
+		'<td class="job_amount">'+ amount +'</td>'+
+			'<td class="job_payments">'+
+			'<button type="button" class="btn btn-mini" onclick="editJob(\''+ job_cnt + '\')" >редактировать</button><br /> <br />' +
+			'<a class="btn btn-mini btn-info" onclick="newJobPayment(\''+ job_cnt +'\');return false;"><i class="icon-plus icon-white"></i> добавить счет</a><table></table></td></tr>';
 	
   $('#job_list').append(payment_tr);
   //clear input fields
@@ -269,6 +274,25 @@ function addJob()
 	$('#job_amount').val('');
 	
   job_cnt++;
+}
+
+function editaddJob(id)
+{
+	typeId = $('#job_job_type option:selected').val();
+	typeName = $('#job_job_type option:selected').text();
+	name = $('#job_name').val();
+	supplier = $('#job_supplier').val();
+	amount = $('#job_amount').val().replace(/_/g,'').trim();
+	
+	$("input[name='jo[outcome_payment][" + id + "][job_type]']").val(typeId);
+	$("input[name='jo[outcome_payment][" + id + "][name]']").val(name);
+	$("input[name='jo[outcome_payment][" + id + "][supplier]']").val(supplier);
+	$("input[name='jo[outcome_payment][" + id + "][amount]']").val(stringToValue(amount));
+	
+	$('#job_'+id+' .job_type_name').text(typeName);
+	$('#job_'+id+' .job_name').text(name);
+	$('#job_'+id+' .job_supplier').text(supplier);
+	$('#job_'+id+' .job_amount').text(amount);
 }
 
 //function addJobPayment()
@@ -440,6 +464,24 @@ function newJobDialog()
 	});	
 	return dialog;
 }
+
+function editJobDialog(job_id)
+{
+	dialog = $('#dialog_new_job').dialog({
+		autoOpen: false, minWidth: 440,	modal: true, resizable: false, draggable: false,
+		title:	"Редактирование работы",
+		buttons: {
+			"Сохранить": function() {
+				if (validateNewJob()) {
+					editaddJob(job_id);
+					$(this).dialog("close");
+				}
+			}
+		}			
+	});	
+	return dialog;
+}
+
 //function newJobPaymentDialog()
 //{
 //	dialog = $('#dialog_job_payment').dialog({
@@ -562,6 +604,30 @@ function editIncomePayment(i)
 function newJob()
 {
 	new_job.dialog('open');
+	$('#job_job_type').val(0);
+	$('#job_name').val('');
+	$('#job_supplier').val('');
+	$('#job_amount').val('');
+	$('#job_amount').inputmask('999 999 999 999,99', { numericInput: true, placeholder:"_" });
+}
+
+function editJob(id)
+{
+/*	var job_tr = '<tr id="job_id_new_payment"><td><input type="hidden" name="job_id" value="'+ id +'" /></td></tr>'; 
+  $('#dialog_job_payment').append(job_tr); */
+   editJobDialog(id).dialog('open');
+   
+   typeId = $("input[name='jo[outcome_payment][" + id + "][job_type]']").val();
+   name = $("input[name='jo[outcome_payment][" + id + "][name]']").val();
+   supplier = $("input[name='jo[outcome_payment][" + id + "][supplier]']").val();
+   amount = $("input[name='jo[outcome_payment][" + id + "][amount]']").val();
+   
+   $('#job_job_type option[value='+typeId+']').prop('selected', true);
+   $('#job_name').val(name);
+   $('#job_supplier').val(supplier);
+   amount = amount.replace('.','');
+   $('#job_amount').inputmask('999 999 999 999,99', { numericInput: true, placeholder:"_" });
+   $('#job_amount').val(amount);
 }
 
 //function newJobPayment(id)
@@ -573,15 +639,14 @@ function newJob()
 function newJobPayment(id)
 {
 	var job_tr = '<tr id="job_id_new_payment"><td><input type="hidden" name="job_id" value="'+ id +'" /></td></tr>';
-  $('#dialog_job_payment').append(job_tr);
-   newJobPaymentDialog().dialog('open');
-   $('#job_payment_name').val('');
-   $('#job_payment_date').val('');
-   $('#job_payment_amount').val('');
-   $('#job_payment_amount').inputmask('999 999 999 999,99', { numericInput: true, placeholder:"_" });
-
-   
+	$('#dialog_job_payment').append(job_tr);
+	newJobPaymentDialog().dialog('open');
+	$('#job_payment_name').val('');
+	$('#job_payment_date').val('');
+	$('#job_payment_amount').val('');
+	$('#job_payment_amount').inputmask('999 999 999 999,99', { numericInput: true, placeholder:"_" });
 }
+
 function editJobPayment(id,job_id)
 {
 	var job_tr = '<tr id="job_id_new_payment"><td><input type="hidden" name="job_id" value="'+ id +'" /></td></tr>';
@@ -595,10 +660,8 @@ function editJobPayment(id,job_id)
    $('#job_payment_name').val(name);
    $('#job_payment_date').val(date);
    $('#job_payment_amount').val(amount);
-   
-
-
 }
+
 function deleteJobPayment(i,job_cnt)
 {
 	$('#job_'+job_cnt+' #jp_'+i).remove();	

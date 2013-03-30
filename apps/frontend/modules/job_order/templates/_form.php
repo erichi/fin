@@ -48,7 +48,7 @@
     	</table>
     </div>
     </div>
-    
+
     <div class="row">
     <div class="span4">
     	<h4>Менеджер</h4><br />
@@ -82,14 +82,14 @@
       		<?php echo $form['client_id']->render(); ?>
       		<br /><a href="javascript:;" id="new_client_link">Новая компания клиент</a>
       		<div id="client_org_block">
-		  		<input type="text" name="client[new]" id="client_new" /> 
-		    	<button type="button" onclick="addNewClient()">добавить</button> 
+		  		<input type="text" name="client[new]" id="client_new" />
+		    	<button type="button" onclick="addNewClient()">добавить</button>
 		    </div>
 		    <?php /*
 		  <br /><br /><table id="client_table" class="table table-condensed"></table>
 		  <div id="client_fio_block">
-		  	<input type="text" name="client[contact_person]" id="client_contact_person" /> 
-		    <button type="button" onclick="addClientContactPerson()">добавить</button> 
+		  	<input type="text" name="client[contact_person]" id="client_contact_person" />
+		    <button type="button" onclick="addClientContactPerson()">добавить</button>
 		  </div> */
 		  ?>
 	    </div>
@@ -111,18 +111,18 @@
 									<input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][date]" value="<?php echo  $income_payment->getDate('d.m.Y') ?>" />
 									<input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][is_confirmed]" value="<?php echo  $income_payment->getIsConfirmed() ?>" />
 								</td>
-	    					
+
 	    					<td class ="income_paymen_name"><?= $income_payment->getName() ?></td>
 	    					<td class ="income_paymen_amount"><?= $income_payment->getAmount() ?></td>
 	    					<td class ="income_paymen_date"><?= $income_payment->getDate('d.m.Y') ?></td>
 	    					<td><button type="button" class="btn btn-mini" onclick="editIncomePayment(<?php echo $ip_cnt?>)" style="margin-top:5px;"><i class="icon-pencil icon-black"></i> редактировать</button> </td>
 	    					<td><button type="button" class="btn btn-mini" onclick="deleteIncomePayment(<?php echo $ip_cnt?>)" style="margin-top:5px;"><i class="icon-trash icon-black"></i> удалить</button> </td>
 	    				</tr>
-	    		<?php $ip_cnt++; 
+	    		<?php $ip_cnt++;
 	    			endforeach;
 	    		} ?>
 	    	</table>
-		    <button type="button" class="btn" onclick="newIncomePayment()" style="margin-top:5px;"><i class="icon-plus"></i> новый платеж</button> 
+		    <button type="button" class="btn" onclick="newIncomePayment()" style="margin-top:5px;"><i class="icon-plus"></i> новый платеж</button>
 
 
 
@@ -133,7 +133,7 @@
     <div class="row">
     	<div class="span8">
     		<h4>Планирование и стоимость работ</h4><br />
-    		
+
 		    <table id="job_list" class="table">
 		    	<tr>
 		    		<th class="hidden_fields"></th>
@@ -153,11 +153,12 @@
 								<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][supplier]" value="<?php echo  $job->getSupplier() ?>" />
 								<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][amount]" value="<?php echo  $job->getAmount() ?>" id="jo_outcome_payment_amount_<?php echo  $job_cnt ?>"  />
     					</td>
-    					<td><?php echo  $job->getJobType()->getName() ?></td>
-    					<td><?php echo  $job->getName() ?></td>
-    					<td><?php echo  $job->getSupplier() ?></td>
-    					<td><?php echo  $job->getAmount() ?></td>
+    					<td class="job_type_name"><?php echo  $job->getJobType()->getName() ?></td>
+    					<td class="job_name"><?php echo  $job->getName() ?></td>
+    					<td class="job_supplier"><?php echo  $job->getSupplier() ?></td>
+    					<td class="job_amount"><?php echo  $job->getAmount() ?></td>
     					<td class="job_payments">
+							<button type="button" class="btn btn-mini" onclick="editJob('<?php echo $job_cnt ?>')" >редактировать</button><br /> <br />
     						<a class="btn btn-mini btn-info" onclick="newJobPayment('<?php echo  $job_cnt ?>');return false;"><i class="icon-plus icon-white"></i> добавить счет</a><br /><br />
     						<table><?php if($job->getJobPayments()){
     							$jp_cnt = 1;
@@ -180,12 +181,12 @@
 	    						     	<?php else:?>
 	    						     	<td class="job_payment_download"><a href="#" onclick="uploadJobPayment(<?php echo $jp_cnt.','.$job_cnt?>);return false;">загрузить</a></td>
 	    						     	<?php endif;?>
-	    								
+
 	    						 		<td style="padding-left: 0; padding-right: 0;"><button type="button" class="btn btn-mini" onclick="editJobPayment(<?php echo $jp_cnt.','.$job_cnt?>)" >редактировать</button> </td>
 	    					            <td style="padding-right: 0;"><button type="button" class="btn btn-mini" onclick="deleteJobPayment(<?php echo $jp_cnt.','.$job_cnt?>)" >удалить</button> </td>
 	    						  </tr>
-	    						  
-					    		<?php $jp_cnt++; 
+
+					    		<?php $jp_cnt++;
 					    		endforeach;
 					    		} ?>	</table>
 				    	</td>
@@ -195,9 +196,9 @@
     		} ?>
 		    </table>
 	    	<button class="btn" type="button" onclick="newJob()"><i class="icon-plus"></i> новая работа</button>
-     		
-    		
-    		
+
+
+
     	</div>
     </div>
     			<div class="dialog" id="dialog_new_job">																						<!--Dialog box Job-->
@@ -271,13 +272,13 @@
         	</tr>
         </table>
     </div>												<!--End Dialog box-->
-    
-<br />   
+
+<br />
 <div class="row">
-	<div class="span8"> 
+	<div class="span8">
     <?php include_partial('job_order/form_actions', array('JobOrder' => $JobOrder, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper)) ?>
   </form>
-  
+
   </div>
   </div>
 
@@ -297,7 +298,7 @@
 	{
     	return (input - 0) == input && input.length > 0;
 	}
-	
+
 	$(document).ready(function(){
 		$('.income_paymen_amount').each(function(){
 
