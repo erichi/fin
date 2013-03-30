@@ -19,11 +19,11 @@
 					<th>доля в плане</th>
 					<th>приход</th>
 					<th>расход</th>
-				
+
 					<th>дебет</th>
 					<th>кредит</th>
 					<th>сальдо</th>
-			
+
 				</tr>
 			</thead>
 			<tbody>
@@ -46,7 +46,7 @@
 			</tbody>
 			</table>
 			<div><?php echo link_to('Новый проект', 'job_order/new?return_to_pr='.$business_unit->getId(), 'class=btn btn-primary') ?></div>
-			
+
 		</div>
 			<br />																											<!--    Tenders		 -->
 		<div>
@@ -101,7 +101,7 @@
 				} ?>
 			</table>
 			<div><?php echo link_to('Новый тендер', 'tender/new?return_to_pr='.$business_unit->getId(), 'class=btn btn-primary') ?></div>
-			
+
 		</div>
 		<br />
 		<div>																											<!--    Lost Tenders		 -->
@@ -192,7 +192,7 @@
 			</table>
 			<div><?php echo link_to('Запланировать', 'plan/new?return_to_pr='.$business_unit->getId(), 'class=btn btn-primary') ?></div>
 		</div>
-		
+
 	</div>
 </div>
 <script type="text/javascript">
@@ -201,13 +201,14 @@
 	{
     	return (input - 0) == input && input.length > 0;
 	}
-	
+
 	$(document).ready(function(){
-		$('td').each(function(){
+		$('td,span').each(function(){
 
 			if(IsNumeric($(this).text()) && $(this).text() != 0)
 				$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
 		});
+
 
 	});
 

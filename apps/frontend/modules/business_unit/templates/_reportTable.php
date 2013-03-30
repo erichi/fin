@@ -2,7 +2,7 @@
 <div style="margin: 50px 0; padding: 15px; width: 400px; background: #fff;">
 	<h3 style="margin: 10px">Report</h3>
 	<ul style="margin-left: 20px">
-	 
+
 		<li>Дебет: <?php echo $bu->getDebet(); ?></li>
 		<li>Кредит: <?php echo $bu->getCredit(); ?></li>
 		<li>Текущие расходы на этот месяц: <?php echo $bu->getMonthExpences();?></li>
@@ -10,7 +10,7 @@
 		<li>Итого на текущий месяц: <?php echo $bu->getCurrentSumm(); ?></li>
 		<?php for($i = 1; $i < 12; $i++): ?>
 			<li>Итого на <?php echo date('m/Y', strtotime('+'.$i.' month'))?>: <?php echo $bu->getCurrentSumm($i); ?></li>
-		<?php endfor;?>		
+		<?php endfor;?>
 	</ul>
 </div>
 */
@@ -34,7 +34,7 @@
 						<tr><td>Итого на текущий месяц:</td><td><?php echo $bu->getCurrentSumm(); ?></td></tr>
 		<?php for($i = 1; $i < 12; $i++): ?>
 			<tr><td>Итого на <?php echo date('m/Y', strtotime('+'.$i.' month'))?>:</td> <td><?php echo $bu->getCurrentSumm($i); ?></td></tr>
-		<?php endfor;?>		
+		<?php endfor;?>
 			</table>
 	</div>
     <div class="span4">
@@ -43,7 +43,7 @@
 				<tbody>
 					<tr>
 						<td>План</td>
-						<td><?php echo $bu->getPlan(); ?> <?php echo $bu->getCurrentProfitPercent()?>%</td>
+						<td><span><?php echo $bu->getPlan(); ?></span> <?php echo $bu->getCurrentProfitPercent()?>%</td>
 					</tr>
 					<tr>
 						<td>Фактическая прибыль</td>
@@ -53,6 +53,6 @@
 				</table>
 			</form>
 	</div>
-	</div>			
+	</div>
 
 <br />
