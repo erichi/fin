@@ -18,7 +18,7 @@
 				<tr>
 					<th>Наименование</th><th>Тип</th>
 					<?php for($i = 0; $i < 12; $i++):?>
-					<th><?php echo date('m/Y', strtotime('+'.$i.' month')); ?></th>
+					<th><?php echo date('m/Y', strtotime('first day of +'.$i.' month')); ?></th>
 					<?php endfor; ?>
 					<th>Итого</th>
 				</tr>
@@ -28,7 +28,7 @@
 						<td style="background-color: #e7f4ff;"><a class="expand" href="javascript:;">развернуть</a></td>
 						<td style="background-color: #e7f4ff;"><?php echo $et->getName(); ?></td>
 						<?php for($i = 0; $i < 12; $i++):?>
-							<td style="background-color: #e7f4ff;" desc="<?php echo $et->getCode();?>_0_<?php echo date('m', strtotime('+'.$i.' month')).'_'.date('Y', strtotime('+'.$i.' month')); ?>"></td>
+							<td style="background-color: #e7f4ff;" desc="<?php echo $et->getCode();?>_0_<?php echo date('m', strtotime('first day of +'.$i.' month')).'_'.date('Y', strtotime('first day of +'.$i.' month')); ?>"></td>
 						<?php endfor; ?>
 						<td desc="<?php echo $et->getCode();?>_all" style="background-color: #e7f4ff;" class="year_sum"></td>
 					</tr>
@@ -38,7 +38,7 @@
 								<td><?php echo $ce->getName() ?></td>
 								<td><?php echo $ce->getExpencesType()->getName(); ?></td>
 								<?php for($i = 0; $i<12; $i++):?>
-								<td <?php echo ($ce->getMonthPayment($i)->getIsConfirmed())?'':'class="edit"';?> info="<?php echo $ce->getMonthPayment($i)->getId(); ?>" desc="<?php echo $ce->getExpencesType()->getCode();?>_<?php echo $ce->getId(); ?>_<?php echo date('m', strtotime('+'.$i.' month')).'_'.date('Y', strtotime('+'.$i.' month')); ?>" data='{"id":"<?php echo $ce->getMonthPayment($i)->getId() ?>"}'>
+								<td <?php echo ($ce->getMonthPayment($i)->getIsConfirmed())?'':'class="edit"';?> info="<?php echo $ce->getMonthPayment($i)->getId(); ?>" desc="<?php echo $ce->getExpencesType()->getCode();?>_<?php echo $ce->getId(); ?>_<?php echo date('m', strtotime('first day of +'.$i.' month')).'_'.date('Y', strtotime('first day of +'.$i.' month')); ?>" data='{"id":"<?php echo $ce->getMonthPayment($i)->getId() ?>"}'>
 								<?php include_partial('business_unit/regular_expence', array('mp' => $ce->getMonthPayment($i))); ?>
 								</td>
 								<?php endfor; ?>
@@ -52,7 +52,7 @@
 					<td>Итого</td>
 					<td></td>
 					<?php for($i = 0; $i < 12; $i++):?>
-					<td desc="col_sum_<?php echo date('m', strtotime('+'.$i.' month')).'_'.date('Y', strtotime('+'.$i.' month')); ?>" class="summ_by_month"></td>
+					<td desc="col_sum_<?php echo date('m', strtotime('first day of +'.$i.' month')).'_'.date('Y', strtotime('first day of +'.$i.' month')); ?>" class="summ_by_month"></td>
 					<?php endfor; ?>
 
 					<td id="tax_sum_month_all"></td>
