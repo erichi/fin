@@ -809,7 +809,25 @@ class business_unitActions extends autoBusiness_unitActions
 
 	public function executeBuStats(sfWebRequest $request)
 	{
+		$request->getParameterHolder();
 		$this->bus = BusinessUnitPeer::doSelect(new Criteria());
 
+		$overall = new FakeModel();
+
+		$factories = array('Debet', 'Credit', 'MonthExpences', 'Loans', 'CurrentSumm', 'Plan', 'CurrentProfit');
+		foreach ($this->bus as $bu){
+			foreach ($factories as $factory){
+				$get = 'get'.$factory;
+				$set = 'set'.$factory;
+				$overall->$set($bu->$get() + $overall->$get());
+			}
+			for ($i=0; $i<12; $i++){
+				$set = 'setCurrentSumm';
+				$get = 'getCurrentSumm';
+				$overall->$set($i, $bu->$get($i) + $overall->$get($i));
+			}
+		}
+		$overall->setCurrentProfitPercent(number_format($overall->getCurrentProfit()/$overall->getPlan()*100, 2));
+		array_unshift($this->bus, $overall);
 	}
 }
