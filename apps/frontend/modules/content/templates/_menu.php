@@ -28,6 +28,7 @@
 
 		<a class="dropdown-toggle" data-toggle="dropdown" href="#">Настройки <b class="caret"></b></a>
 		<ul class="dropdown-menu">
+			<li><?php echo link_to('Типы текущих расходов', '@expences_type') ?></li>
 			<li><?php echo link_to('Типы работ', '@job_type') ?></li>
 			<li><?php echo link_to('Клиенты', '@client') ?></li>
 			<li><?php echo link_to('Пользователи', '@sf_guard_user') ?></li>

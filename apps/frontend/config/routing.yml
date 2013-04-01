@@ -1,3 +1,12 @@
+expences_type:
+  class: sfPropelRouteCollection
+  options:
+    model:                ExpencesType
+    module:               expences_type
+    prefix_path:          /expences_type
+    column:               id
+    with_wildcard_routes: true
+
 business_unit_stats:
   url: /bu_stats
   param: { module: business_unit, action: buStats }
