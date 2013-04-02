@@ -1,3 +1,6 @@
+<script>
+var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
+</script>
 <?php //use_stylesheet('default.css') ?>
 <?php use_stylesheet('smoothness/jquery-ui-1.8.16.custom.css') ?>
 <?php use_javascript('jquery-ui-1.8.16.custom.min.js') ?>

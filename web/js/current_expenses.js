@@ -26,9 +26,9 @@ $(document).ready(function(){
 		
 	});
 	
-	recount();
+	recount(types);
 	$('#recount_link').click(function(){
-		recount();
+		recount(types);
 	});
 	
 	$('.confirm_exp').change(function(){
@@ -67,7 +67,7 @@ $(function() {
     		return { id: obj.id }
     	},
     	callback : function(value, settings) {
-    		recount();
+    		recount(types);
     	}
 	});
 
@@ -89,9 +89,8 @@ $(function() {
 
 });
 
-function recount()
+function recount(types)
 {
-    var types = [ 'salary', 'rent', 'tax', 'co', 'ooe', 'loan', 'fin' ];
     $.each(types, function(){
 		var type = this.concat();
     	$('td:regex(desc,^'+type+'_0_\\d{2}_\\d{4}$)').each(function(){

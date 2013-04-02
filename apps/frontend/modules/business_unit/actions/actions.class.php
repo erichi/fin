@@ -57,6 +57,10 @@ class business_unitActions extends autoBusiness_unitActions
 		}
 		$this->expenses = CurrentExpensesPeer::retrieveByBU($this->business_unit_id, new Criteria());
 		$this->expence_types = ExpencesTypePeer::doSelect(new Criteria());
+		$this->types = array();
+		foreach($this->expence_types as $type) {
+			$this->types[] = $type->getCode();
+		}
 	}
 
 	protected function createDateRangeArray($strDateFrom,$strDateTo)
