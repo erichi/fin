@@ -16,7 +16,10 @@ $(function() {
     		return { id: save_bu_id }
     	},
      	callback : function(value, settings) {
-    		$('.edit').html($.formatNumber($('.edit').text(), {format:"0,000.00", locale:"ru"}));
+			value = $.parseJSON(value)
+			$.each(value, function(key, val){
+				$("." + key).html($.formatNumber(val, {format:"0,000.00", locale:"ru"}));
+			});
     	} 
 	});
 });

@@ -31,9 +31,9 @@
 						<tr><td>Кредит:</td><td><?php echo $bu->getCredit(); ?></td></tr>
 						<tr><td>Текущие расходы на этот месяц:</td><td><?php echo $bu->getMonthExpences();?></td></tr>
 						<tr><td>Займы в прибыль:</td><td class="edit"><?php echo $bu->getLoans();?></td></tr>
-						<tr><td>Итого на текущий месяц:</td><td><?php echo $bu->getCurrentSumm(); ?></td></tr>
+						<tr><td>Итого на текущий месяц:</td><td class="currentSum0"><?php echo $bu->getCurrentSumm(); ?></td></tr>
 		<?php for($i = 1; $i < 12; $i++): ?>
-			<tr><td>Итого на <?php echo date('m/Y', strtotime('first day of +'.$i.' month'))?>:</td> <td><?php echo $bu->getCurrentSumm($i); ?></td></tr>
+			<tr><td>Итого на <?php echo date('m/Y', strtotime('first day of +'.$i.' month'))?>:</td> <td class="currentSum<?php echo $i; ?>"><?php echo $bu->getCurrentSumm($i); ?></td></tr>
 		<?php endfor;?>
 			</table>
 	</div>

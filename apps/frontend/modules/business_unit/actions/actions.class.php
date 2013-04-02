@@ -850,6 +850,10 @@ class business_unitActions extends autoBusiness_unitActions
 		$bu->setLoans($value);
 		$bu->save();
 
-		return $this->renderText($bu->getLoans());
+		$result = array('edit' => $bu->getLoans());
+		for($i = 0; $i<12; $i++){
+			$result['currentSum'.$i] = $bu->getCurrentSumm($i);
+		}
+		return $this->renderText(json_encode($result));
 	}
 }
