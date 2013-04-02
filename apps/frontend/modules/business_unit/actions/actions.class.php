@@ -817,21 +817,28 @@ class business_unitActions extends autoBusiness_unitActions
 		$this->bus = BusinessUnitPeer::doSelect(new Criteria());
 
 		$overall = new FakeModel();
-
+		$fakeBus = array();
 		$factories = array('Debet', 'Credit', 'MonthExpences', 'Loans', 'CurrentSumm', 'Plan', 'CurrentProfit');
 		foreach ($this->bus as $bu){
+			$fakebu = new FakeModel();
 			foreach ($factories as $factory){
 				$get = 'get'.$factory;
 				$set = 'set'.$factory;
-				$overall->$set($bu->$get() + $overall->$get());
+				$fakebu->$set($bu->$get());
+				$overall->$set($fakebu->$get() + $overall->$get());
 			}
 			for ($i=0; $i<12; $i++){
 				$set = 'setCurrentSumm';
 				$get = 'getCurrentSumm';
-				$overall->$set($i, $bu->$get($i) + $overall->$get($i));
+				$fakebu->$set($i,$bu->$get());
+				$overall->$set($i, $fakebu->$get($i) + $overall->$get($i));
 			}
+			$fakebu->setCurrentProfitPercent($bu->getCurrentProfitPercent());
+			$fakebu->setName($bu->getName());
+			$fakeBus[] = $fakebu;
 		}
 		$overall->setCurrentProfitPercent(number_format($overall->getCurrentProfit()/$overall->getPlan()*100, 2));
+		$this->bus=$fakeBus;
 		array_unshift($this->bus, $overall);
 	}
 }
