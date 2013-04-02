@@ -37,6 +37,13 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 	protected $plan;
 
 	/**
+	 * The value for the loans field.
+	 * Note: this column has a database default value of: '0'
+	 * @var        string
+	 */
+	protected $loans;
+
+	/**
 	 * @var        array sfGuardUserProfile[] Collection to store aggregation of sfGuardUserProfile objects.
 	 */
 	protected $collsfGuardUserProfiles;
@@ -105,6 +112,27 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 	const PEER = 'BusinessUnitPeer';
 
 	/**
+	 * Applies default values to this object.
+	 * This method should be called from the object's constructor (or
+	 * equivalent initialization method).
+	 * @see        __construct()
+	 */
+	public function applyDefaultValues()
+	{
+		$this->loans = '0';
+	}
+
+	/**
+	 * Initializes internal state of BaseBusinessUnit object.
+	 * @see        applyDefaults()
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->applyDefaultValues();
+	}
+
+	/**
 	 * Get the [id] column value.
 	 * 
 	 * @return     int
@@ -132,6 +160,16 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 	public function getPlan()
 	{
 		return $this->plan;
+	}
+
+	/**
+	 * Get the [loans] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getLoans()
+	{
+		return $this->loans;
 	}
 
 	/**
@@ -195,6 +233,26 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 	} // setPlan()
 
 	/**
+	 * Set the value of [loans] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     BusinessUnit The current object (for fluent API support)
+	 */
+	public function setLoans($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->loans !== $v || $this->isNew()) {
+			$this->loans = $v;
+			$this->modifiedColumns[] = BusinessUnitPeer::LOANS;
+		}
+
+		return $this;
+	} // setLoans()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -204,6 +262,10 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 	 */
 	public function hasOnlyDefaultValues()
 	{
+			if ($this->loans !== '0') {
+				return false;
+			}
+
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -229,6 +291,7 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->plan = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->loans = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -238,7 +301,7 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 3; // 3 = BusinessUnitPeer::NUM_COLUMNS - BusinessUnitPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 4; // 4 = BusinessUnitPeer::NUM_COLUMNS - BusinessUnitPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating BusinessUnit object", $e);
@@ -672,6 +735,9 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 			case 2:
 				return $this->getPlan();
 				break;
+			case 3:
+				return $this->getLoans();
+				break;
 			default:
 				return null;
 				break;
@@ -696,6 +762,7 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getPlan(),
+			$keys[3] => $this->getLoans(),
 		);
 		return $result;
 	}
@@ -736,6 +803,9 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 			case 2:
 				$this->setPlan($value);
 				break;
+			case 3:
+				$this->setLoans($value);
+				break;
 		} // switch()
 	}
 
@@ -763,6 +833,7 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setPlan($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setLoans($arr[$keys[3]]);
 	}
 
 	/**
@@ -777,6 +848,7 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(BusinessUnitPeer::ID)) $criteria->add(BusinessUnitPeer::ID, $this->id);
 		if ($this->isColumnModified(BusinessUnitPeer::NAME)) $criteria->add(BusinessUnitPeer::NAME, $this->name);
 		if ($this->isColumnModified(BusinessUnitPeer::PLAN)) $criteria->add(BusinessUnitPeer::PLAN, $this->plan);
+		if ($this->isColumnModified(BusinessUnitPeer::LOANS)) $criteria->add(BusinessUnitPeer::LOANS, $this->loans);
 
 		return $criteria;
 	}
@@ -834,6 +906,8 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 		$copyObj->setName($this->name);
 
 		$copyObj->setPlan($this->plan);
+
+		$copyObj->setLoans($this->loans);
 
 
 		if ($deepCopy) {

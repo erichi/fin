@@ -39,6 +39,7 @@ class BusinessUnitTableMap extends TableMap {
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 50, null);
 		$this->addColumn('PLAN', 'Plan', 'DECIMAL', true, 10, null);
+		$this->addColumn('LOANS', 'Loans', 'DECIMAL', true, 10, 0);
 		// validators
 	} // initialize()
 

@@ -841,4 +841,15 @@ class business_unitActions extends autoBusiness_unitActions
 		$this->bus=$fakeBus;
 		array_unshift($this->bus, $overall);
 	}
+
+	public function executeSaveTypedData(sfWebRequest $request)
+	{
+		$this->forward404Unless($request->isXmlHttpRequest());
+		$value = $request->getParameter('value');
+		$bu = BusinessUnitPeer::retrieveByPK($request->getParameter('id'));
+		$bu->setLoans($value);
+		$bu->save();
+
+		return $this->renderText($bu->getLoans());
+	}
 }

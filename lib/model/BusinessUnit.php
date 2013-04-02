@@ -77,21 +77,25 @@ class BusinessUnit extends BaseBusinessUnit
 		return $sum;
 	}
 
-	public function getLoans()
-	{
-		$c = new Criteria();
-		$c->add(CurrentExpensesPeer::EXPENCES_TYPE_ID, 6);
-		$c->add(CurrentExpensesPeer::BUSINESS_UNIT_ID, $this->getId());
+//	public function getLoans()
+//	{
+//		$c = new Criteria();
+//		$c->add(CurrentExpensesPeer::EXPENCES_TYPE_ID, 6);
+//		$c->add(CurrentExpensesPeer::BUSINESS_UNIT_ID, $this->getId());
+//
+//		$expences = CurrentExpensesPeer::doSelect($c);
+//
+//		$sum = 0;
+//		foreach($expences as $ex)
+//		{
+//			$sum += $ex->getExpenceSumm();
+//		}
+//		return $sum;
+//
+//	}
 
-		$expences = CurrentExpensesPeer::doSelect($c);
-
-		$sum = 0;
-		foreach($expences as $ex)
-		{
-			$sum += $ex->getExpenceSumm();
-		}
-		return $sum;
-
+	public function getLoans(){
+		return (float)parent::getLoans();
 	}
 
 	public function getCurrentSumm($month = 0)
@@ -106,5 +110,4 @@ class BusinessUnit extends BaseBusinessUnit
     	}
 		return $no_expences - $summ;
 	}
-
 } // BusinessUnit

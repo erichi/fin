@@ -23,6 +23,7 @@ propel:
     id:           ~
     name:         { type: varchar(50), required: true }
     plan:         { type: decimal, size: 10, scale: 2, required: true }
+    loans:        { type: decimal, size: 10, scale: 2, required: true, default: 0 }
     
   job_order_manager:      #JO - User
     job_order_id: { type: integer, primaryKey: true, required: true, foreignTable: job_order, foreignReference: id, onDelete: cascade }

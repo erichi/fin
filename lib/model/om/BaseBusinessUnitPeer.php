@@ -25,7 +25,7 @@ abstract class BaseBusinessUnitPeer {
 	const TM_CLASS = 'BusinessUnitTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 3;
+	const NUM_COLUMNS = 4;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -38,6 +38,9 @@ abstract class BaseBusinessUnitPeer {
 
 	/** the column name for the PLAN field */
 	const PLAN = 'business_unit.PLAN';
+
+	/** the column name for the LOANS field */
+	const LOANS = 'business_unit.LOANS';
 
 	/**
 	 * An identiy map to hold any loaded instances of BusinessUnit objects.
@@ -62,11 +65,11 @@ abstract class BaseBusinessUnitPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Plan', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'plan', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::PLAN, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'plan', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Plan', 'Loans', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'plan', 'loans', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::PLAN, self::LOANS, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'plan', 'loans', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -76,11 +79,11 @@ abstract class BaseBusinessUnitPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Plan' => 2, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'plan' => 2, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::PLAN => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'plan' => 2, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Plan' => 2, 'Loans' => 3, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'plan' => 2, 'loans' => 3, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::PLAN => 2, self::LOANS => 3, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'plan' => 2, 'loans' => 3, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -153,6 +156,7 @@ abstract class BaseBusinessUnitPeer {
 		$criteria->addSelectColumn(BusinessUnitPeer::ID);
 		$criteria->addSelectColumn(BusinessUnitPeer::NAME);
 		$criteria->addSelectColumn(BusinessUnitPeer::PLAN);
+		$criteria->addSelectColumn(BusinessUnitPeer::LOANS);
 	}
 
 	/**

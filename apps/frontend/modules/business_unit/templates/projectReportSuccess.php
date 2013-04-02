@@ -1,4 +1,9 @@
 <?php //use_stylesheet('default.css')?>
+<?php use_stylesheet('smoothness/jquery-ui-1.8.16.custom.css') ?>
+<?php use_javascript('jquery-ui-1.8.16.custom.min.js') ?>
+<?php use_javascript('jquery.jeditable.mini.js') ?>
+<?php use_javascript('project_report.js') ?>
+
 <div id="sf_admin_container" class="project_report">
 	<h1>Отчет по проектам</h1>
 	<div id="sf_admin_content">
@@ -196,6 +201,8 @@
 	</div>
 </div>
 <script type="text/javascript">
+	var save_field_data_url = "<?php echo url_for('business_unit/saveTypedData') ?>";
+	var save_bu_id = "<?php echo $sf_request->getParameter('id') ?>";
 
 	function IsNumeric(input)
 	{
