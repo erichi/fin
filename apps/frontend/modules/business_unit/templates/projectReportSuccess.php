@@ -77,7 +77,7 @@
 				<?php foreach ($tenders as $tender){
 						if ($tender->getStatus() == 'new'): ?>
 					<tr>
-						<td><?php echo $tender->getName() ?></td>
+						<td><a href="<?php echo url_for('tender_edit', array('id' => $tender->getId(), 'business_unit' => $business_unit->getId(), 'return_to_pr' => $business_unit->getId()));?>"><?php echo $tender->getName() ?></a></td>
 						<td><?php echo $tender->getBudget() ?></td>
 						<td><?php echo $tender->getAmount() ?></td>
 						<td><?php echo $tender->getMargin(); ?></td>
@@ -174,7 +174,7 @@
 				<?php foreach ($plans as $plan){
 						if (!$plan->getJobOrderId()): ?>
 					<tr>
-						<td><?php echo $plan->getName() ?></td>
+						<td><a href="<?php echo url_for('plan_edit', array('id' => $plan->getId(), 'busines_unit' => $business_unit->getId(),'return_to_pr' => $business_unit->getId()));?>"><?php echo $plan->getName() ?></a></td>
 						<td><?php echo $plan->getBudget() ?></td>
 						<td><?php echo $plan->getAmount() ?></td>
 						<td><?php echo $plan->getMargin(); ?></td>

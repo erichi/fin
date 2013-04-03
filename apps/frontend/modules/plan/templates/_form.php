@@ -10,7 +10,7 @@ $(document).ready(function(){
 <div class="sf_admin_form">
   <?php echo form_tag_for($form, '@plan') ?>
     <?php echo $form->renderHiddenFields(false) ?>
-
+    <input type="hidden" name="return_to_pr" value="<?php echo $sf_request->getParameter('return_to_pr'); ?>" />
     <?php if ($form->hasGlobalErrors()): ?>
       <?php echo $form->renderGlobalErrors() ?>
     <?php endif; ?>

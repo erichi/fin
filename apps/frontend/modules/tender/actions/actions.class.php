@@ -20,7 +20,7 @@ class tenderActions extends autoTenderActions
 		}
 		parent::executeNew($request);
 	}
-	
+
 	protected function processForm(sfWebRequest $request, sfForm $form)
   {
     $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));
@@ -31,7 +31,7 @@ class tenderActions extends autoTenderActions
       $Tender = $form->save();
 
       $this->dispatcher->notify(new sfEvent($this, 'admin.save_object', array('object' => $Tender)));
-			
+
       if ($this->getUser()->hasAttribute('return_to_pr')) {																			//redirect if tender created from ProjectReport
       	$this->redirect('@project_report?id='.$this->getUser()->getAttribute('return_to_pr'));
       }
@@ -53,4 +53,14 @@ class tenderActions extends autoTenderActions
       $this->getUser()->setFlash('error', 'The item has not been saved due to some errors.', false);
     }
 	}
+
+  public function executeDelete(sfWebRequest $request)
+  {
+    $this->dispatcher->notify(new sfEvent($this, 'admin.delete_object', array('object' => $this->getRoute()->getObject())));
+    $obj = $this->getRoute()->getObject();
+    $id = $obj->getBusinessUnitId();
+    $obj->delete();
+    $this->getUser()->setFlash('notice', 'The item was deleted successfully.');
+    $this->redirect('project_report', array('id' => $id));
+  }
 }
