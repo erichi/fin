@@ -101,12 +101,12 @@ class business_unitActions extends autoBusiness_unitActions
 		foreach ($jos as $jo) {
 			$ins = IncomePaymentPeer::retrieveByJobOrderId($jo->getId());
 			foreach ($ins as $in) {
-				$jo_payments[$jo->getId()][$in->getDate()]['in'][] = $in->getAmount();
+				$jo_payments[$jo->getId()][$in->getDate()]['in'][] = $in;
 				$dates[] = $in->getDate();
 			}
 			$outs = JobPaymentPeer::retrieveByJobId($jo->getId());
 			foreach ($outs as $out) {
-				$jo_payments[$jo->getId()][$out->getDate()]['out'][] = array($out->getAmount(), $out->getFileName());
+				$jo_payments[$jo->getId()][$out->getDate()]['out'][] = $out;
 				$dates[] = $out->getDate();
 			}
 		}
@@ -120,7 +120,7 @@ class business_unitActions extends autoBusiness_unitActions
 				$date = explode('-', $p->getMonth());
 				$date = date('Y-m-d', strtotime($p->getMonth().'-01 last friday'));
 				$dates[] = $date;
-				$currents[$ce->getExpencesTypeId()][$date]['out'][] = array($p->getAmount());
+				$currents[$ce->getExpencesTypeId()][$date]['out'][] = $p->getAmount();
 			}
 
 		}
@@ -163,8 +163,6 @@ class business_unitActions extends autoBusiness_unitActions
 
 		}
 
-		//exit;
-
 		$this->range = $range;
 
 		//echo count($range).'<br />';
@@ -177,19 +175,23 @@ class business_unitActions extends autoBusiness_unitActions
 				if(isset($date['in'])) {
 
 					foreach ($date['in'] as $amount) {
-						$sum_count_in += $amount;
+						$sum_count_in += $amount->getAmount();
 					}
 
 				}
 				if(isset($date['out'])) {
-
 					foreach ($date['out'] as $amount) {
-						$sum_count_out += $amount[0];
+                        if($amount instanceof JobPayment){
+                            $sum_count_out += $amount->getAmount();
+                        }else{
+                            $sum_count_out += $amount;
+                        }
 					}
 
 				}
 			}
-			$res['dates']['sum'] = array('in' => array($sum_count_in), 'out' => array(array($sum_count_out)));
+
+			$res['dates']['sum'] = array('in' => array($sum_count_in), 'out' => array($sum_count_out));
 			$sum_res[$key] = $res;
 			//$k++;
 			//if($k == 3) {
@@ -209,17 +211,26 @@ class business_unitActions extends autoBusiness_unitActions
 				if(isset($sum_res[$i]['dates'][$date]['in']) && count($sum_res[$i]['dates'][$date]['in']) !=0) {
 					//print_r($sum_res[$i]['dates'][$date]['in']);
 					foreach ($sum_res[$i]['dates'][$date]['in'] as $amount) {
-						$in_sum += $amount;
+                        if($amount instanceof IncomePayment){
+						    $in_sum += $amount->getAmount();
+                        }else{
+                            $in_sum += $amount;
+                        }
 					}
 				}
 				if(isset($sum_res[$i]['dates'][$date]['out']) && count($sum_res[$i]['dates'][$date]['out']) !=0) {
 					foreach ($sum_res[$i]['dates'][$date]['out'] as $amount) {
-						$out_sum += $amount[0];
+                        if($amount instanceof JobPayment){
+						    $out_sum += $amount->getAmount();
+                        }else{
+
+                            $out_sum += $amount;
+                        }
 					}
 				}
 			}
 
-			$vert_sum[$date] = array('in' => array($in_sum), 'out' => array(array($out_sum)));
+			$vert_sum[$date] = array('in' => array($in_sum), 'out' => array($out_sum));
 		}
 //		exit;
 

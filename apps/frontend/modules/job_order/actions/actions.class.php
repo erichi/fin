@@ -356,4 +356,23 @@ class job_orderActions extends autoJob_orderActions
   	$this->net_profit = round($total_budget - $sum_op, 2);
   	$this->margin = round(($this->net_profit / $this->total_budget) * 100, 2);
   }
+
+  function executeApprovePayment(sfWebRequest $request)
+  {
+      if( $request->getParameter('isIncome') == 'true' ){
+          $payment = IncomePaymentPeer::retrieveByPK($request->getParameter('id'));
+      }else{
+          $payment = JobPaymentPeer::retrieveByPK($request->getParameter('id'));
+      }
+      if(!is_null($payment)){
+          $payment->setIsConfirmed(true);
+          $oldDate = $payment->getDate('Y-m-d');
+          $payment->setAmount($request->getParameter('amount'));
+          $payment->setDate($request->getParameter('date'));
+          $payment->setName($request->getParameter('name'));
+          $payment->save();
+          return $this->renderText($this->generateUrl('cashflow', array('id' => $request->getParameter('bu'), 'startDate' => $oldDate)));
+      }
+      return $this->renderText('error');
+  }
 }
