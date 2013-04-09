@@ -15,10 +15,12 @@ if($amount instanceof sfOutputEscaperObjectDecorator){
         }
         echo '<a href="#" class="'.($isIncome ? 'income_payments' : 'outcome_payments').'" onclick="editPaymentDialog(\''.($isIncome ? 'in' : 'out').$amount->getId().'\','.($isIncome ? 'true' : 'false').'); return false;" id="'.($isIncome ? 'in' : 'out').$amount->getId().'" data-jo=\''.json_encode($data).'\'>'.$amount->getAmount().'</a>';
     }else{
+        echo '<nobr>';
         echo image_tag('/sf/sf_admin/images/tick.png', array('alt' => 'Подтвержден', 'title' => 'Подтвержден'));
         echo '<span class="'.($isIncome ? 'income_payments' : 'outcome_payments').'">';
         echo $amount->getAmount();
         echo '</span>';
+        echo '</nobr>';
     }
 }else{
     if(!$isIncome || $amount >0 ){
