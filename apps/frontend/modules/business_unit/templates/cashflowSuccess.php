@@ -115,7 +115,7 @@
 
     $(document).ready(function(){
         $('.outcome_payments, .income_payments').each(function(){
-            if($(this).has('a').length == 0 && IsNumeric($(this).text()) && $(this).text() != 0) {
+            if($(this).has('a').length == 0 && $(this).has('img').length == 0 && IsNumeric($(this).text()) && $(this).text() != 0) {
                 $(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
             }
         });
