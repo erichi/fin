@@ -125,33 +125,36 @@ function approveJoOp(id) {
     });
 }
 
+function approvePayment(isIncome, isApproved) {
+	if (validateJobPayment()) {
+		$.ajax({
+			url: '/job_order/approvePayment/action',
+			data: {
+				'bu': business_unit_id,
+				'id': $('#job_payment_id').val(),
+				'name': $('#job_payment_name').val(),
+				'date': $('#job_payment_date').val(),
+				'amount': $('#job_payment_amount').val().replace(/[_ ]/g,'').replace(',', '.'),
+				'isIncome' : isIncome,
+				'isApproved' : isApproved
+			},
+			success: function(result){
+				if(result != "error" && result.length > 0){
+					document.location = result;
+				}
+			}
+		});
+	}
+}
+
 function editPaymentDialog(joid, isIncome)
 {
 	dialog = $('#dialog_job_payment').dialog({
 		autoOpen: false, minWidth: 500,	modal: true, resizable: false, draggable: false,
 		title:	isIncome ? "Подтверждение входящего платежа" : "Подтверждение платежа подрядчику",
 		buttons: {
-			"Подтвердить": function() {
-				if (validateJobPayment()) {
-					$.ajax({
-						url: '/job_order/approvePayment/action',
-//						method: 'GET',
-						data: {
-							'bu': business_unit_id,
-							'id': $('#job_payment_id').val(),
-							'name': $('#job_payment_name').val(),
-							'date': $('#job_payment_date').val(),
-							'amount': $('#job_payment_amount').val().replace(/[_ ]/g,'').replace(',', '.'),
-							'isIncome' : isIncome
-						},
-						success: function(result){
-							if(result != "error" && result.length > 0){
-								document.location = result;
-							}
-						}
-					});
-				}
-			},
+			"Подтвердить": function(){ approvePayment(isIncome, true); },
+			"Сохранить": function(){ approvePayment(isIncome, false); },
 			"Отмена": function() {
 				$(this).dialog("close");
 			}
@@ -160,7 +163,6 @@ function editPaymentDialog(joid, isIncome)
 	
 	
 	var data = $('#'+joid).data('jo');
-	console.log(data);
 	if(typeof data.filelink == 'undefined'){
 		$('#job_payment_file_container').css('display' , 'none');
 	}else{

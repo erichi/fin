@@ -365,7 +365,9 @@ class job_orderActions extends autoJob_orderActions
           $payment = JobPaymentPeer::retrieveByPK($request->getParameter('id'));
       }
       if(!is_null($payment)){
-          $payment->setIsConfirmed(true);
+          if($request->getParameter('isApproved') == 'true'){
+            $payment->setIsConfirmed(true);
+          }
           $oldDate = $payment->getDate('Y-m-d');
           $payment->setAmount($request->getParameter('amount'));
           $payment->setDate($request->getParameter('date'));
