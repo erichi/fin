@@ -31,8 +31,9 @@ class JobOrder extends BaseJobOrder
 			$crit1 = $criteria->getNewCriterion(IncomePaymentPeer::DATE, date('Y-m-d', strtotime($date_end)), Criteria::LESS_EQUAL);
 			$crit0->addAnd($crit1);
 			$criteria->add($crit0);
+
 		}
-		
+		$criteria->add(IncomePaymentPeer::IS_CONFIRMED, true);
 		return $this->getIncomePayments($criteria);
 	}
 	
@@ -40,7 +41,7 @@ class JobOrder extends BaseJobOrder
 	{
 		$c = new Criteria();
 		$c->add(IncomePaymentPeer::JOB_ORDER_ID, $this->getId());
-		//$c->add(IncomePaymentPeer::IS_CONFIRMED, true);
+		$c->add(IncomePaymentPeer::IS_CONFIRMED, true);
 		$jos = IncomePaymentPeer::doSelect($c);
 		
 		$b = 0;
@@ -96,7 +97,7 @@ class JobOrder extends BaseJobOrder
 	{
 		$c = new Criteria();
 		$c->add(JobPaymentPeer::JOB_ID, $this->getId());
-		//$c->add(JobPaymentPeer::IS_CONFIRMED, true);
+		$c->add(JobPaymentPeer::IS_CONFIRMED, true);
 		$outcomes = JobPaymentPeer::doSelect($c);
 		
 		$sum = 0;
