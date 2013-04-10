@@ -171,10 +171,18 @@ class business_unitActions extends autoBusiness_unitActions
 		foreach ($result as $key => $res) {
 			$sum_count_in = 0;
 			$sum_count_out = 0;
+            $outConfirmedAll = true;
+            $outConfirmedOne = false;
+            $inConfirmedAll = true;
+            $inConfirmedOne = false;
 			foreach ($res['dates'] as $date) {
 				if(isset($date['in'])) {
-
 					foreach ($date['in'] as $amount) {
+                        if($amount->getIsConfirmed() == true){
+                            $inConfirmedOne = true;
+                        }else{
+                            $inConfirmedAll = false;
+                        }
 						$sum_count_in += $amount->getAmount();
 					}
 
@@ -183,6 +191,11 @@ class business_unitActions extends autoBusiness_unitActions
 					foreach ($date['out'] as $amount) {
                         if($amount instanceof JobPayment){
                             $sum_count_out += $amount->getAmount();
+                            if($amount->getIsConfirmed() == true){
+                                $outConfirmedOne = true;
+                            }else{
+                                $outConfirmedAll = false;
+                            }
                         }else{
                             $sum_count_out += $amount;
                         }
@@ -190,8 +203,14 @@ class business_unitActions extends autoBusiness_unitActions
 
 				}
 			}
+            if(!$outConfirmedOne){
+                $outConfirmedAll = false;
+            }
+            if(!$inConfirmedOne){
+                $inConfirmedAll = false;
+            }
 
-			$res['dates']['sum'] = array('in' => array($sum_count_in), 'out' => array($sum_count_out));
+			$res['dates']['sum'] = array('in' => array(array($sum_count_in, $inConfirmedOne, $inConfirmedAll)), 'out' => array(array($sum_count_out, $outConfirmedOne, $outConfirmedAll)));
 			$sum_res[$key] = $res;
 			//$k++;
 			//if($k == 3) {
@@ -214,7 +233,11 @@ class business_unitActions extends autoBusiness_unitActions
                         if($amount instanceof IncomePayment){
 						    $in_sum += $amount->getAmount();
                         }else{
-                            $in_sum += $amount;
+                            if(is_array($amount)){
+                                $in_sum += $amount[0];
+                            }else{
+                                $in_sum += $amount;
+                            }
                         }
 					}
 				}
@@ -223,8 +246,11 @@ class business_unitActions extends autoBusiness_unitActions
                         if($amount instanceof JobPayment){
 						    $out_sum += $amount->getAmount();
                         }else{
-
-                            $out_sum += $amount;
+                            if(is_array($amount)){
+                                $out_sum += $amount[0];
+                            }else{
+                                $out_sum += $amount;
+                            }
                         }
 					}
 				}

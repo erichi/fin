@@ -11,7 +11,7 @@ if($amount instanceof sfOutputEscaperObjectDecorator){
             'amount' => $amount->getAmount(),
         );
         if(!empty($file)){
-            $data['filelink'] = '<a href="http://'.$sf_request->getHost().'/uploads/files/'.$file.'">скачать</a> ';
+            $data['filelink'] = '<a target="_blank" href="http://'.$sf_request->getHost().'/uploads/files/'.$file.'">скачать</a> ';
         }
         echo '<a href="#" class="'.($isIncome ? 'income_payments' : 'outcome_payments').'" onclick="editPaymentDialog(\''.($isIncome ? 'in' : 'out').$amount->getId().'\','.($isIncome ? 'true' : 'false').'); return false;" id="'.($isIncome ? 'in' : 'out').$amount->getId().'" data-jo=\''.json_encode($data).'\'>'.$amount->getAmount().'</a>';
     }else{
@@ -23,7 +23,26 @@ if($amount instanceof sfOutputEscaperObjectDecorator){
         echo '</nobr>';
     }
 }else{
+    if($amount instanceof sfOutputEscaperArrayDecorator ){
+        if($amount[2] == true){
+            echo '<nobr>';
+            echo image_tag('/sf/sf_admin/images/tick.png', array('alt' => 'Все подтверждены', 'title' => 'Все подтверждены'));
+            echo '<span class="'.($isIncome ? 'income_payments' : 'outcome_payments').'">';
+            $close = true;
+        }elseif($amount[1] == true){
+            echo '<nobr>';
+            echo image_tag('/images/tick2.png', array('alt' => 'Есть подтвержденные', 'title' => 'Есть подтвержденные'));
+            echo '<span class="'.($isIncome ? 'income_payments' : 'outcome_payments').'">';
+            $close = true;
+        }
+        $amount = $amount[0];
+
+    }
     if(!$isIncome || $amount >0 ){
         echo $amount;
+    }
+
+    if(isset($close)){
+        echo '</span></nobr>';
     }
 }

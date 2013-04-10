@@ -106,6 +106,9 @@
 	    			foreach ($income_payments as $income_payment): ?>
 	    				<tr id="ip_<?php echo  $ip_cnt ?>">
 	    					<td>
+                                <?php if($income_payment->getIsConfirmed() == true){
+                                    echo image_tag('/sf/sf_admin/images/tick.png', array('alt' => 'Подтвержден', 'title' => 'Подтвержден'));
+                                }?>
 	    					  <input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][name]" value="<?php echo  $income_payment->getName() ?>" />
 									<input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][amount]" value="<?php echo  $income_payment->getAmount() ?>" id="jo_income_payment_amount_<?php echo  $ip_cnt ?>" />
 									<input type="hidden" name="jo[income_payment][<?php echo  $ip_cnt ?>][date]" value="<?php echo  $income_payment->getDate('d.m.Y') ?>" />
@@ -115,7 +118,11 @@
 	    					<td class ="income_paymen_name"><?= $income_payment->getName() ?></td>
 	    					<td class ="income_paymen_amount"><?= $income_payment->getAmount() ?></td>
 	    					<td class ="income_paymen_date"><?= $income_payment->getDate('d.m.Y') ?></td>
-	    					<td><button type="button" class="btn btn-mini" onclick="editIncomePayment(<?php echo $ip_cnt?>)" style="margin-top:5px;"><i class="icon-pencil icon-black"></i> редактировать</button> </td>
+	    					<td>
+                                <?php if($income_payment->getIsConfirmed() == false) : ?>
+                                <button type="button" class="btn btn-mini" onclick="editIncomePayment(<?php echo $ip_cnt?>)" style="margin-top:5px;"><i class="icon-pencil icon-black"></i> редактировать</button>
+                                <?php endif ?>
+                            </td>
 	    					<td><button type="button" class="btn btn-mini" onclick="deleteIncomePayment(<?php echo $ip_cnt?>)" style="margin-top:5px;"><i class="icon-trash icon-black"></i> удалить</button> </td>
 	    				</tr>
 	    		<?php $ip_cnt++;
@@ -167,6 +174,9 @@
 	    						<?php $file_link = $job_payment->getFilename() ? 'http://'.$sf_request->getHost().'/uploads/files/'.$job_payment->getFilename() : '#' ?>
 	    							<tr id="jp_<?php echo  $jp_cnt ?>">
 	    								<td>
+                                            <?php if($job_payment->getIsConfirmed() == true){
+                                                echo image_tag('/sf/sf_admin/images/tick.png', array('alt' => 'Подтвержден', 'title' => 'Подтвержден'));
+                                            }?>
 	    									<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][name]" value="<?php echo  $job_payment->getName() ?>" />
 												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][date]" value="<?php echo  $job_payment->getDate('d.m.Y') ?>" />
 												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][amount]" value="<?php echo  $job_payment->getAmount() ?>" />
@@ -182,7 +192,11 @@
 	    						     	<td class="job_payment_download"><a href="#" onclick="uploadJobPayment(<?php echo $jp_cnt.','.$job_cnt?>);return false;">загрузить</a></td>
 	    						     	<?php endif;?>
 
-	    						 		<td style="padding-left: 0; padding-right: 0;"><button type="button" class="btn btn-mini" onclick="editJobPayment(<?php echo $jp_cnt.','.$job_cnt?>)" >редактировать</button> </td>
+	    						 		<td style="padding-left: 0; padding-right: 0;">
+                                             <?php if($job_payment->getIsConfirmed() == false) : ?>
+                                             <button type="button" class="btn btn-mini" onclick="editJobPayment(<?php echo $jp_cnt.','.$job_cnt?>)" >редактировать</button>
+                                             <?php endif; ?>
+                                         </td>
 	    					            <td style="padding-right: 0;"><button type="button" class="btn btn-mini" onclick="deleteJobPayment(<?php echo $jp_cnt.','.$job_cnt?>)" >удалить</button> </td>
 	    						  </tr>
 
