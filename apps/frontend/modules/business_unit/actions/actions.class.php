@@ -114,16 +114,33 @@ class business_unitActions extends autoBusiness_unitActions
 		$currents = array();
 		$ces = CurrentExpensesPeer::retrieveByBU($bu_id);
 
+        $confirmed = array();
 		foreach ($ces as $ce) {
 			$payments = RegularPaymentPeer::getByCE($ce->getId());
 			foreach ($payments as $p) {
 				$date = explode('-', $p->getMonth());
 				$date = date('Y-m-d', strtotime($p->getMonth().'-01 last friday'));
 				$dates[] = $date;
-				$currents[$ce->getExpencesTypeId()][$date]['out'][] = $p->getAmount();
+                if(!isset($currents[$ce->getExpencesTypeId()]) || !isset($currents[$ce->getExpencesTypeId()][$date])){
+                    $currents[$ce->getExpencesTypeId()][$date]['out'][] = 0;
+                }
+				$currents[$ce->getExpencesTypeId()][$date]['out'][0] += $p->getAmount();
+                if($p->getIsConfirmed() == true){
+                    $confirmed[$ce->getExpencesTypeId()][$date]['confirmedOne'] = true;
+                }else{
+                    $confirmed[$ce->getExpencesTypeId()][$date]['notConfirmedOne'] = true;
+                }
 			}
-
 		}
+        foreach ($confirmed as $expencesTypeId => $confirmedDates) {
+            foreach($confirmedDates as $date => $c){
+                $currents[$expencesTypeId][$date]['out'] = array(array(
+                    $currents[$expencesTypeId][$date]['out'][0],
+                    isset($c['confirmedOne']) ?  true : false,
+                    isset($c['confirmedOne']) && !isset($c['notConfirmedOne']) ? true : false
+                ));
+            }
+        }
 		sort($dates);
 
 
@@ -171,19 +188,10 @@ class business_unitActions extends autoBusiness_unitActions
 		foreach ($result as $key => $res) {
 			$sum_count_in = 0;
 			$sum_count_out = 0;
-            $outConfirmedAll = true;
-            $outConfirmedOne = false;
-            $inConfirmedAll = true;
-            $inConfirmedOne = false;
 			foreach ($res['dates'] as $date) {
 				if(isset($date['in'])) {
 					foreach ($date['in'] as $amount) {
-                        if($amount->getIsConfirmed() == true){
-                            $inConfirmedOne = true;
-                        }else{
-                            $inConfirmedAll = false;
-                        }
-						$sum_count_in += $amount->getAmount();
+            			$sum_count_in += $amount->getAmount();
 					}
 
 				}
@@ -191,26 +199,19 @@ class business_unitActions extends autoBusiness_unitActions
 					foreach ($date['out'] as $amount) {
                         if($amount instanceof JobPayment){
                             $sum_count_out += $amount->getAmount();
-                            if($amount->getIsConfirmed() == true){
-                                $outConfirmedOne = true;
-                            }else{
-                                $outConfirmedAll = false;
-                            }
                         }else{
-                            $sum_count_out += $amount;
+                            if(is_array($amount)){
+                                $sum_count_out += $amount[0];
+                            }else{
+                                $sum_count_out += $amount;
+                            }
                         }
 					}
 
 				}
 			}
-            if(!$outConfirmedOne){
-                $outConfirmedAll = false;
-            }
-            if(!$inConfirmedOne){
-                $inConfirmedAll = false;
-            }
 
-			$res['dates']['sum'] = array('in' => array(array($sum_count_in, $inConfirmedOne, $inConfirmedAll)), 'out' => array(array($sum_count_out, $outConfirmedOne, $outConfirmedAll)));
+			$res['dates']['sum'] = array('in' => array($sum_count_in), 'out' => array($sum_count_out));
 			$sum_res[$key] = $res;
 			//$k++;
 			//if($k == 3) {
