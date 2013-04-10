@@ -64,7 +64,7 @@ class BusinessUnit extends BaseBusinessUnit
 		$date = date('Y-m', strtotime('first day of +'.$month.' month'));
 		$c = new Criteria();
 		$c->add(RegularPaymentPeer::MONTH, $date);
-//		$c->add(RegularPaymentPeer::IS_CONFIRMED, false);
+		$c->add(RegularPaymentPeer::IS_CONFIRMED, false);
 		$c->addJoin(RegularPaymentPeer::CURRENT_EXPENSES_ID, CurrentExpensesPeer::ID);
 		$c->add(CurrentExpensesPeer::BUSINESS_UNIT_ID, $this->getId());
 		$payments = RegularPaymentPeer::doSelect($c);
