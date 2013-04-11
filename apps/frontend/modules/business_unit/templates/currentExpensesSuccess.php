@@ -7,7 +7,6 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
 <?php use_javascript('jquery.jeditable.mini.js') ?>
 <?php use_javascript('current_expenses.js') ?>
 <?php use_javascript('inputmask.js') ?>
-
 <div id="sf_admin_container" class="current_expenses">
 	<div class="page-header">
 	<h1>Текущие расходы</h1>
@@ -82,6 +81,14 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
 		</tr>
 	</table>
 </div>												<!--End Dialog box-->
+<div class="dialog" id="dialog_edit_expence">																					<!--Dialog box Job Payment-->
+    <table>
+        <tr>
+            <td><label for="expence_amount">Сумма:</label></td>
+            <td><input type="text" name="mp[amount]" id="expence_amount"></td>
+        </tr>
+    </table>
+</div>
 
 <script type="text/javascript">
 	var business_unit_id = <?php echo $business_unit_id ?>;

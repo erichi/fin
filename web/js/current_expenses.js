@@ -31,7 +31,7 @@ $(document).ready(function(){
 		recount(types);
 	});
 	
-	$('.confirm_exp').change(function(){
+/*	$('.confirm_exp').change(function(){
 		var id = $(this).attr('info');
 		$.ajax({
 			type: "POST",
@@ -42,12 +42,12 @@ $(document).ready(function(){
 			if(result == 'error')
 				alert('Платеж не подтвержден из-за ошибки системы. No entry in database');
 		});
-	});
+	});*/
 });
 
 $(function() {
 	
-	$('.edit').editable(save_field_data_url,{
+/*	$('.edit').editable(save_field_data_url,{
 		event			: "dblclick.editable",
 		id:  'editinput',
 		loadurl         : "/frontend_dev.php/loadexp",
@@ -69,7 +69,7 @@ $(function() {
     	callback : function(value, settings) {
     		recount(types);
     	}
-	});
+	}); */
 
 	$('#tax_dialog').dialog({
 		autoOpen: false, minWidth: 440,	modal: true, resizable: false, draggable: false,
@@ -97,7 +97,7 @@ function recount(types)
     		var desc_regexp = $(this).attr('desc').split(type+'_0').join(type+'_[^0]{1}[0-9]*');
     		var amount = 0;
     		$('td:regex(desc,^'+desc_regexp+'$)').each(function(){
-				var value = parseInt($.trim($(this).html()));
+				var value = parseInt($.trim($(this).text()));
 				if (isNaN(value)) {
 					value = 0;
 				}
@@ -110,7 +110,7 @@ function recount(types)
 
     	var amount_all = 0;
     	$('td:regex(desc,^'+type+'_0_\\d{2}_\\d{4}$)').each(function(){
-    		var value = parseInt($.trim($(this).html()));
+    		var value = parseInt($.trim($(this).text()));
 			if (isNaN(value)) {
 				value = 0;
 			}
@@ -208,6 +208,70 @@ function showTaxes()
 		$(this).css('visibility', 'visible');
 	});
 }
+
+function approveExpence(id, isApproved) {
+	if (validateExpence()) {
+        var amount = $('#expence_amount').val().replace(/[_ ]/g,'');
+		$.ajax({
+			url: '/confirmexp',
+			data: {
+				'id': id,
+				'amount': amount,
+				'isApproved' : isApproved
+			},
+			success: function(msg){
+                var result = $.parseJSON(msg);
+                if(result == 'error'){
+                    alert('Платеж не подтвержден из-за ошибки системы. No entry in database');
+                }else{
+                    if(isApproved){
+                        $('#exp' + id).before('<nobr><img src="/sf/sf_admin/images/tick.png" alt="Подтвержден" title="Подтвержден" />'+amount+'</nobr>');
+                        $('#exp' + id).remove();
+                    }else{
+                        $('#exp' + id).text(amount);
+                    }
+                    recount(types);
+                }
+			}
+		});
+	}
+}
+
+function editCurrentExpence(id)
+{
+	dialog = $('#dialog_edit_expence').dialog({
+		autoOpen: false, minWidth: 500,	modal: true, resizable: false, draggable: false,
+		title:	"Подтверждение",
+		buttons: {
+			"Подтвердить": function(){ approveExpence(id, true); $(this).dialog("close"); },
+			"Сохранить": function(){ approveExpence(id, false); $(this).dialog("close"); },
+			"Отмена": function() {
+				$(this).dialog("close");
+			}
+		}			
+	});	
+
+	$('#expence_amount').inputmask('999 999 999 999', { numericInput: true, placeholder:"_" });
+    console.log($('#exp'+id).text().trim());
+	$('#expence_amount').val($('#exp'+id).text().trim());
+	dialog.dialog('open');
+}
+
+function validateExpence()
+{
+	if(!$.trim($('#expence_amount').val())){
+		alert("Пожалуйста, введите сумму.");
+		$('#expence_amount').focus();
+		return false;
+	} else if (isNaN($('#expence_amount').val().replace(/[_ ]/g,''))) {
+		alert("Сумма должна быть числом, например (999).");
+		$('#expence_amount').focus();
+		return false;
+	}
+    //$('#job_payment_amount').val($('#job_payment_amount').val().replace(/_/g,''));
+	return true;
+}
+
 /*
 $.expr[':'].regex = function(elem, index, match) {
     var matchParams = match[3].split(','),

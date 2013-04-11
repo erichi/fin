@@ -819,7 +819,8 @@ class business_unitActions extends autoBusiness_unitActions
 		{
 			$result = 'error';
 		}
-		$rp->setIsConfirmed(1);
+		$rp->setIsConfirmed($request->getParameter('isApproved') == 'true' ? true : false);
+        $rp->setAmount($request->getParameter('amount'));
 		$rp->save();
 
 		return $this->renderText(json_encode(array('status' => $result)));
