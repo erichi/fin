@@ -104,7 +104,7 @@ class business_unitActions extends autoBusiness_unitActions
 				$jo_payments[$jo->getId()][$in->getDate()]['in'][] = $in;
 				$dates[] = $in->getDate();
 			}
-			$outs = JobPaymentPeer::retrieveByJobId($jo->getId());
+			$outs = JobPaymentPeer::retrieveByJobOrderId($jo->getId());
 			foreach ($outs as $out) {
 				$jo_payments[$jo->getId()][$out->getDate()]['out'][] = $out;
 				$dates[] = $out->getDate();

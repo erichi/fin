@@ -14,7 +14,7 @@
  */
 class JobPaymentPeer extends BaseJobPaymentPeer
 {
-	public static function retrieveByJobId($id)
+	public static function retrieveByJobOrderId($id)
 	{
 		$c = new Criteria();
 		$c->add(JobPeer::JOB_ORDER_ID, $id);
@@ -34,5 +34,11 @@ class JobPaymentPeer extends BaseJobPaymentPeer
 		
 		return $outs;
 	}
+
+    public static function retrieveByJobId($id){
+        $c = new Criteria();
+        $c->add(self::JOB_ID, $id);
+        return self::doSelect($c);
+    }
 
 } // JobPaymentPeer

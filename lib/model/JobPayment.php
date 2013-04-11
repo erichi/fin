@@ -14,4 +14,22 @@
  */
 class JobPayment extends BaseJobPayment {
 
+    public function save(PropelPDO $con = null)
+    {
+        parent::save($con);
+        $this->_updateJobAmount($this->getJobId());
+    }
+
+    private function _updateJobAmount($jobId)
+    {
+        $payments = JobPaymentPeer::retrieveByJobId($jobId);
+        $sum = 0;
+        foreach($payments as $p){
+            $sum += $p->getAmount();
+        }
+        $job = JobPeer::retrieveByPK($jobId);
+        $job->setAmount($sum);
+        $job->save();
+    }
+
 } // JobPayment
