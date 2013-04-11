@@ -41,7 +41,7 @@ class JobOrder extends BaseJobOrder
 	{
 		$c = new Criteria();
 		$c->add(IncomePaymentPeer::JOB_ORDER_ID, $this->getId());
-		$c->add(IncomePaymentPeer::IS_CONFIRMED, true);
+		//$c->add(IncomePaymentPeer::IS_CONFIRMED, true);
 		$jos = IncomePaymentPeer::doSelect($c);
 		
 		$b = 0;
