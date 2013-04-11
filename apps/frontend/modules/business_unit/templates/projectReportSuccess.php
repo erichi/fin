@@ -34,7 +34,7 @@
 			<tbody>
 				<?php foreach ($job_orders as $jo): ?>
 					<tr>
-						<td><?php echo $jo->getName();				 ?></td>
+						<td><a href="/job_order/<?php echo $jo->getId(); ?>/edit"><?php echo $jo->getName(); ?></a></td>
 						<td><?php echo $jo->getBudget(); ?></td>
 						<td><?php echo $jo->getProductionCost();?></td>
 						<td><?php echo $jo->getMargin(); ?></td>
