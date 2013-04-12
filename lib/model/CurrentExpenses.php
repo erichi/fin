@@ -28,6 +28,7 @@ class CurrentExpenses extends BaseCurrentExpenses {
 			$mp = new RegularPayment();
 			$mp->setCurrentExpensesId($this->getId());
 			$mp->setMonth($date);
+            $mp->setAmount(0);
 			$mp->save();
 		}
 
