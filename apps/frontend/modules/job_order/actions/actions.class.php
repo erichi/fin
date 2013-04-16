@@ -23,7 +23,7 @@ class job_orderActions extends autoJob_orderActions
 
 		$this->clients = $this->getClientsArray();
 
-	    $this->all_managers = sfGuardUserPeer::retrieveByPermission('pm');
+	    $this->all_managers_new = sfGuardUserPeer::retrieveByPermission('pm');
 	    $this->jo_managers = null;
 	    $this->job_types = JobTypePeer::doSelect(new Criteria());
 	    $this->income_payments = null;
@@ -41,7 +41,7 @@ class job_orderActions extends autoJob_orderActions
   	parent::executeEdit($request);
 
   	$this->clients = $this->getClientsArray();
-  	$this->all_managers = sfGuardUserPeer::retrieveByPermission('pm');
+  	$this->all_managers = sfGuardUserPeer::retrieveManagers($this->getRoute()->getObject()->getBusinessUnitId());
     $this->jo_managers = sfGuardUserPeer::doSelectJoManagers($this->JobOrder);
   	$this->job_types = JobTypePeer::doSelect(new Criteria());
   	$this->income_payments = IncomePaymentPeer::retrieveByJobOrderId($this->JobOrder->getId());

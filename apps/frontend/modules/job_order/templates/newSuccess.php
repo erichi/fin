@@ -31,3 +31,28 @@
     <?php include_partial('job_order/form_footer', array('JobOrder' => $JobOrder, 'form' => $form, 'configuration' => $configuration)) ?>
   </div>
 </div>
+<script type="text/javascript">
+    <?php
+        $managers = array();
+        foreach($all_managers_new as $manager){
+            /** @var $manager sfGuardUser */
+            $managers[$manager->getProfile()->getBusinessUnitId()][] = array(
+                'id' => $manager->getId(),
+                'name' => $manager->getProfile()->getLastName().' '.$manager->getProfile()->getFirstName()
+            );
+        }
+    ?>
+    var managers = <?php echo json_encode($managers) ?>;
+    $(document).ready(function(){
+        $('#bu-select').change(function(){
+            var bu = $('#bu-select :selected').val();
+            $('#manager').empty();
+            $('#manager').append('<option value=""></option>');
+            for(var k in managers[bu]){
+                var val = managers[bu][k];
+                $('#manager').append('<option value="'+val.id+'">'+val.name+'</option>')
+            }
+
+        });
+    })
+</script>

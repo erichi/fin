@@ -48,11 +48,21 @@ class sfGuardUserPeer extends PluginsfGuardUserPeer
 		return self::doSelectJoinProfile($c);
 	}
 
-	public static function retrieveByPermission($permission){
+    public static function retrieveByPermission($permission){
+        $criteria = new Criteria();
+        $criteria->addJoin(sfGuardUserPeer::ID, sfGuardUserPermissionPeer::USER_ID, Criteria::LEFT_JOIN);
+        $criteria->addJoin(sfGuardUserPermissionPeer::PERMISSION_ID,sfGuardPermissionPeer::ID, Criteria::LEFT_JOIN);
+        $criteria->add(sfGuardPermissionPeer::NAME, 'pm', Criteria::EQUAL);
+        return sfGuardUserPeer::doSelect($criteria);
+    }
+
+	public static function retrieveManagers($bu){
 		$criteria = new Criteria();
 		$criteria->addJoin(sfGuardUserPeer::ID, sfGuardUserPermissionPeer::USER_ID, Criteria::LEFT_JOIN);
 		$criteria->addJoin(sfGuardUserPermissionPeer::PERMISSION_ID,sfGuardPermissionPeer::ID, Criteria::LEFT_JOIN);
-		$criteria->add(sfGuardPermissionPeer::NAME, $permission, Criteria::EQUAL);
+        $criteria->addJoin(sfGuardUserPeer::ID, sfGuardUserProfilePeer::USER_ID, Criteria::LEFT_JOIN);
+		$criteria->add(sfGuardPermissionPeer::NAME, 'pm', Criteria::EQUAL);
+        $criteria->add(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, $bu, Criteria::EQUAL);
 		return sfGuardUserPeer::doSelect($criteria);
 	}
 }

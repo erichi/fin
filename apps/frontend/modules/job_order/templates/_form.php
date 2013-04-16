@@ -31,7 +31,7 @@
     	<div class="control-group<?php echo ($form['business_unit_id']->hasError())?' error':'';?>">
             <label class="control-label" for="input01">Бизнес юнит:</label>
             <div class="controls">
-              <?php echo $form['business_unit_id']->render(array('class' => 'input-medium')); ?>
+              <?php echo $form['business_unit_id']->render(array('class' => 'input-medium', 'id' => 'bu-select')); ?>
               <?php if($form['business_unit_id']->hasError()): ?>
               	<p class="help-block"><?php echo $form['business_unit_id']->renderError(); ?></p>
               <?php endif; ?>
