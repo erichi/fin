@@ -44,8 +44,8 @@
     ?>
     var managers = <?php echo json_encode($managers) ?>;
     $(document).ready(function(){
-        $('#bu-select').change(function(){
-            var bu = $('#bu-select :selected').val();
+        $('#jo_business_unit_id').change(function(){
+            var bu = $('#jo_business_unit_id :selected').val();
             $('#manager').empty();
             $('#manager').append('<option value=""></option>');
             for(var k in managers[bu]){

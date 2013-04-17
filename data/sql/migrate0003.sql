@@ -1,0 +1,1 @@
+ALTER TABLE `expences_type` ADD UNIQUE KEY `expences_type_U_1` (`code`);

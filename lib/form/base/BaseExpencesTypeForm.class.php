@@ -7,7 +7,7 @@
  *
  * @package    Finsys
  * @subpackage form
- * @author     Stepix
+ * @author     Eric Usmanov
  */
 abstract class BaseExpencesTypeForm extends BaseFormPropel
 {
@@ -24,6 +24,10 @@ abstract class BaseExpencesTypeForm extends BaseFormPropel
       'code' => new sfValidatorString(array('max_length' => 100)),
       'name' => new sfValidatorString(array('max_length' => 100)),
     ));
+
+    $this->validatorSchema->setPostValidator(
+      new sfValidatorPropelUnique(array('model' => 'ExpencesType', 'column' => array('code')))
+    );
 
     $this->widgetSchema->setNameFormat('expences_type[%s]');
 

@@ -782,7 +782,7 @@ abstract class BaseExpencesTypePeer {
 	 */
 	static public function getUniqueColumnNames()
 	{
-	  return array();
+	  return array(array('code'));
 	}
 
 	// symfony_behaviors behavior

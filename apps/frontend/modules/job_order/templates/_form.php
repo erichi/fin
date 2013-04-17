@@ -31,7 +31,7 @@
     	<div class="control-group<?php echo ($form['business_unit_id']->hasError())?' error':'';?>">
             <label class="control-label" for="input01">Бизнес юнит:</label>
             <div class="controls">
-              <?php echo $form['business_unit_id']->render(array('class' => 'input-medium', 'id' => 'bu-select')); ?>
+              <?php echo $form['business_unit_id']->render(array('class' => 'input-medium')); ?>
               <?php if($form['business_unit_id']->hasError()): ?>
               	<p class="help-block"><?php echo $form['business_unit_id']->renderError(); ?></p>
               <?php endif; ?>
@@ -161,8 +161,8 @@
 								<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][amount]" value="<?php echo  $job->getAmount() ?>" id="jo_outcome_payment_amount_<?php echo  $job_cnt ?>"  />
     					</td>
     					<td class="job_type_name"><?php echo  $job->getJobType()->getName() ?></td>
-    					<td class="job_name"><?php echo  $job->getName() ?></td>
-    					<td class="job_supplier"><?php echo  $job->getSupplier() ?></td>
+    					<td class="job_name noFormat"><?php echo  $job->getName() ?></td>
+    					<td class="job_supplier noFormat"><?php echo  $job->getSupplier() ?></td>
     					<td class="job_amount"><?php echo  $job->getAmount() ?></td>
     					<td class="job_payments">
 							<button type="button" class="btn btn-mini" onclick="editJob('<?php echo $job_cnt ?>')" >редактировать</button><br /> <br />
@@ -183,7 +183,7 @@
 												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][file]" value="<?php echo  $job_payment->getFilename() ?>" />
 												<input type="hidden" name="jo[outcome_payment][<?php echo  $job_cnt ?>][job_payment][<?php echo  $jp_cnt ?>][is_confirmed]" value="<?php echo  $job_payment->getIsConfirmed() ?>" />
 											</td>
-	    								<td class="job_payment_name"><?= $job_payment->getName() ?></td>
+	    								<td class="job_payment_name noFormat"><?= $job_payment->getName() ?></td>
 	    								<td class="job_payment_date"><?= $job_payment->getDate('d.m.Y') ?></td>
 	    								<td class="job_payment_amount"><?= $job_payment->getAmount() ?></td>
 	    								<?php if ($job_payment->getFilename()):?>
@@ -320,7 +320,7 @@
 				$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
 
 		});
-		$('td').each(function(){
+		$('td').not('.noFormat').each(function(){
 
 			if(IsNumeric($(this).text()) && $(this).text() != 0)
 				$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');

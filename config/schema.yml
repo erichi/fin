@@ -105,5 +105,5 @@ propel:
     
   expences_type: 
     id:           ~
-    code:         { type: varchar(100), required: true }
+    code:         { type: varchar(100), required: true, index: unique}
     name:         { type: varchar(100), required: true }

@@ -11,5 +11,6 @@ class ExpencesTypeForm extends BaseExpencesTypeForm
 {
   public function configure()
   {
+      $this->validatorSchema['code'] = new sfValidatorStringAlphabet();
   }
 }
