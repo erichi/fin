@@ -13,7 +13,8 @@ generator:
 
     config:
       actions: ~
-      fields:  ~
+      fields:
+        amount: { label: Internal cost }
       list:   
         display: [id, name, budget, amount, status]
       filter:  ~

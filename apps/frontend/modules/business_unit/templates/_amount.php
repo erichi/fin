@@ -27,12 +27,12 @@ if($amount instanceof sfOutputEscaperObjectDecorator){
         if($amount[2] == true){
             echo '<nobr>';
             echo image_tag('/sf/sf_admin/images/tick.png', array('alt' => 'Все подтверждены', 'title' => 'Все подтверждены'));
-            echo '<span class="'.($isIncome ? 'income_payments' : 'outcome_payments').'">';
+            echo '<span class="'.($isIncome ? 'income_payments' : 'outcome_payments formatInt').'">';
             $close = true;
         }elseif($amount[1] == true){
             echo '<nobr>';
             echo image_tag('/images/tick2.png', array('alt' => 'Есть подтвержденные', 'title' => 'Есть подтвержденные'));
-            echo '<span class="'.($isIncome ? 'income_payments' : 'outcome_payments').'">';
+            echo '<span class="'.($isIncome ? 'income_payments' : 'outcome_payments formatInt').'">';
             $close = true;
         }
         $amount = $amount[0];

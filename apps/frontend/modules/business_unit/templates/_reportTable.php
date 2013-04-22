@@ -29,7 +29,7 @@
 					<tr>
 						<td>Дебет: </td><td><?php echo $bu->getDebet(); ?></td></tr>
 						<tr><td>Кредит:</td><td><?php echo $bu->getCredit(); ?></td></tr>
-						<tr><td>Текущие расходы на этот месяц:</td><td><?php echo $bu->getMonthExpences();?></td></tr>
+						<tr><td>Текущие расходы на этот месяц:</td><td class="formatInt"><?php echo $bu->getMonthExpences();?></td></tr>
 						<tr><td>Займы в прибыль:</td><td class="edit"><?php echo $bu->getLoans();?></td></tr>
 						<tr><td>Итого на текущий месяц:</td><td class="currentSum0"><?php echo $bu->getCurrentSumm(); ?></td></tr>
 		<?php for($i = 1; $i < 12; $i++): ?>

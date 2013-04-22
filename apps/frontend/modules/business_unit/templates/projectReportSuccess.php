@@ -34,7 +34,11 @@
 			<tbody>
 				<?php foreach ($job_orders as $jo): ?>
 					<tr>
-						<td><a href="/job_order/<?php echo $jo->getId(); ?>/edit"><?php echo $jo->getName(); ?></a></td>
+						<td>
+                        <?php if($jo->getId() != -1) : ?>
+                            <a href="/job_order/<?php echo $jo->getId(); ?>/edit"><?php echo $jo->getName(); ?></a>
+                        <?php else : echo $jo->getName(); endif;  ?>
+                        </td>
 						<td><?php echo $jo->getBudget(); ?></td>
 						<td><?php echo $jo->getProductionCost();?></td>
 						<td><?php echo $jo->getMargin(); ?></td>
@@ -77,10 +81,14 @@
 				<?php foreach ($tenders as $tender){
 						if ($tender->getStatus() == 'new'): ?>
 					<tr>
-						<td><a href="<?php echo url_for('tender_edit', array('id' => $tender->getId(), 'business_unit' => $business_unit->getId(), 'return_to_pr' => $business_unit->getId()));?>"><?php echo $tender->getName() ?></a></td>
-						<td><?php echo $tender->getBudget() ?></td>
-						<td><?php echo $tender->getAmount() ?></td>
-						<td><?php echo $tender->getMargin(); ?></td>
+						<td class="noFormat">
+                        <?php if($tender->getId() != -1) : ?>
+                            <a href="<?php echo url_for('tender_edit', array('id' => $tender->getId(), 'business_unit' => $business_unit->getId(), 'return_to_pr' => $business_unit->getId()));?>"><?php echo $tender->getName() ?></a>
+                        <?php else : echo $tender->getName(); endif; ?>
+                        </td>
+						<td class="formatInt"><?php echo $tender->getBudget() ?></td>
+						<td class="formatInt"><?php echo $tender->getAmount() ?></td>
+						<td class="formatInt"><?php echo $tender->getMargin(); ?></td>
 						<td><?php echo $tender->getMarginPercent(); ?>%</td>
 						<td><?php echo $tender->getTurnoverShare(); ?>%</td>
 						<td><?php echo $tender->getPlanShare(); ?>%</td>
@@ -127,17 +135,23 @@
 					<th>кредит</th>
 					<th>сальдо</th>*/
 					?>
+                    <th></th>
 				</tr>
 				<?php foreach ($tenders as $tender){
 						if ($tender->getStatus() == 'lost'): ?>
 					<tr>
-						<td><?php echo $tender->getName() ?></td>
-						<td><?php echo $tender->getBudget() ?></td>
-						<td><?php echo $tender->getAmount() ?></td>
-						<td><?php echo $tender->getMargin(); ?></td>
+						<td class="noFormat"><?php echo $tender->getName() ?></td>
+						<td class="formatInt"><?php echo $tender->getBudget() ?></td>
+						<td class="formatInt"><?php echo $tender->getAmount() ?></td>
+						<td class="formatInt"><?php echo $tender->getMargin(); ?></td>
 						<td><?php echo $tender->getMarginPercent(); ?>%</td>
 						<td><?php echo $tender->getTurnoverShare(); ?>%</td>
 						<td><?php echo $tender->getPlanShare(); ?>%</td>
+                        <td>
+                        <?php if($tender->getId() != -1) : ?>
+                            <a href="<?php echo '/business_unit/renewTender?tender_id='.$tender->getId().'&bu_id='.$business_unit->getId(); ?>"><i class="icon-thumbs-up"></i>Вернуть</a>
+                        <?php endif; ?>
+                        </td>
 						<?php /*
 						<td>33000</td>
 						<td>54777</td>
@@ -170,14 +184,19 @@
 					<th>сальдо</th>
 					<th></th>*/
 					?>
+                    <th></th>
 				</tr>
 				<?php foreach ($plans as $plan){
 						if (!$plan->getJobOrderId()): ?>
 					<tr>
-						<td><a href="<?php echo url_for('plan_edit', array('id' => $plan->getId(), 'busines_unit' => $business_unit->getId(),'return_to_pr' => $business_unit->getId()));?>"><?php echo $plan->getName() ?></a></td>
-						<td><?php echo $plan->getBudget() ?></td>
-						<td><?php echo $plan->getAmount() ?></td>
-						<td><?php echo $plan->getMargin(); ?></td>
+						<td class="noFormat">
+                        <?php if($plan->getId() != -1) : ?>
+                            <a href="<?php echo url_for('plan_edit', array('id' => $plan->getId(), 'busines_unit' => $business_unit->getId(),'return_to_pr' => $business_unit->getId()));?>"><?php echo $plan->getName() ?></a>
+                        <?php else : echo $plan->getName(); endif; ?>
+                        </td>
+						<td class="formatInt"><?php echo $plan->getBudget() ?></td>
+						<td class="formatInt"><?php echo $plan->getAmount() ?></td>
+						<td class="formatInt"><?php echo $plan->getMargin(); ?></td>
 						<td><?php echo $plan->getMarginPercent(); ?>%</td>
 						<td><?php echo $plan->getTurnoverShare(); ?>%</td>
 						<td><?php echo $plan->getPlanShare(); ?>%</td>
@@ -189,7 +208,17 @@
 						<td>320000</td>*/
 						?>
 						<td>
-							<?php echo link_to('перенести в "реальные"', 'job_order/new?plan_id='.$plan->getId().'&return_to_pr='.$business_unit->getId()) ?>
+                        <?php if($plan->getId() != -1) : ?>
+                            <div class="btn-group">
+                                <a class="btn btn-mini" href="#">Перенести</a>
+                                <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?php echo 'job_order/new?plan_id='.$plan->getId().'&return_to_pr='.$business_unit->getId(); ?>">В "реальные"</a></li>
+                                    <li><a href="<?php echo '/business_unit/PlanToTender?plan_id='.$plan->getId().'&bu_id='.$business_unit->getId(); ?>">В тендеры</a></li>
+                                </ul>
+                            </div>
+							<?php // echo link_to('перенести в "реальные"', 'job_order/new?plan_id='.$plan->getId().'&return_to_pr='.$business_unit->getId()) ?>
+                        <?php endif; ?>
 						</td>
 					</tr>
 				<?php endif;
@@ -210,11 +239,14 @@
 	}
 
 	$(document).ready(function(){
-		$('td,span').each(function(){
-
+		$('td,span').not('.formatInt,.noFormat').each(function(){
 			if(IsNumeric($(this).text()) && $(this).text() != 0)
 				$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
 		});
+        $('.formatInt').each(function(){
+            if(IsNumeric($(this).text()) && $(this).text() != 0)
+                $(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000", locale:"ru"})+'</nobr>');
+        });
 
 
 	});

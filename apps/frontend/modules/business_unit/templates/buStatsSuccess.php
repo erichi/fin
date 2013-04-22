@@ -18,13 +18,14 @@
 	}
 
 	$(document).ready(function(){
-		$('td,span').each(function(){
-
+		$('td,span').not('.formatInt,.noFormat').each(function(){
 			if(IsNumeric($(this).text()) && $(this).text() != 0)
 				$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
 		});
-
-
+        $('.formatInt').each(function(){
+            if(IsNumeric($(this).text()) && $(this).text() != 0)
+                $(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000", locale:"ru"})+'</nobr>');
+        });
 	});
 
 </script>

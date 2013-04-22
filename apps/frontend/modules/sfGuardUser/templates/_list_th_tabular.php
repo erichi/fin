@@ -29,6 +29,16 @@
 </th>
 <?php end_slot(); ?>
 <?php include_slot('sf_admin.current_header') ?><?php slot('sf_admin.current_header') ?>
+    <th class="sf_admin_text sf_admin_list_th_business_unit">
+        Бизнес юнит
+    </th>
+<?php end_slot(); ?>
+<?php include_slot('sf_admin.current_header') ?><?php slot('sf_admin.current_header') ?>
+    <th class="sf_admin_text sf_admin_list_th_permissions">
+        <?php echo __('Permissions', array(), 'messages') ?>
+    </th>
+<?php end_slot(); ?>
+<?php include_slot('sf_admin.current_header') ?><?php slot('sf_admin.current_header') ?>
 <th class="sf_admin_boolean sf_admin_list_th_is_active">
   <?php if ('is_active' == $sort[0]): ?>
     <?php echo link_to(__('Is active', array(), 'messages'), '@sf_guard_user', array('query_string' => 'sort=is_active&sort_type='.($sort[1] == 'asc' ? 'desc' : 'asc'))) ?>
