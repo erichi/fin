@@ -44,7 +44,6 @@ class sfGuardUserProfileTableMap extends TableMap {
 		$this->addColumn('ADDRESS', 'Address', 'VARCHAR', true, 255, null);
 		$this->addColumn('PHONE', 'Phone', 'VARCHAR', false, 50, null);
 		$this->addColumn('BIO', 'Bio', 'LONGVARCHAR', false, null, null);
-		$this->addForeignKey('BUSINESS_UNIT_ID', 'BusinessUnitId', 'INTEGER', 'business_unit', 'ID', false, null, null);
 		// validators
 	} // initialize()
 
@@ -54,7 +53,6 @@ class sfGuardUserProfileTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('sfGuardUser', 'sfGuardUser', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), 'CASCADE', null);
-    $this->addRelation('BusinessUnit', 'BusinessUnit', RelationMap::MANY_TO_ONE, array('business_unit_id' => 'id', ), 'SET NULL', null);
 	} // buildRelations()
 
 	/**

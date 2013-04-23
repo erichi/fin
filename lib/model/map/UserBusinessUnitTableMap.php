@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'job' table.
+ * This class defines the structure of the 'user_business_unit' table.
  *
  *
  *
@@ -13,12 +13,12 @@
  *
  * @package    lib.model.map
  */
-class JobTableMap extends TableMap {
+class UserBusinessUnitTableMap extends TableMap {
 
 	/**
 	 * The (dot-path) name of this class
 	 */
-	const CLASS_NAME = 'lib.model.map.JobTableMap';
+	const CLASS_NAME = 'lib.model.map.UserBusinessUnitTableMap';
 
 	/**
 	 * Initialize the table attributes, columns and validators
@@ -30,18 +30,14 @@ class JobTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('job');
-		$this->setPhpName('Job');
-		$this->setClassname('Job');
+		$this->setName('user_business_unit');
+		$this->setPhpName('UserBusinessUnit');
+		$this->setClassname('UserBusinessUnit');
 		$this->setPackage('lib.model');
-		$this->setUseIdGenerator(true);
+		$this->setUseIdGenerator(false);
 		// columns
-		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addForeignKey('JOB_ORDER_ID', 'JobOrderId', 'INTEGER', 'job_order', 'ID', false, null, null);
-		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
-		$this->addForeignKey('JOB_TYPE_ID', 'JobTypeId', 'INTEGER', 'job_type', 'ID', true, null, null);
-		$this->addColumn('SUPPLIER', 'Supplier', 'VARCHAR', true, 100, null);
-		$this->addColumn('AMOUNT', 'Amount', 'DECIMAL', true, 10, null);
+		$this->addForeignPrimaryKey('USER_ID', 'UserId', 'INTEGER' , 'sf_guard_user', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('BUSINESS_UNIT_ID', 'BusinessUnitId', 'INTEGER' , 'business_unit', 'ID', true, null, null);
 		// validators
 	} // initialize()
 
@@ -50,9 +46,8 @@ class JobTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('JobOrder', 'JobOrder', RelationMap::MANY_TO_ONE, array('job_order_id' => 'id', ), 'CASCADE', null);
-    $this->addRelation('JobType', 'JobType', RelationMap::MANY_TO_ONE, array('job_type_id' => 'id', ), 'CASCADE', null);
-    $this->addRelation('JobPayment', 'JobPayment', RelationMap::ONE_TO_MANY, array('id' => 'job_id', ), 'CASCADE', null);
+    $this->addRelation('sfGuardUser', 'sfGuardUser', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), 'CASCADE', null);
+    $this->addRelation('BusinessUnit', 'BusinessUnit', RelationMap::MANY_TO_ONE, array('business_unit_id' => 'id', ), 'CASCADE', null);
 	} // buildRelations()
 
 	/**
@@ -69,4 +64,4 @@ class JobTableMap extends TableMap {
 		);
 	} // getBehaviors()
 
-} // JobTableMap
+} // UserBusinessUnitTableMap

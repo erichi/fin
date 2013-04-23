@@ -19,21 +19,19 @@ class business_unitActions extends autoBusiness_unitActions
 			$this->getUser()->getAttributeHolder()->remove('return_to_pr');
 		}
 
-		if ($this->getUser()->hasCredential('admin')) {
-			$business_unit_id = $request->getParameter('id');
+		if ($this->getUser()->hasCredential('admin') || $this->getUser()->hasBusinessUnit($request->getParameter('id'))) {
+            $this->business_unit = BusinessUnitPeer::retrieveByPK($request->getParameter('id'));
 		} else {
-			$business_unit_id = $this->getUser()->getProfile()->getBusinessUnitId();
+            $userBU = $this->getUser()->getGuardUser()->getBusinessUnits();
+            $this->business_unit = $userBU[0]->getBusinessUnit();
 		}
-		if ($this->getUser()->getProfile()->getBusinessUnitId()) {
-			$business_unit_id = $this->getUser()->getProfile()->getBusinessUnitId();
-		}
-		$this->business_unit = BusinessUnitPeer::retrieveByPK($business_unit_id);
+        $business_unit_id = $this->business_unit->getId();
 
 		$this->job_orders = JobOrderPeer::retrieveByBU($business_unit_id);
         $fakeTotal = new FakeModel();
         foreach($this->job_orders as &$jo){
             $fakeOrder = new FakeModel();
-            foreach(array('Id', 'Name', 'Budget','ProductionCost', 'Margin', 'Income', 'Outcome', 'Debet', 'Credit', 'MarginPercent', 'TurnoverShare', 'PlanShare') as $factory){
+            foreach(array('Id', 'Name', 'Budget','ProductionCost', 'Margin', 'Income', 'Outcome', 'Debet', 'Credit', 'MarginPercent', 'TurnoverShare', 'PlanShare', 'Saldo') as $factory){
                 $factorySet = 'set'.$factory;
                 $factoryGet = 'get'.$factory;
                 $fakeOrder->$factorySet($jo->$factoryGet());
@@ -162,11 +160,13 @@ class business_unitActions extends autoBusiness_unitActions
 
 	public function executeCurrentExpenses(sfWebRequest $request)
 	{
-		if ($this->getUser()->hasCredential('admin')) {
-			$this->business_unit_id = $request->getParameter('id');
-		} else {
-			$this->business_unit_id = $this->getUser()->getProfile()->getBusinessUnitId();
-		}
+        if ($this->getUser()->hasCredential('admin') || $this->getUser()->hasBusinessUnit($request->getParameter('id'))) {
+            $this->business_unit = BusinessUnitPeer::retrieveByPK($request->getParameter('id'));
+        } else {
+            $userBU = $this->getUser()->getGuardUser()->getBusinessUnits();
+            $this->business_unit = $userBU[0]->getBusinessUnit();
+        }
+        $this->business_unit_id = $this->business_unit->getId();
 		$this->expenses = CurrentExpensesPeer::retrieveByBU($this->business_unit_id, new Criteria());
 		$this->expence_types = ExpencesTypePeer::doSelect(new Criteria());
 		$this->types = array();
@@ -992,7 +992,7 @@ class business_unitActions extends autoBusiness_unitActions
 		}
 		$overall->setCurrentProfitPercent(number_format($overall->getCurrentProfit()/$overall->getPlan()*100, 2));
 		$this->bus=$fakeBus;
-		array_unshift($this->bus, $overall);
+		$this->overall = $overall;
 	}
 
 	public function executeSaveTypedData(sfWebRequest $request)

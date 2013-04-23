@@ -207,6 +207,7 @@ function recount(types)
 			year_value = 0;
 		}
 		var percent = year_value / sum_of_types * 100;
+		if(isNaN(percent)) { percent = 0; }
 		$('[desc='+type+'_percent]').html(percent.toFixed(2));
 	});
 	

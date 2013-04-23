@@ -49,7 +49,7 @@
 						<td><?php echo $jo->getOutcome(); ?></td>
 						<td><?php echo $jo->getDebet(); ?></td>
 						<td><?php echo $jo->getCredit(); ?></td>
-						<td>320000</td>
+						<td><?php echo $jo->getSaldo(); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
@@ -241,7 +241,7 @@
 	$(document).ready(function(){
 		$('td,span').not('.formatInt,.noFormat').each(function(){
 			if(IsNumeric($(this).text()) && $(this).text() != 0)
-				$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
+				$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000", locale:"ru"})+'</nobr>');
 		});
         $('.formatInt').each(function(){
             if(IsNumeric($(this).text()) && $(this).text() != 0)

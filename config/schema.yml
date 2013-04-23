@@ -9,8 +9,11 @@ propel:
     address:      { type: varchar(255), required: true }
     phone:        { type: varchar(50) }
     bio:          { type: longvarchar }
-    business_unit_id: { type: integer, foreignTable: business_unit, foreignReference: id, onDelete: setnull }
-    
+
+  user_business_unit:
+      user_id:      { type: integer, primaryKey: true, required: true, foreignTable: sf_guard_user, foreignReference: id, onDelete: cascade }
+      business_unit_id: { type: integer, primaryKey: true, required: true, foreignTable: business_unit, foreignReference: id, onDelete: cascade }
+ 
   client:                                               #name of client firm
     id:           ~
     name:         { type: varchar(50), required: true }
@@ -52,7 +55,7 @@ propel:
     id:           ~
     job_order_id: { type: integer, foreignTable: job_order, foreignReference: id, onDelete: cascade }
     name:         { type: varchar(255), required: true }
-    job_type_id:  { type: integer, required: true, foreignTable: job_type, foreignReference: id }
+    job_type_id:  { type: integer, required: true, foreignTable: job_type, foreignReference: id, onDelete: cascade }
     supplier:     { type: varchar(100), required: true }
     amount:       { type: decimal, size: 10, scale: 2, required: true }  
           

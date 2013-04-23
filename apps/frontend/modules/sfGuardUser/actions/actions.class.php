@@ -6,9 +6,9 @@ class sfGuardUserActions extends autoSfGuardUserActions
   {
   	$data = $request->getParameter($form->getName());
   	$vs = $form->getValidatorSchema();
-  	if ($data['sf_guard_user_permission_list'] != 1){
-  		$vs['business_unit_id']->setOption('required', true);
-  	}
+//  	if ($data['sf_guard_user_permission_list'] != 1){
+//  		$vs['business_unit_id']->setOption('required', true);
+//  	}
     parent::processForm($request, $form);
   }
   

@@ -25,7 +25,7 @@ abstract class BasesfGuardUserProfilePeer {
 	const TM_CLASS = 'sfGuardUserProfileTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 9;
+	const NUM_COLUMNS = 8;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -54,9 +54,6 @@ abstract class BasesfGuardUserProfilePeer {
 	/** the column name for the BIO field */
 	const BIO = 'sf_guard_user_profile.BIO';
 
-	/** the column name for the BUSINESS_UNIT_ID field */
-	const BUSINESS_UNIT_ID = 'sf_guard_user_profile.BUSINESS_UNIT_ID';
-
 	/**
 	 * An identiy map to hold any loaded instances of sfGuardUserProfile objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -80,11 +77,11 @@ abstract class BasesfGuardUserProfilePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'Email', 'FirstName', 'LastName', 'Address', 'Phone', 'Bio', 'BusinessUnitId', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'email', 'firstName', 'lastName', 'address', 'phone', 'bio', 'businessUnitId', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::EMAIL, self::FIRST_NAME, self::LAST_NAME, self::ADDRESS, self::PHONE, self::BIO, self::BUSINESS_UNIT_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'email', 'first_name', 'last_name', 'address', 'phone', 'bio', 'business_unit_id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'Email', 'FirstName', 'LastName', 'Address', 'Phone', 'Bio', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'email', 'firstName', 'lastName', 'address', 'phone', 'bio', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::EMAIL, self::FIRST_NAME, self::LAST_NAME, self::ADDRESS, self::PHONE, self::BIO, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'email', 'first_name', 'last_name', 'address', 'phone', 'bio', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
 	/**
@@ -94,11 +91,11 @@ abstract class BasesfGuardUserProfilePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'Email' => 2, 'FirstName' => 3, 'LastName' => 4, 'Address' => 5, 'Phone' => 6, 'Bio' => 7, 'BusinessUnitId' => 8, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'email' => 2, 'firstName' => 3, 'lastName' => 4, 'address' => 5, 'phone' => 6, 'bio' => 7, 'businessUnitId' => 8, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::EMAIL => 2, self::FIRST_NAME => 3, self::LAST_NAME => 4, self::ADDRESS => 5, self::PHONE => 6, self::BIO => 7, self::BUSINESS_UNIT_ID => 8, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'email' => 2, 'first_name' => 3, 'last_name' => 4, 'address' => 5, 'phone' => 6, 'bio' => 7, 'business_unit_id' => 8, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'Email' => 2, 'FirstName' => 3, 'LastName' => 4, 'Address' => 5, 'Phone' => 6, 'Bio' => 7, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'email' => 2, 'firstName' => 3, 'lastName' => 4, 'address' => 5, 'phone' => 6, 'bio' => 7, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::EMAIL => 2, self::FIRST_NAME => 3, self::LAST_NAME => 4, self::ADDRESS => 5, self::PHONE => 6, self::BIO => 7, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'email' => 2, 'first_name' => 3, 'last_name' => 4, 'address' => 5, 'phone' => 6, 'bio' => 7, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
 	/**
@@ -176,7 +173,6 @@ abstract class BasesfGuardUserProfilePeer {
 		$criteria->addSelectColumn(sfGuardUserProfilePeer::ADDRESS);
 		$criteria->addSelectColumn(sfGuardUserProfilePeer::PHONE);
 		$criteria->addSelectColumn(sfGuardUserProfilePeer::BIO);
-		$criteria->addSelectColumn(sfGuardUserProfilePeer::BUSINESS_UNIT_ID);
 	}
 
 	/**
@@ -491,62 +487,6 @@ abstract class BasesfGuardUserProfilePeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related BusinessUnit table
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     int Number of matching rows.
-	 */
-	public static function doCountJoinBusinessUnit(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
-
-		// We need to set the primary table name, since in the case that there are no WHERE columns
-		// it will be impossible for the BasePeer::createSelectSql() method to determine which
-		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(sfGuardUserProfilePeer::TABLE_NAME);
-
-		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->setDistinct();
-		}
-
-		if (!$criteria->hasSelectClause()) {
-			sfGuardUserProfilePeer::addSelectColumns($criteria);
-		}
-		
-		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-		
-		// Set the correct dbName
-		$criteria->setDbName(self::DATABASE_NAME);
-
-		if ($con === null) {
-			$con = Propel::getConnection(sfGuardUserProfilePeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-
-		$criteria->addJoin(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, BusinessUnitPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BasesfGuardUserProfilePeer', $criteria, $con);
-		}
-
-		$stmt = BasePeer::doCount($criteria, $con);
-
-		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$count = (int) $row[0];
-		} else {
-			$count = 0; // no rows returned; we infer that means 0 matches.
-		}
-		$stmt->closeCursor();
-		return $count;
-	}
-
-
-	/**
 	 * Selects a collection of sfGuardUserProfile objects pre-filled with their sfGuardUser objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -619,78 +559,6 @@ abstract class BasesfGuardUserProfilePeer {
 
 
 	/**
-	 * Selects a collection of sfGuardUserProfile objects pre-filled with their BusinessUnit objects.
-	 * @param      Criteria  $criteria
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of sfGuardUserProfile objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinBusinessUnit(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$criteria = clone $criteria;
-
-		// Set the correct dbName if it has not been overridden
-		if ($criteria->getDbName() == Propel::getDefaultDB()) {
-			$criteria->setDbName(self::DATABASE_NAME);
-		}
-
-		sfGuardUserProfilePeer::addSelectColumns($criteria);
-		$startcol = (sfGuardUserProfilePeer::NUM_COLUMNS - sfGuardUserProfilePeer::NUM_LAZY_LOAD_COLUMNS);
-		BusinessUnitPeer::addSelectColumns($criteria);
-
-		$criteria->addJoin(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, BusinessUnitPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BasesfGuardUserProfilePeer', $criteria, $con);
-		}
-
-		$stmt = BasePeer::doSelect($criteria, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = sfGuardUserProfilePeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = sfGuardUserProfilePeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-
-				$cls = sfGuardUserProfilePeer::getOMClass(false);
-
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				sfGuardUserProfilePeer::addInstanceToPool($obj1, $key1);
-			} // if $obj1 already loaded
-
-			$key2 = BusinessUnitPeer::getPrimaryKeyHashFromRow($row, $startcol);
-			if ($key2 !== null) {
-				$obj2 = BusinessUnitPeer::getInstanceFromPool($key2);
-				if (!$obj2) {
-
-					$cls = BusinessUnitPeer::getOMClass(false);
-
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol);
-					BusinessUnitPeer::addInstanceToPool($obj2, $key2);
-				} // if obj2 already loaded
-				
-				// Add the $obj1 (sfGuardUserProfile) to $obj2 (BusinessUnit)
-				$obj2->addsfGuardUserProfile($obj1);
-
-			} // if joined row was not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
-	}
-
-
-	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
 	 * @param      Criteria $criteria
@@ -727,8 +595,6 @@ abstract class BasesfGuardUserProfilePeer {
 		}
 
 		$criteria->addJoin(sfGuardUserProfilePeer::USER_ID, sfGuardUserPeer::ID, $join_behavior);
-
-		$criteria->addJoin(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, BusinessUnitPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -772,12 +638,7 @@ abstract class BasesfGuardUserProfilePeer {
 		sfGuardUserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (sfGuardUserPeer::NUM_COLUMNS - sfGuardUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		BusinessUnitPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (BusinessUnitPeer::NUM_COLUMNS - BusinessUnitPeer::NUM_LAZY_LOAD_COLUMNS);
-
 		$criteria->addJoin(sfGuardUserProfilePeer::USER_ID, sfGuardUserPeer::ID, $join_behavior);
-
-		$criteria->addJoin(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, BusinessUnitPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -819,294 +680,6 @@ abstract class BasesfGuardUserProfilePeer {
 				// Add the $obj1 (sfGuardUserProfile) to the collection in $obj2 (sfGuardUser)
 				$obj2->addsfGuardUserProfile($obj1);
 			} // if joined row not null
-
-			// Add objects for joined BusinessUnit rows
-
-			$key3 = BusinessUnitPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-			if ($key3 !== null) {
-				$obj3 = BusinessUnitPeer::getInstanceFromPool($key3);
-				if (!$obj3) {
-
-					$cls = BusinessUnitPeer::getOMClass(false);
-
-					$obj3 = new $cls();
-					$obj3->hydrate($row, $startcol3);
-					BusinessUnitPeer::addInstanceToPool($obj3, $key3);
-				} // if obj3 loaded
-
-				// Add the $obj1 (sfGuardUserProfile) to the collection in $obj3 (BusinessUnit)
-				$obj3->addsfGuardUserProfile($obj1);
-			} // if joined row not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
-	}
-
-
-	/**
-	 * Returns the number of rows matching criteria, joining the related sfGuardUser table
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     int Number of matching rows.
-	 */
-	public static function doCountJoinAllExceptsfGuardUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
-
-		// We need to set the primary table name, since in the case that there are no WHERE columns
-		// it will be impossible for the BasePeer::createSelectSql() method to determine which
-		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(sfGuardUserProfilePeer::TABLE_NAME);
-		
-		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->setDistinct();
-		}
-
-		if (!$criteria->hasSelectClause()) {
-			sfGuardUserProfilePeer::addSelectColumns($criteria);
-		}
-		
-		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
-		
-		// Set the correct dbName
-		$criteria->setDbName(self::DATABASE_NAME);
-
-		if ($con === null) {
-			$con = Propel::getConnection(sfGuardUserProfilePeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-	
-		$criteria->addJoin(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, BusinessUnitPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BasesfGuardUserProfilePeer', $criteria, $con);
-		}
-
-		$stmt = BasePeer::doCount($criteria, $con);
-
-		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$count = (int) $row[0];
-		} else {
-			$count = 0; // no rows returned; we infer that means 0 matches.
-		}
-		$stmt->closeCursor();
-		return $count;
-	}
-
-
-	/**
-	 * Returns the number of rows matching criteria, joining the related BusinessUnit table
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     int Number of matching rows.
-	 */
-	public static function doCountJoinAllExceptBusinessUnit(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
-
-		// We need to set the primary table name, since in the case that there are no WHERE columns
-		// it will be impossible for the BasePeer::createSelectSql() method to determine which
-		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(sfGuardUserProfilePeer::TABLE_NAME);
-		
-		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->setDistinct();
-		}
-
-		if (!$criteria->hasSelectClause()) {
-			sfGuardUserProfilePeer::addSelectColumns($criteria);
-		}
-		
-		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
-		
-		// Set the correct dbName
-		$criteria->setDbName(self::DATABASE_NAME);
-
-		if ($con === null) {
-			$con = Propel::getConnection(sfGuardUserProfilePeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-	
-		$criteria->addJoin(sfGuardUserProfilePeer::USER_ID, sfGuardUserPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BasesfGuardUserProfilePeer', $criteria, $con);
-		}
-
-		$stmt = BasePeer::doCount($criteria, $con);
-
-		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$count = (int) $row[0];
-		} else {
-			$count = 0; // no rows returned; we infer that means 0 matches.
-		}
-		$stmt->closeCursor();
-		return $count;
-	}
-
-
-	/**
-	 * Selects a collection of sfGuardUserProfile objects pre-filled with all related objects except sfGuardUser.
-	 *
-	 * @param      Criteria  $criteria
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of sfGuardUserProfile objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAllExceptsfGuardUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$criteria = clone $criteria;
-
-		// Set the correct dbName if it has not been overridden
-		// $criteria->getDbName() will return the same object if not set to another value
-		// so == check is okay and faster
-		if ($criteria->getDbName() == Propel::getDefaultDB()) {
-			$criteria->setDbName(self::DATABASE_NAME);
-		}
-
-		sfGuardUserProfilePeer::addSelectColumns($criteria);
-		$startcol2 = (sfGuardUserProfilePeer::NUM_COLUMNS - sfGuardUserProfilePeer::NUM_LAZY_LOAD_COLUMNS);
-
-		BusinessUnitPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (BusinessUnitPeer::NUM_COLUMNS - BusinessUnitPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		$criteria->addJoin(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, BusinessUnitPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BasesfGuardUserProfilePeer', $criteria, $con);
-		}
-
-
-		$stmt = BasePeer::doSelect($criteria, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = sfGuardUserProfilePeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = sfGuardUserProfilePeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-				$cls = sfGuardUserProfilePeer::getOMClass(false);
-
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				sfGuardUserProfilePeer::addInstanceToPool($obj1, $key1);
-			} // if obj1 already loaded
-
-				// Add objects for joined BusinessUnit rows
-
-				$key2 = BusinessUnitPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-				if ($key2 !== null) {
-					$obj2 = BusinessUnitPeer::getInstanceFromPool($key2);
-					if (!$obj2) {
-	
-						$cls = BusinessUnitPeer::getOMClass(false);
-
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol2);
-					BusinessUnitPeer::addInstanceToPool($obj2, $key2);
-				} // if $obj2 already loaded
-
-				// Add the $obj1 (sfGuardUserProfile) to the collection in $obj2 (BusinessUnit)
-				$obj2->addsfGuardUserProfile($obj1);
-
-			} // if joined row is not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
-	}
-
-
-	/**
-	 * Selects a collection of sfGuardUserProfile objects pre-filled with all related objects except BusinessUnit.
-	 *
-	 * @param      Criteria  $criteria
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of sfGuardUserProfile objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAllExceptBusinessUnit(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$criteria = clone $criteria;
-
-		// Set the correct dbName if it has not been overridden
-		// $criteria->getDbName() will return the same object if not set to another value
-		// so == check is okay and faster
-		if ($criteria->getDbName() == Propel::getDefaultDB()) {
-			$criteria->setDbName(self::DATABASE_NAME);
-		}
-
-		sfGuardUserProfilePeer::addSelectColumns($criteria);
-		$startcol2 = (sfGuardUserProfilePeer::NUM_COLUMNS - sfGuardUserProfilePeer::NUM_LAZY_LOAD_COLUMNS);
-
-		sfGuardUserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (sfGuardUserPeer::NUM_COLUMNS - sfGuardUserPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		$criteria->addJoin(sfGuardUserProfilePeer::USER_ID, sfGuardUserPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BasesfGuardUserProfilePeer', $criteria, $con);
-		}
-
-
-		$stmt = BasePeer::doSelect($criteria, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = sfGuardUserProfilePeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = sfGuardUserProfilePeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-				$cls = sfGuardUserProfilePeer::getOMClass(false);
-
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				sfGuardUserProfilePeer::addInstanceToPool($obj1, $key1);
-			} // if obj1 already loaded
-
-				// Add objects for joined sfGuardUser rows
-
-				$key2 = sfGuardUserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-				if ($key2 !== null) {
-					$obj2 = sfGuardUserPeer::getInstanceFromPool($key2);
-					if (!$obj2) {
-	
-						$cls = sfGuardUserPeer::getOMClass(false);
-
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol2);
-					sfGuardUserPeer::addInstanceToPool($obj2, $key2);
-				} // if $obj2 already loaded
-
-				// Add the $obj1 (sfGuardUserProfile) to the collection in $obj2 (sfGuardUser)
-				$obj2->addsfGuardUserProfile($obj1);
-
-			} // if joined row is not null
 
 			$results[] = $obj1;
 		}

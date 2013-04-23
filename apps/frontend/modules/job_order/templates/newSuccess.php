@@ -36,10 +36,12 @@
         $managers = array();
         foreach($all_managers_new as $manager){
             /** @var $manager sfGuardUser */
-            $managers[$manager->getProfile()->getBusinessUnitId()][] = array(
-                'id' => $manager->getId(),
-                'name' => $manager->getProfile()->getLastName().' '.$manager->getProfile()->getFirstName()
-            );
+            foreach($manager->getUserBusinessUnits() as $userBusinesUnit){
+                $managers[$userBusinesUnit->getBusinessUnitId()][] = array(
+                    'id' => $manager->getId(),
+                    'name' => $manager->getProfile()->getLastName().' '.$manager->getProfile()->getFirstName()
+                );
+            }
         }
     ?>
     var managers = <?php echo json_encode($managers) ?>;

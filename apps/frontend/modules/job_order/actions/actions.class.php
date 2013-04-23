@@ -23,6 +23,7 @@ class job_orderActions extends autoJob_orderActions
 
 		$this->clients = $this->getClientsArray();
 
+        $this->all_managers = array();
 	    $this->all_managers_new = sfGuardUserPeer::retrieveByPermission('pm');
 	    $this->jo_managers = null;
 	    $this->job_types = JobTypePeer::doSelect(new Criteria());
