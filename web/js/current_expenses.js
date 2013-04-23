@@ -96,16 +96,25 @@ function recount(types)
     	$('td:regex(desc,^'+type+'_0_\\d{2}_\\d{4}$)').each(function(){
     		var desc_regexp = $(this).attr('desc').split(type+'_0').join(type+'_[^0]{1}[0-9]*');
     		var amount = 0;
+			var confirmed = 0;
+			var not_confirmed = 0;
     		$('td:regex(desc,^'+desc_regexp+'$)').each(function(){
 				var value = parseInt($.trim($(this).text()));
 				if (isNaN(value)) {
 					value = 0;
 				}
     			amount += value;
+				if($(this).has('a').length == 0){ // confirmed
+					confirmed += value;
+				}else{
+					not_confirmed += value;
+				}
     		});
 			var type_sum_attr = desc_regexp.split(type+'_[^0]{1}[0-9]*').join(type+'_0');
-    		$('[desc="'+type_sum_attr+'"]').html(amount);
-    		
+			if(not_confirmed == 0 && confirmed != 0){
+				amount = '<nobr><img src="/sf/sf_admin/images/tick.png" alt="Подтвержден" title="Подтвержден" />'+amount+'</nobr>';
+			}
+    		$('[desc="'+type_sum_attr+'"]').html(amount).data("confirmed", confirmed).data("notconfirmed", not_confirmed);
     	});		
 
     	var amount_all = 0;
@@ -122,17 +131,37 @@ function recount(types)
     
     $('td:regex(desc,^col_sum_\\d{2}_\\d{4}$)').each(function(){
     	var desc_attr = $(this).attr('desc').split('col_sum').join('');
+//		console.log(desc_attr);
     	var col_summ = 0;
+		var confirmed_summ = 0;
+		var notconfirmed_summ = 0;
     	$.each(types, function(){
     		var type = this.concat();
-    		var value = parseInt($.trim($('[desc="'+type+'_0'+desc_attr+'"]').html()));
+    		var value = parseInt($.trim($('[desc="'+type+'_0'+desc_attr+'"]').text()));
 			if (isNaN(value)) {
 				value = 0;
 			}
     		col_summ += value;
+			confirmed_summ += $('[desc="'+type+'_0'+desc_attr+'"]').data("confirmed");
+			notconfirmed_summ += $('[desc="'+type+'_0'+desc_attr+'"]').data("notconfirmed");
     	});
     	$('[desc="col_sum'+desc_attr+'"]').html(col_summ);
+		$('[desc="col_sum_confirmed'+desc_attr+'"]').html(confirmed_summ);
+		$('[desc="col_sum_notconfirmed'+desc_attr+'"]').html(notconfirmed_summ);
     });
+	
+	var confirmed_summ_all = 0;
+	$('[desc^=col_sum_confirmed]').each(function(){
+		var value = parseInt($(this).text());
+		confirmed_summ_all += value;
+	});
+	$('#tax_sum_month_confirmed_all').html(confirmed_summ_all);
+	var notconfirmed_summ_all = 0;
+	$('[desc^=col_sum_notconfirmed]').each(function(){
+		var value = parseInt($(this).text());
+		notconfirmed_summ_all += value;
+	});
+	$('#tax_sum_month_notconfirmed_all').html(notconfirmed_summ_all);
     
     var sum_of_types = 0;
     $.each(types, function(){
@@ -166,6 +195,16 @@ function recount(types)
     	});	
     });
 	$('#tax_sum_month_all').html(sum_of_types);
+	
+	$.each(types, function(){
+		var type = this.concat();
+		var year_value = parseInt($.trim($('[desc='+type+'_all]').text()));
+		if (isNaN(year_value)) {
+			year_value = 0;
+		}
+		var percent = year_value / sum_of_types * 100;
+		$('[desc='+type+'_percent]').html(percent.toFixed(2));
+	});
 
 }
 

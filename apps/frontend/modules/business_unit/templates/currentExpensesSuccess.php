@@ -23,6 +23,7 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
 					<th><?php echo date('m/Y', strtotime('first day of +'.$i.' month')); ?></th>
 					<?php endfor; ?>
 					<th>Итого</th>
+                    <th>%</th>
 				</tr>
 
 				<?php foreach($expence_types as $key => $et): ?>
@@ -33,6 +34,7 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
 							<td style="background-color: #e7f4ff;" desc="<?php echo $et->getCode();?>_0_<?php echo date('m', strtotime('first day of +'.$i.' month')).'_'.date('Y', strtotime('first day of +'.$i.' month')); ?>"></td>
 						<?php endfor; ?>
 						<td desc="<?php echo $et->getCode();?>_all" style="background-color: #e7f4ff;" class="year_sum"></td>
+                        <td desc="<?php echo $et->getCode();?>_percent" style="background-color: #e7f4ff;" class="year_percent"></td>
 					</tr>
 					<?php foreach($expenses as $ce): ?>
 						<?php if($et->getCode() == $ce->getExpencesType()->getCode()): ?>
@@ -45,6 +47,7 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
 								</td>
 								<?php endfor; ?>
 								<td desc="<?php echo $ce->getExpencesType()->getCode();?>_<?php echo $ce->getId(); ?>_0"></td>
+                                <td></td>
 							</tr>
 
 						<?php endif; ?>
@@ -58,7 +61,29 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
 					<?php endfor; ?>
 
 					<td id="tax_sum_month_all"></td>
+                    <td></td>
 				</tr>
+                <tr>
+                    <td>Оплачено</td>
+                    <td></td>
+                    <?php for($i = 0; $i < 12; $i++):?>
+                        <td desc="col_sum_confirmed_<?php echo date('m', strtotime('first day of +'.$i.' month')).'_'.date('Y', strtotime('first day of +'.$i.' month')); ?>" class="summ_by_month"></td>
+                    <?php endfor; ?>
+
+                    <td id="tax_sum_month_confirmed_all"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Не оплачено</td>
+                    <td></td>
+                    <?php for($i = 0; $i < 12; $i++):?>
+                        <td desc="col_sum_notconfirmed_<?php echo date('m', strtotime('first day of +'.$i.' month')).'_'.date('Y', strtotime('first day of +'.$i.' month')); ?>" class="summ_by_month"></td>
+                    <?php endfor; ?>
+
+                    <td id="tax_sum_month_notconfirmed_all"></td>
+                    <td></td>
+                </tr>
+
 
 			</table>
 			<div><a href="#" onclick="$('#tax_dialog').dialog('open');return false;" class="btn btn-primary">Новая строка</a></div>

@@ -28,13 +28,97 @@ class business_unitActions extends autoBusiness_unitActions
 			$business_unit_id = $this->getUser()->getProfile()->getBusinessUnitId();
 		}
 		$this->business_unit = BusinessUnitPeer::retrieveByPK($business_unit_id);
+
 		$this->job_orders = JobOrderPeer::retrieveByBU($business_unit_id);
+        $fakeTotal = new FakeModel();
+        foreach($this->job_orders as &$jo){
+            $fakeOrder = new FakeModel();
+            foreach(array('Id', 'Name', 'Budget','ProductionCost', 'Margin', 'Income', 'Outcome', 'Debet', 'Credit', 'MarginPercent', 'TurnoverShare', 'PlanShare') as $factory){
+                $factorySet = 'set'.$factory;
+                $factoryGet = 'get'.$factory;
+                $fakeOrder->$factorySet($jo->$factoryGet());
+                $fakeTotal->$factorySet($fakeTotal->$factoryGet() + $fakeOrder->$factoryGet());
+            }
+            $jo = $fakeOrder;
+        }
+        if(!is_null($fakeTotal->getId())){
+            $fakeTotal->setId(-1);
+            $fakeTotal->setName('Общее');
+            $divide = $fakeTotal->getBudget();
+            if($divide == 0) $divide = 1;
+            $fakeTotal->setMarginPercent(number_format($fakeTotal->getMargin()/$divide*100, 2));
+            $this->job_orders[] = $fakeTotal;
+        }
+
 		$c = new Criteria();
 		$c->Add(TenderPeer::BUSINESS_UNIT_ID, $business_unit_id);
 		$this->tenders = TenderPeer::doSelect($c);
+        $fakeTotal = new FakeModel();
+        foreach($this->tenders as &$tender){
+            if($tender->getStatus() == 'new'){
+                $fakeTender = new FakeModel();
+                foreach(array('Id', 'Name', 'Status', 'Budget','Amount', 'Margin', 'MarginPercent', 'TurnoverShare', 'PlanShare') as $factory){
+                    $factorySet = 'set'.$factory;
+                    $factoryGet = 'get'.$factory;
+                    $fakeTender->$factorySet($tender->$factoryGet());
+                    $fakeTotal->$factorySet($fakeTotal->$factoryGet() + $fakeTender->$factoryGet());
+                }
+                $tender = $fakeTender;
+            }
+        }
+        if(!is_null($fakeTotal->getId())){
+            $fakeTotal->setId(-1);
+            $fakeTotal->setName('Общее');
+            $fakeTotal->setStatus('new');
+            $divide = $fakeTotal->getBudget();
+            $fakeTotal->setMarginPercent(number_format($fakeTotal->getMargin()/$divide*100, 2));
+            $this->tenders[] = $fakeTotal;
+        }
+
+        $fakeTotal = new FakeModel();
+        foreach($this->tenders as &$tender){
+            if($tender->getStatus() == 'lost'){
+                $fakeTender = new FakeModel();
+                foreach(array('Id', 'Name', 'Status', 'Budget','Amount', 'Margin', 'MarginPercent', 'TurnoverShare', 'PlanShare') as $factory){
+                    $factorySet = 'set'.$factory;
+                    $factoryGet = 'get'.$factory;
+                    $fakeTender->$factorySet($tender->$factoryGet());
+                    $fakeTotal->$factorySet($fakeTotal->$factoryGet() + $fakeTender->$factoryGet());
+                }
+                $tender = $fakeTender;
+            }
+        }
+        if(!is_null($fakeTotal->getId())){
+            $fakeTotal->setId(-1);
+            $fakeTotal->setName('Общее');
+            $fakeTotal->setStatus('lost');
+            $divide = $fakeTotal->getBudget();
+            $fakeTotal->setMarginPercent(number_format($fakeTotal->getMargin()/$divide*100, 2));
+            $this->tenders[] = $fakeTotal;
+        }
+
 		$c = new Criteria();
 		$c->Add(PlanPeer::BUSINESS_UNIT_ID, $business_unit_id);
 		$this->plans = PlanPeer::doSelect($c);
+
+        $fakeTotal = new FakeModel();
+        foreach($this->plans as &$plan){
+            $fakePlan = new FakeModel();
+            foreach(array('Id', 'Name', 'JobOrderId', 'Budget','Amount', 'Margin', 'MarginPercent', 'TurnoverShare', 'PlanShare') as $factory){
+                $factorySet = 'set'.$factory;
+                $factoryGet = 'get'.$factory;
+                $fakePlan->$factorySet($plan->$factoryGet());
+                $fakeTotal->$factorySet($fakeTotal->$factoryGet() + $fakePlan->$factoryGet());
+            }
+            $plan = $fakePlan;
+        }
+        if(!is_null($fakeTotal->getId())){
+            $fakeTotal->setId(-1);
+            $fakeTotal->setName('Общее');
+            $divide = $fakeTotal->getBudget();
+            $fakeTotal->setMarginPercent(number_format($fakeTotal->getMargin()/$divide*100, 2));
+            $this->plans[] = $fakeTotal;
+        }
 	}
 
 	public function executeLoseTender(sfWebRequest $request)
@@ -47,6 +131,34 @@ class business_unitActions extends autoBusiness_unitActions
 
 		return $this->redirect('@project_report?id='.$business_unit_id);
 	}
+
+    public function executeRenewTender(sfWebRequest $request)
+    {
+        $tender_id = $request->getParameter('tender_id');
+        $business_unit_id = $request->getParameter('bu_id');
+        $tender = TenderPeer::retrieveByPK($tender_id);
+        $tender->setStatus('new');
+        $tender->save();
+
+        return $this->redirect('@project_report?id='.$business_unit_id);
+    }
+
+    public function executePlanToTender(sfWebRequest $request)
+    {
+        $plan = PlanPeer::retrieveByPK($request->getParameter('plan_id'));
+        if($plan instanceof Plan){
+            $tender = new Tender();
+            $tender->setName($plan->getName());
+            $tender->setBudget($plan->getBudget());
+            $tender->setAmount($plan->getAmount());
+            $tender->setBusinessUnitId($plan->getBusinessUnitId());
+            $tender->setStatus('new');
+            $tender->save();
+            $plan->delete();
+        }
+
+        return $this->redirect('@project_report?id='.$request->getParameter('bu_id'));
+    }
 
 	public function executeCurrentExpenses(sfWebRequest $request)
 	{
@@ -118,7 +230,7 @@ class business_unitActions extends autoBusiness_unitActions
 		foreach ($ces as $ce) {
 			$payments = RegularPaymentPeer::getByCE($ce->getId());
 			foreach ($payments as $p) {
-				$date = explode('-', $p->getMonth());
+//				$date = explode('-', $p->getMonth());
 				$date = date('Y-m-d', strtotime($p->getMonth().'-01 last friday'));
 				$dates[] = $date;
                 if(!isset($currents[$ce->getExpencesTypeId()]) || !isset($currents[$ce->getExpencesTypeId()][$date])){

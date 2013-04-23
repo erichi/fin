@@ -13,4 +13,11 @@ require_once dirname(__FILE__).'/../lib/expences_typeGeneratorHelper.class.php';
  */
 class expences_typeActions extends autoExpences_typeActions
 {
+    public function executeDelete(sfWebRequest $request)
+    {
+        $this->dispatcher->notify(new sfEvent($this, 'admin.delete_object', array('object' => $this->getRoute()->getObject())));
+        $this->getRoute()->getObject()->delete();
+        $this->getUser()->setFlash('notice', 'The item was deleted successfully.');
+        $this->redirect('@expences_type');
+    }
 }
