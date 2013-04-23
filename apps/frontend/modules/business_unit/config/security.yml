@@ -1,2 +1,4 @@
+projectReport:
+  credentials: [[admin, fm, director, sharer]]
 all:
   credentials: [[admin, fm, director]]

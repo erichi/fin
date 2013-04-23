@@ -15,18 +15,12 @@
 class BusinessUnitPeer extends BaseBusinessUnitPeer {
 
 	public static function getBusByUser($user) {
-
 		$c = new Criteria();
-		
-		if($user->hasCredential('director')) {
-			
-			$c->add(self::ID, $user->getGuardUser()->getProfile()->getBusinessUnitId());
-			
+		if(!$user->hasCredential('admin')) {
+			$c->addJoin(self::ID, UserBusinessUnitPeer::BUSINESS_UNIT_ID);
+			$c->add(UserBusinessUnitPeer::USER_ID, $user->getGuardUser()->getId());
 		}
-		
 		return self::doSelect($c);
-
-	
 	}
 
 } // BusinessUnitPeer

@@ -66,15 +66,19 @@
 		<li><?php echo link_to('Выход', '@sf_guard_signout') ?></li>
 		
 	<?php elseif ($sf_user->hasCredential('sharer')): ?>
-
-		<li><?php echo link_to('Job order', '@job_order') ?></li>
 		<li class="dropdown">
-
-		<a class="dropdown-toggle" data-toggle="dropdown" href="#">Бизнес юниты <b class="caret"></b></a>
-		<ul class="dropdown-menu">
-			<li><?php echo link_to('Показатели по всем BU', '@business_unit_stats') ?></li>
-    	</ul>
-    	</li>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Бизнес юниты <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <?php foreach ($bus as $bu): ?>
+                    <li class="dropdown-submenu">
+                        <a tabindex="-1" href="#"><?php echo $bu->getName(); ?></a>
+                        <ul class="dropdown-menu">
+                            <li><a tabindex="-1" href="/business_unit/projectReport?id=<?php echo $bu->getId(); ?>">Отчет по проектам</a></li>
+                        </ul>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+		</li>
 		<li><?php echo link_to('Выход', '@sf_guard_signout') ?></li>
 		
 	<?php elseif ($sf_user->hasCredential('pm')): ?>

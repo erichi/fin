@@ -15,6 +15,8 @@ class job_orderActions extends autoJob_orderActions
 {
 	public function executeNew(sfWebRequest $request)
 	{
+        $this->forward404Unless($this->getUser()->hasCredential(array('admin','director', 'fm'), false));
+
 		if ($request->hasParameter('return_to_pr')) {
 			$this->getUser()->setAttribute('return_to_pr', $request->getParameter('return_to_pr'));
 		}
@@ -33,12 +35,7 @@ class job_orderActions extends autoJob_orderActions
 
   public function executeEdit(sfWebRequest $request)
   {
-  	if ($this->getUser()->hasCredential('pm')) {
-  		$this->forward404Unless(JobOrderPeer::hasManager($this->getRoute()->getObject()->getId(), $this->getUser()->getGuardUser()->getId()));
-  	}
-  	if ($this->getUser()->hasCredential(array('director', 'fm'), false)) {
-  		$this->forward404Unless($this->getRoute()->getObject()->getBusinessUnitId() == $this->getUser()->getProfile()->getBusinessUnitId());
-  	}
+    $this->_requireJobOrder($this->getRoute()->getObject()->getId());
   	parent::executeEdit($request);
 
   	$this->clients = $this->getClientsArray();
@@ -320,9 +317,9 @@ class job_orderActions extends autoJob_orderActions
   		$c->addJoin(JobOrderPeer::ID, JobOrderManagerPeer::JOB_ORDER_ID, Criteria::LEFT_JOIN);
   		$c->add(JobOrderManagerPeer::USER_ID, $this->getUser()->getGuardUser()->getId());
   	}
-
-  	if ($this->getUser()->hasCredential('director')) {
-  		$c->add(JobOrderPeer::BUSINESS_UNIT_ID, $this->getUser()->getGuardUser()->getProfile()->getBusinessUnitId());
+  	if ($this->getUser()->hasCredential(array('director', 'fm'),false)) {
+        $c->addJoin(JobOrderPeer::BUSINESS_UNIT_ID, UserBusinessUnitPeer::BUSINESS_UNIT_ID);
+  		$c->add(UserBusinessUnitPeer::USER_ID, $this->getUser()->getGuardUser()->getId());
   	}
 
   	return $c;
@@ -378,4 +375,23 @@ class job_orderActions extends autoJob_orderActions
       }
       return $this->renderText('error');
   }
+
+    private function _requireJobOrder($id)
+    {
+        if ($this->getUser()->hasCredential('admin')) {
+            $job_order = JobOrderPeer::retrieveByPK($id);
+        } elseif ($this->getUser()->hasCredential('pm') && JobOrderPeer::hasManager($id, $this->getUser()->getGuardUser()->getId())){
+            $job_order = JobOrderPeer::retrieveByPK($id);
+        } elseif ($this->getUser()->hasCredential(array('director', 'fm'), false)) {
+            $job_order = JobOrderPeer::retrieveByPK($id);
+            if (!$this->getUser()->hasBusinessUnit($job_order->getBusinessUnitId())){
+                unset($job_order);
+            }
+        }
+        if(!isset($job_order)){
+            $this->forward404();
+        }else{
+            return $job_order;
+        }
+    }
 }

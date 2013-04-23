@@ -15,18 +15,12 @@ class business_unitActions extends autoBusiness_unitActions
 {
 	public function executeProjectReport(sfWebRequest $request)
 	{
+        $this->business_unit = $this->_requireBusinessUnit($request->getParameter('id'));
+
 		if ($this->getUser()->hasAttribute('return_to_pr')) {
 			$this->getUser()->getAttributeHolder()->remove('return_to_pr');
 		}
-
-		if ($this->getUser()->hasCredential('admin') || $this->getUser()->hasBusinessUnit($request->getParameter('id'))) {
-            $this->business_unit = BusinessUnitPeer::retrieveByPK($request->getParameter('id'));
-		} else {
-            $userBU = $this->getUser()->getGuardUser()->getBusinessUnits();
-            $this->business_unit = $userBU[0]->getBusinessUnit();
-		}
         $business_unit_id = $this->business_unit->getId();
-
 		$this->job_orders = JobOrderPeer::retrieveByBU($business_unit_id);
         $fakeTotal = new FakeModel();
         foreach($this->job_orders as &$jo){
@@ -160,12 +154,7 @@ class business_unitActions extends autoBusiness_unitActions
 
 	public function executeCurrentExpenses(sfWebRequest $request)
 	{
-        if ($this->getUser()->hasCredential('admin') || $this->getUser()->hasBusinessUnit($request->getParameter('id'))) {
-            $this->business_unit = BusinessUnitPeer::retrieveByPK($request->getParameter('id'));
-        } else {
-            $userBU = $this->getUser()->getGuardUser()->getBusinessUnits();
-            $this->business_unit = $userBU[0]->getBusinessUnit();
-        }
+        $this->business_unit = $this->_requireBusinessUnit($request->getParameter('id'));
         $this->business_unit_id = $this->business_unit->getId();
 		$this->expenses = CurrentExpensesPeer::retrieveByBU($this->business_unit_id, new Criteria());
 		$this->expence_types = ExpencesTypePeer::doSelect(new Criteria());
@@ -201,9 +190,10 @@ class business_unitActions extends autoBusiness_unitActions
 	    return $aryRange;
 	}
 
-	public function executeCashflow(sfWebRequest $request) {
-
-		$bu_id = $request->getParameter('id');
+	public function executeCashflow(sfWebRequest $request)
+    {
+        $this->business_unit = $this->_requireBusinessUnit($request->getParameter('id'));
+		$bu_id = $this->business_unit->getId();
 
 		$jos = JobOrderPeer::retrieveByBU($bu_id);
 
@@ -966,8 +956,7 @@ class business_unitActions extends autoBusiness_unitActions
 
 	public function executeBuStats(sfWebRequest $request)
 	{
-		$request->getParameterHolder();
-		$this->bus = BusinessUnitPeer::doSelect(new Criteria());
+		$this->bus = BusinessUnitPeer::getBusByUser($this->getUser());
 
 		$overall = new FakeModel();
 		$fakeBus = array();
@@ -1009,4 +998,24 @@ class business_unitActions extends autoBusiness_unitActions
 		}
 		return $this->renderText(json_encode($result));
 	}
+
+    private function _requireBusinessUnit($id, $strict = false)
+    {
+        if ($this->getUser()->hasCredential('admin')) {
+            $business_unit = BusinessUnitPeer::retrieveByPK($id);
+        } elseif ($this->getUser()->hasCredential('director') || $this->getUser()->hasCredential('fm')) {
+            if ($this->getUser()->hasBusinessUnit($id)) {
+                $business_unit = BusinessUnitPeer::retrieveByPK($id);
+            }
+        } elseif ($this->getUser()->hasCredential('sharer') && $this->getActionName() == 'projectReport'){
+            if ($this->getUser()->hasBusinessUnit($id)) {
+                $business_unit = BusinessUnitPeer::retrieveByPK($id);
+            }
+        }
+        if(!isset($business_unit) || ( $strict && $business_unit->getId() != $id)){
+            $this->forward404();
+        }else{
+            return $business_unit;
+        }
+    }
 }

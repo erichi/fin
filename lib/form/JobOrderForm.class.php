@@ -12,7 +12,15 @@ class JobOrderForm extends BaseJobOrderForm
   public function configure()
   {
   	$indulgences = array('' => '') + JobOrderPeer::$indulgences;
-  	
+
+    $user = sfContext::getInstance()->getUser();
+    if($user->hasCredential(array('director', 'fm', 'pm'), false)){
+        $criteria = new Criteria();
+        $criteria->addJoin(BusinessUnitPeer::ID, UserBusinessUnitPeer::BUSINESS_UNIT_ID);
+        $criteria->add(UserBusinessUnitPeer::USER_ID, $user->getGuardUser()->getId());
+        $this->widgetSchema['business_unit_id']->setOption('criteria', $criteria);
+    }
+
   	$this->widgetSchema['business_unit_id']->setOption('add_empty', true);
   	
   	if (sfContext::getInstance()->getRequest()->hasParameter('return_to_pr')) {																//create JO from BusinessUnit
