@@ -96,9 +96,10 @@ class JobOrder extends BaseJobOrder
 	public function getOutcome()
 	{
 		$c = new Criteria();
-		$c->add(JobPaymentPeer::JOB_ID, $this->getId());
+		$c->add(JobPeer::JOB_ORDER_ID, $this->getId());
+		$c->addJoin(JobPaymentPeer::JOB_ID, JobPeer::ID);
 		$c->add(JobPaymentPeer::IS_CONFIRMED, true);
-		$outcomes = JobPaymentPeer::doSelect($c);
+		$outcomes = JobPaymentPeer::doSelect($c);	
 		
 		$sum = 0;
 		foreach($outcomes as $o)
@@ -141,6 +142,6 @@ class JobOrder extends BaseJobOrder
 
 	public function getSaldo()
 	{
-		return $this->getCredit() - $this->getDebet();
+		return $this->getIncome() - $this->getOutcome();
 	} 
 } // JobOrder

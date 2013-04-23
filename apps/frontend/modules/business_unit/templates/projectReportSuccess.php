@@ -45,7 +45,7 @@
 						<td><?php echo $jo->getOutcome(); ?></td>
 						<td><?php echo $jo->getDebet(); ?></td>
 						<td><?php echo $jo->getCredit(); ?></td>
-						<td>320000</td>
+						<td><?php echo $jo->getSaldo(); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
