@@ -239,7 +239,7 @@ class business_unitActions extends autoBusiness_unitActions
 				$currents[$ce->getExpencesTypeId()][$date]['out'][0] += $p->getAmount();
                 if($p->getIsConfirmed() == true){
                     $confirmed[$ce->getExpencesTypeId()][$date]['confirmedOne'] = true;
-                }else{
+                }elseif($p->getAmount() != 0){
                     $confirmed[$ce->getExpencesTypeId()][$date]['notConfirmedOne'] = true;
                 }
 			}
@@ -282,11 +282,13 @@ class business_unitActions extends autoBusiness_unitActions
 
 		foreach ($jos as $jo) {
 			$result[$i]['name'] = $jo_labels_arr[$jo->getId()];
+            $result[$i]['jobOrderId'] = $jo->getId();
 			$result[$i]['dates'] = array_merge($mask, $jo_payments[$jo->getId()]);
 			$i++;
 		}
 		foreach ($currents as $type => $ce) {
 			$result[$i]['name'] = $ce_labels_arr[$type];
+            $result[$i]['ceBusinessUnitId'] = $bu_id;
 			$result[$i]['dates'] = array_merge($mask, $ce);
 			$i++;
 

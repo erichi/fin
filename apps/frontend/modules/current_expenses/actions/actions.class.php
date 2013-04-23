@@ -38,4 +38,10 @@ class current_expensesActions extends autoCurrent_expensesActions
 		return $this->renderText($ce->getId());
 		//return $this->redirect('business_unit/currentExpenses?id='.$request->getParameter('business_unit_id'));
 	}
+
+    public function executeDelRow(sfWebRequest $request)
+    {
+        CurrentExpensesPeer::doDelete($request->getParameter('id'));
+        return $this->redirect('business_unit/currentExpenses?id='.$request->getParameter('business_unit_id'));
+    }
 }

@@ -99,10 +99,11 @@ function recount(types)
 			var confirmed = 0;
 			var not_confirmed = 0;
     		$('td:regex(desc,^'+desc_regexp+'$)').each(function(){
-				var value = parseInt($.trim($(this).text()));
+				var value = parseInt($.trim($(this).text()).replace(/[_ ]/g,''));
 				if (isNaN(value)) {
 					value = 0;
 				}
+				//console.log($.trim($(this).text()) + '=' + value);
     			amount += value;
 				if($(this).has('a').length == 0){ // confirmed
 					confirmed += value;
@@ -111,10 +112,13 @@ function recount(types)
 				}
     		});
 			var type_sum_attr = desc_regexp.split(type+'_[^0]{1}[0-9]*').join(type+'_0');
+			var el = $('[desc="'+type_sum_attr+'"]');
 			if(not_confirmed == 0 && confirmed != 0){
-				amount = '<nobr><img src="/sf/sf_admin/images/tick.png" alt="Подтвержден" title="Подтвержден" />'+amount+'</nobr>';
+				el.html('<nobr><img src="/sf/sf_admin/images/tick.png" alt="Подтвержден" title="Подтвержден" /><span class="formatInt">'+amount+'</span></nobr>');
+			}else{
+				el.html('<span class="formatInt">' + amount + '</span>' );
 			}
-    		$('[desc="'+type_sum_attr+'"]').html(amount).data("confirmed", confirmed).data("notconfirmed", not_confirmed);
+			el.data("confirmed", confirmed).data("notconfirmed", not_confirmed);
     	});		
 
     	var amount_all = 0;
@@ -125,7 +129,7 @@ function recount(types)
 			}
 			amount_all += value;
     	});	
-    	$('[desc="'+type+'_all"]').html(amount_all);
+    	$('[desc="'+type+'_all"]').html('<span class="formatInt">' + amount_all + '</span>');
 
     });	
     
@@ -145,9 +149,9 @@ function recount(types)
 			confirmed_summ += $('[desc="'+type+'_0'+desc_attr+'"]').data("confirmed");
 			notconfirmed_summ += $('[desc="'+type+'_0'+desc_attr+'"]').data("notconfirmed");
     	});
-    	$('[desc="col_sum'+desc_attr+'"]').html(col_summ);
-		$('[desc="col_sum_confirmed'+desc_attr+'"]').html(confirmed_summ);
-		$('[desc="col_sum_notconfirmed'+desc_attr+'"]').html(notconfirmed_summ);
+    	$('[desc="col_sum'+desc_attr+'"]').html('<span class="formatInt">' + col_summ + '</span>');
+		$('[desc="col_sum_confirmed'+desc_attr+'"]').html('<span class="formatInt">' + confirmed_summ + '</span>');
+		$('[desc="col_sum_notconfirmed'+desc_attr+'"]').html('<span class="formatInt">' + notconfirmed_summ + '</span>');
     });
 	
 	var confirmed_summ_all = 0;
@@ -155,18 +159,18 @@ function recount(types)
 		var value = parseInt($(this).text());
 		confirmed_summ_all += value;
 	});
-	$('#tax_sum_month_confirmed_all').html(confirmed_summ_all);
+	$('#tax_sum_month_confirmed_all').html('<span class="formatInt">' + confirmed_summ_all + '</span>');
 	var notconfirmed_summ_all = 0;
 	$('[desc^=col_sum_notconfirmed]').each(function(){
 		var value = parseInt($(this).text());
 		notconfirmed_summ_all += value;
 	});
-	$('#tax_sum_month_notconfirmed_all').html(notconfirmed_summ_all);
+	$('#tax_sum_month_notconfirmed_all').html('<span class="formatInt">' + notconfirmed_summ_all + '</span>');
     
     var sum_of_types = 0;
     $.each(types, function(){
     	var type = this.concat();
-    	var value = parseInt($.trim($('[desc="'+type+'_all"]').html()));
+    	var value = parseInt($.trim($('[desc="'+type+'_all"]').text()));
 		if (isNaN(value)) {
 			value = 0;
 		}
@@ -186,7 +190,7 @@ function recount(types)
     		}
     		else
     		{
-    			var value = parseInt($.trim($(this).html()));
+    			var value = parseInt($.trim($(this).text()));
 				if (isNaN(value)) {
 					value = 0;
 				}
@@ -194,7 +198,7 @@ function recount(types)
     		}
     	});	
     });
-	$('#tax_sum_month_all').html(sum_of_types);
+	$('#tax_sum_month_all').html('<span class="formatInt">' + sum_of_types + '</span>');
 	
 	$.each(types, function(){
 		var type = this.concat();
@@ -205,8 +209,23 @@ function recount(types)
 		var percent = year_value / sum_of_types * 100;
 		$('[desc='+type+'_percent]').html(percent.toFixed(2));
 	});
-
+	
+	formatInt();
 }
+
+function IsNumeric(input)
+{
+   	return (input - 0) == input && input.length > 0;
+}
+
+function formatInt(){
+	$('.formatInt').each(function(){
+		if(IsNumeric($(this).text()) && $(this).text() != 0){
+			//console.log('format ' + $(this).text());
+			$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000", locale:"ru"})+'</nobr>');
+		}
+	});
+};
 
 function addTaxRow(tax_name, tax_type)
 {
@@ -264,10 +283,10 @@ function approveExpence(id, isApproved) {
                     alert('Платеж не подтвержден из-за ошибки системы. No entry in database');
                 }else{
                     if(isApproved){
-                        $('#exp' + id).before('<nobr><img src="/sf/sf_admin/images/tick.png" alt="Подтвержден" title="Подтвержден" />'+amount+'</nobr>');
+                        $('#exp' + id).before('<nobr><img src="/sf/sf_admin/images/tick.png" alt="Подтвержден" title="Подтвержден" /><span class="formatInt">'+amount+'</span></nobr>');
                         $('#exp' + id).remove();
                     }else{
-                        $('#exp' + id).text(amount);
+                        $('#exp' + id).html('<span class="formatInt">' + amount + '</span>');
                     }
                     recount(types);
                 }

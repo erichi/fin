@@ -4,6 +4,8 @@
 <?php else : ?>
     <a href="#" id="exp<?php echo $mp->getId(); ?>" onclick="editCurrentExpence('<?php echo $mp->getId(); ?>')">
 <?php endif; ?>
+<span class="formatInt">
 <?php echo $mp->getAmount() ?>
+</span>
 <?php if(!$mp->getIsConfirmed()) echo '</a>'; ?>
 </nobr>

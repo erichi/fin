@@ -39,7 +39,10 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
 					<?php foreach($expenses as $ce): ?>
 						<?php if($et->getCode() == $ce->getExpencesType()->getCode()): ?>
 							<tr class="tax tax_<?php echo $key?>" id="tax_<?php echo $ce->getId() ?>">
-								<td><?php echo $ce->getName() ?></td>
+								<td>
+                                    <a href="<?php echo url_for('current_expenses/delRow?id='.$ce->getId().'&business_unit_id='.$business_unit_id);?>" onclick="return confirm('Вы уверены?');">-</a>
+                                    <?php echo $ce->getName() ?>
+                                </td>
 								<td><?php echo $ce->getExpencesType()->getName(); ?></td>
 								<?php for($i = 0; $i<12; $i++):?>
 								<td <?php echo ($ce->getMonthPayment($i)->getIsConfirmed())?'':'class="edit"';?> info="<?php echo $ce->getMonthPayment($i)->getId(); ?>" desc="<?php echo $ce->getExpencesType()->getCode();?>_<?php echo $ce->getId(); ?>_<?php echo date('m', strtotime('first day of +'.$i.' month')).'_'.date('Y', strtotime('first day of +'.$i.' month')); ?>" data='{"id":"<?php echo $ce->getMonthPayment($i)->getId() ?>"}'>
@@ -114,27 +117,12 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
         </tr>
     </table>
 </div>
-
+<a href="#" onclick='recount(types); return false;'>recount</a>
 <script type="text/javascript">
 	var business_unit_id = <?php echo $business_unit_id ?>;
 	var save_field_data_url = "<?php echo url_for('current_expenses/saveTypedData') ?>";
 	var new_row_url = "<?php echo url_for('current_expenses/addNewRow') ?>";
 	var current_expenses_url = "<?php echo url_for('business_unit/currentExpenses?id='.$business_unit_id) ?>";
-
-	function IsNumeric(input)
-	{
-    	return (input - 0) == input && input.length > 0;
-	}
-
-/*	$(document).ready(function(){
-		$('td').each(function(){
-
-			if(IsNumeric($(this).text()) && $(this).text() != 0)
-				//$(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
-				//$(this).find("input[type=checkbox]").hide();
-		});
-	}); */
-
 <?php /*
 <?php //use_stylesheet('default.css') ?>
 <?php use_stylesheet('smoothness/jquery-ui-1.8.16.custom.css') ?>

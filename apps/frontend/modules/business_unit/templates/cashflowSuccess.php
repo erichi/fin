@@ -43,7 +43,17 @@
                         <tbody>
                             <?php foreach ($result as $res): ?>
                             <tr>
-                                <td><?php echo $res['name']; ?></td>
+                                <td>
+                                <?php
+                                    if(isset($res['jobOrderId'])){
+                                        echo '<a href="'.url_for('job_order/edit?id='.$res['jobOrderId']).'">'.$res['name'].'</a>';
+                                    }elseif(isset($res['ceBusinessUnitId'])){
+                                        echo '<a href="'.url_for('business_unit/currentExpenses?id='.$res['ceBusinessUnitId']).'">'.$res['name'].'</a>';
+                                    }else{
+                                        echo $res['name'];
+                                    }
+                                ?>
+                                </td>
                                 <?php foreach ($res['dates'] as $date): ?>
                                 <?php if(!empty($date)):?>
                                 <td>
