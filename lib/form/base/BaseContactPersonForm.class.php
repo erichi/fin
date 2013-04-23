@@ -7,7 +7,7 @@
  *
  * @package    Finsys
  * @subpackage form
- * @author     Stepix
+ * @author     Eric Usmanov
  */
 abstract class BaseContactPersonForm extends BaseFormPropel
 {

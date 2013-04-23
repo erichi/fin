@@ -36,5 +36,13 @@ class sfGuardUser extends PluginsfGuardUser
 	public function getPhone()
 	{
 		return $this->getProfile()->getPhone();
-	} 
+	}
+
+    public function hasBusinessUnit($id)
+    {
+        $criteria = new Criteria();
+        $criteria->add(UserBusinessUnitPeer::BUSINESS_UNIT_ID, $id);
+        $userBusinessUnits = $this->getUserBusinessUnits($criteria);
+        return isset($userBusinessUnits[0]);
+    }
 }

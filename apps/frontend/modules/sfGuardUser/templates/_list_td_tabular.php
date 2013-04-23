@@ -14,7 +14,13 @@
   <?php echo $sf_guard_user->getPhone() ?>
 </td>
 <td class="sf_admin_text sf_admin_list_td_business_unit">
-    <?php if($sf_guard_user->getProfile()->getBusinessUnitId() != null) echo $sf_guard_user->getProfile()->getBusinessUnit()->getName(); ?>
+<?php
+    $bus = array();
+    foreach($sf_guard_user->getUserBusinessUnits() as $bu){
+            $bus[] = $bu->getBusinessUnit()->getName();
+    }
+    echo join(', ', $bus);
+?>
 </td>
 <td class="sf_admin_text sf_admin_list_td_permissions">
     <?php

@@ -26,6 +26,7 @@ abstract class BasesfGuardUserForm extends BaseFormPropel
       'sf_guard_user_group_list'      => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'sfGuardGroup')),
       'sf_guard_user_permission_list' => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'sfGuardPermission')),
       'job_order_manager_list'        => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'JobOrder')),
+      'user_business_unit_list'       => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'BusinessUnit')),
     ));
 
     $this->setValidators(array(
@@ -41,6 +42,7 @@ abstract class BasesfGuardUserForm extends BaseFormPropel
       'sf_guard_user_group_list'      => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'sfGuardGroup', 'required' => false)),
       'sf_guard_user_permission_list' => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'sfGuardPermission', 'required' => false)),
       'job_order_manager_list'        => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'JobOrder', 'required' => false)),
+      'user_business_unit_list'       => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'BusinessUnit', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -97,6 +99,17 @@ abstract class BasesfGuardUserForm extends BaseFormPropel
       $this->setDefault('job_order_manager_list', $values);
     }
 
+    if (isset($this->widgetSchema['user_business_unit_list']))
+    {
+      $values = array();
+      foreach ($this->object->getUserBusinessUnits() as $obj)
+      {
+        $values[] = $obj->getBusinessUnitId();
+      }
+
+      $this->setDefault('user_business_unit_list', $values);
+    }
+
   }
 
   protected function doSave($con = null)
@@ -106,6 +119,7 @@ abstract class BasesfGuardUserForm extends BaseFormPropel
     $this->savesfGuardUserGroupList($con);
     $this->savesfGuardUserPermissionList($con);
     $this->saveJobOrderManagerList($con);
+    $this->saveUserBusinessUnitList($con);
   }
 
   public function savesfGuardUserGroupList($con = null)
@@ -208,6 +222,41 @@ abstract class BasesfGuardUserForm extends BaseFormPropel
         $obj = new JobOrderManager();
         $obj->setUserId($this->object->getPrimaryKey());
         $obj->setJobOrderId($value);
+        $obj->save();
+      }
+    }
+  }
+
+  public function saveUserBusinessUnitList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['user_business_unit_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $c = new Criteria();
+    $c->add(UserBusinessUnitPeer::USER_ID, $this->object->getPrimaryKey());
+    UserBusinessUnitPeer::doDelete($c, $con);
+
+    $values = $this->getValue('user_business_unit_list');
+    if (is_array($values))
+    {
+      foreach ($values as $value)
+      {
+        $obj = new UserBusinessUnit();
+        $obj->setUserId($this->object->getPrimaryKey());
+        $obj->setBusinessUnitId($value);
         $obj->save();
       }
     }

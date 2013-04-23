@@ -46,7 +46,7 @@ class JobTypeTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('Job', 'Job', RelationMap::ONE_TO_MANY, array('id' => 'job_type_id', ), null, null);
+    $this->addRelation('Job', 'Job', RelationMap::ONE_TO_MANY, array('id' => 'job_type_id', ), 'CASCADE', null);
 	} // buildRelations()
 
 	/**

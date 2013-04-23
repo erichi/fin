@@ -29,7 +29,7 @@ generator:
         class:                      UserAdminForm
         display:
           "NONE":                   [username, password, password_again, first_name, last_name, email, phone, address, bio]
-          "Permissions and groups": [is_active, sf_guard_user_permission_list, business_unit_id]
+          "Permissions and groups": [is_active, sf_guard_user_permission_list, user_business_unit_list]
 
       edit:
         title: Editing User "%%username%%"

@@ -18,7 +18,7 @@ $(function() {
      	callback : function(value, settings) {
 			value = $.parseJSON(value)
 			$.each(value, function(key, val){
-				$("." + key).html($.formatNumber(val, {format:"0,000.00", locale:"ru"}));
+				$("." + key).html($.formatNumber(val, {format:"0,000", locale:"ru"}));
 			});
     	} 
 	});

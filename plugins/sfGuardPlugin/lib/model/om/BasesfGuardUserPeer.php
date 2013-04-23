@@ -384,6 +384,9 @@ abstract class BasesfGuardUserPeer {
 		// invalidate objects in sfGuardUserProfilePeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
 		sfGuardUserProfilePeer::clearInstancePool();
 
+		// invalidate objects in UserBusinessUnitPeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
+		UserBusinessUnitPeer::clearInstancePool();
+
 		// invalidate objects in JobOrderManagerPeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
 		JobOrderManagerPeer::clearInstancePool();
 
@@ -717,6 +720,12 @@ abstract class BasesfGuardUserPeer {
 			
 			$criteria->add(sfGuardUserProfilePeer::USER_ID, $obj->getId());
 			$affectedRows += sfGuardUserProfilePeer::doDelete($criteria, $con);
+
+			// delete related UserBusinessUnit objects
+			$criteria = new Criteria(UserBusinessUnitPeer::DATABASE_NAME);
+			
+			$criteria->add(UserBusinessUnitPeer::USER_ID, $obj->getId());
+			$affectedRows += UserBusinessUnitPeer::doDelete($criteria, $con);
 
 			// delete related JobOrderManager objects
 			$criteria = new Criteria(JobOrderManagerPeer::DATABASE_NAME);

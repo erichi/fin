@@ -44,14 +44,14 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 	protected $loans;
 
 	/**
-	 * @var        array sfGuardUserProfile[] Collection to store aggregation of sfGuardUserProfile objects.
+	 * @var        array UserBusinessUnit[] Collection to store aggregation of UserBusinessUnit objects.
 	 */
-	protected $collsfGuardUserProfiles;
+	protected $collUserBusinessUnits;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collsfGuardUserProfiles.
+	 * @var        Criteria The criteria used to select the current contents of collUserBusinessUnits.
 	 */
-	private $lastsfGuardUserProfileCriteria = null;
+	private $lastUserBusinessUnitCriteria = null;
 
 	/**
 	 * @var        array JobOrder[] Collection to store aggregation of JobOrder objects.
@@ -363,8 +363,8 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->collsfGuardUserProfiles = null;
-			$this->lastsfGuardUserProfileCriteria = null;
+			$this->collUserBusinessUnits = null;
+			$this->lastUserBusinessUnitCriteria = null;
 
 			$this->collJobOrders = null;
 			$this->lastJobOrderCriteria = null;
@@ -542,8 +542,8 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
-			if ($this->collsfGuardUserProfiles !== null) {
-				foreach ($this->collsfGuardUserProfiles as $referrerFK) {
+			if ($this->collUserBusinessUnits !== null) {
+				foreach ($this->collUserBusinessUnits as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -653,8 +653,8 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 			}
 
 
-				if ($this->collsfGuardUserProfiles !== null) {
-					foreach ($this->collsfGuardUserProfiles as $referrerFK) {
+				if ($this->collUserBusinessUnits !== null) {
+					foreach ($this->collUserBusinessUnits as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -915,9 +915,9 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
-			foreach ($this->getsfGuardUserProfiles() as $relObj) {
+			foreach ($this->getUserBusinessUnits() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addsfGuardUserProfile($relObj->copy($deepCopy));
+					$copyObj->addUserBusinessUnit($relObj->copy($deepCopy));
 				}
 			}
 
@@ -993,47 +993,47 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collsfGuardUserProfiles collection (array).
+	 * Clears out the collUserBusinessUnits collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addsfGuardUserProfiles()
+	 * @see        addUserBusinessUnits()
 	 */
-	public function clearsfGuardUserProfiles()
+	public function clearUserBusinessUnits()
 	{
-		$this->collsfGuardUserProfiles = null; // important to set this to NULL since that means it is uninitialized
+		$this->collUserBusinessUnits = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collsfGuardUserProfiles collection (array).
+	 * Initializes the collUserBusinessUnits collection (array).
 	 *
-	 * By default this just sets the collsfGuardUserProfiles collection to an empty array (like clearcollsfGuardUserProfiles());
+	 * By default this just sets the collUserBusinessUnits collection to an empty array (like clearcollUserBusinessUnits());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initsfGuardUserProfiles()
+	public function initUserBusinessUnits()
 	{
-		$this->collsfGuardUserProfiles = array();
+		$this->collUserBusinessUnits = array();
 	}
 
 	/**
-	 * Gets an array of sfGuardUserProfile objects which contain a foreign key that references this object.
+	 * Gets an array of UserBusinessUnit objects which contain a foreign key that references this object.
 	 *
 	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
 	 * Otherwise if this BusinessUnit has previously been saved, it will retrieve
-	 * related sfGuardUserProfiles from storage. If this BusinessUnit is new, it will return
+	 * related UserBusinessUnits from storage. If this BusinessUnit is new, it will return
 	 * an empty collection or the current collection, the criteria is ignored on a new object.
 	 *
 	 * @param      PropelPDO $con
 	 * @param      Criteria $criteria
-	 * @return     array sfGuardUserProfile[]
+	 * @return     array UserBusinessUnit[]
 	 * @throws     PropelException
 	 */
-	public function getsfGuardUserProfiles($criteria = null, PropelPDO $con = null)
+	public function getUserBusinessUnits($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(BusinessUnitPeer::DATABASE_NAME);
@@ -1043,15 +1043,15 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collsfGuardUserProfiles === null) {
+		if ($this->collUserBusinessUnits === null) {
 			if ($this->isNew()) {
-			   $this->collsfGuardUserProfiles = array();
+			   $this->collUserBusinessUnits = array();
 			} else {
 
-				$criteria->add(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, $this->id);
+				$criteria->add(UserBusinessUnitPeer::BUSINESS_UNIT_ID, $this->id);
 
-				sfGuardUserProfilePeer::addSelectColumns($criteria);
-				$this->collsfGuardUserProfiles = sfGuardUserProfilePeer::doSelect($criteria, $con);
+				UserBusinessUnitPeer::addSelectColumns($criteria);
+				$this->collUserBusinessUnits = UserBusinessUnitPeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1061,28 +1061,28 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, $this->id);
+				$criteria->add(UserBusinessUnitPeer::BUSINESS_UNIT_ID, $this->id);
 
-				sfGuardUserProfilePeer::addSelectColumns($criteria);
-				if (!isset($this->lastsfGuardUserProfileCriteria) || !$this->lastsfGuardUserProfileCriteria->equals($criteria)) {
-					$this->collsfGuardUserProfiles = sfGuardUserProfilePeer::doSelect($criteria, $con);
+				UserBusinessUnitPeer::addSelectColumns($criteria);
+				if (!isset($this->lastUserBusinessUnitCriteria) || !$this->lastUserBusinessUnitCriteria->equals($criteria)) {
+					$this->collUserBusinessUnits = UserBusinessUnitPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastsfGuardUserProfileCriteria = $criteria;
-		return $this->collsfGuardUserProfiles;
+		$this->lastUserBusinessUnitCriteria = $criteria;
+		return $this->collUserBusinessUnits;
 	}
 
 	/**
-	 * Returns the number of related sfGuardUserProfile objects.
+	 * Returns the number of related UserBusinessUnit objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related sfGuardUserProfile objects.
+	 * @return     int Count of related UserBusinessUnit objects.
 	 * @throws     PropelException
 	 */
-	public function countsfGuardUserProfiles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countUserBusinessUnits(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(BusinessUnitPeer::DATABASE_NAME);
@@ -1096,14 +1096,14 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 
 		$count = null;
 
-		if ($this->collsfGuardUserProfiles === null) {
+		if ($this->collUserBusinessUnits === null) {
 			if ($this->isNew()) {
 				$count = 0;
 			} else {
 
-				$criteria->add(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, $this->id);
+				$criteria->add(UserBusinessUnitPeer::BUSINESS_UNIT_ID, $this->id);
 
-				$count = sfGuardUserProfilePeer::doCount($criteria, false, $con);
+				$count = UserBusinessUnitPeer::doCount($criteria, false, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1113,35 +1113,35 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, $this->id);
+				$criteria->add(UserBusinessUnitPeer::BUSINESS_UNIT_ID, $this->id);
 
-				if (!isset($this->lastsfGuardUserProfileCriteria) || !$this->lastsfGuardUserProfileCriteria->equals($criteria)) {
-					$count = sfGuardUserProfilePeer::doCount($criteria, false, $con);
+				if (!isset($this->lastUserBusinessUnitCriteria) || !$this->lastUserBusinessUnitCriteria->equals($criteria)) {
+					$count = UserBusinessUnitPeer::doCount($criteria, false, $con);
 				} else {
-					$count = count($this->collsfGuardUserProfiles);
+					$count = count($this->collUserBusinessUnits);
 				}
 			} else {
-				$count = count($this->collsfGuardUserProfiles);
+				$count = count($this->collUserBusinessUnits);
 			}
 		}
 		return $count;
 	}
 
 	/**
-	 * Method called to associate a sfGuardUserProfile object to this object
-	 * through the sfGuardUserProfile foreign key attribute.
+	 * Method called to associate a UserBusinessUnit object to this object
+	 * through the UserBusinessUnit foreign key attribute.
 	 *
-	 * @param      sfGuardUserProfile $l sfGuardUserProfile
+	 * @param      UserBusinessUnit $l UserBusinessUnit
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addsfGuardUserProfile(sfGuardUserProfile $l)
+	public function addUserBusinessUnit(UserBusinessUnit $l)
 	{
-		if ($this->collsfGuardUserProfiles === null) {
-			$this->initsfGuardUserProfiles();
+		if ($this->collUserBusinessUnits === null) {
+			$this->initUserBusinessUnits();
 		}
-		if (!in_array($l, $this->collsfGuardUserProfiles, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collsfGuardUserProfiles, $l);
+		if (!in_array($l, $this->collUserBusinessUnits, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collUserBusinessUnits, $l);
 			$l->setBusinessUnit($this);
 		}
 	}
@@ -1152,13 +1152,13 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this BusinessUnit is new, it will return
 	 * an empty collection; or if this BusinessUnit has previously
-	 * been saved, it will retrieve related sfGuardUserProfiles from storage.
+	 * been saved, it will retrieve related UserBusinessUnits from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in BusinessUnit.
 	 */
-	public function getsfGuardUserProfilesJoinsfGuardUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getUserBusinessUnitsJoinsfGuardUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(BusinessUnitPeer::DATABASE_NAME);
@@ -1168,29 +1168,29 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collsfGuardUserProfiles === null) {
+		if ($this->collUserBusinessUnits === null) {
 			if ($this->isNew()) {
-				$this->collsfGuardUserProfiles = array();
+				$this->collUserBusinessUnits = array();
 			} else {
 
-				$criteria->add(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, $this->id);
+				$criteria->add(UserBusinessUnitPeer::BUSINESS_UNIT_ID, $this->id);
 
-				$this->collsfGuardUserProfiles = sfGuardUserProfilePeer::doSelectJoinsfGuardUser($criteria, $con, $join_behavior);
+				$this->collUserBusinessUnits = UserBusinessUnitPeer::doSelectJoinsfGuardUser($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, $this->id);
+			$criteria->add(UserBusinessUnitPeer::BUSINESS_UNIT_ID, $this->id);
 
-			if (!isset($this->lastsfGuardUserProfileCriteria) || !$this->lastsfGuardUserProfileCriteria->equals($criteria)) {
-				$this->collsfGuardUserProfiles = sfGuardUserProfilePeer::doSelectJoinsfGuardUser($criteria, $con, $join_behavior);
+			if (!isset($this->lastUserBusinessUnitCriteria) || !$this->lastUserBusinessUnitCriteria->equals($criteria)) {
+				$this->collUserBusinessUnits = UserBusinessUnitPeer::doSelectJoinsfGuardUser($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastsfGuardUserProfileCriteria = $criteria;
+		$this->lastUserBusinessUnitCriteria = $criteria;
 
-		return $this->collsfGuardUserProfiles;
+		return $this->collUserBusinessUnits;
 	}
 
 	/**
@@ -2009,8 +2009,8 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->collsfGuardUserProfiles) {
-				foreach ((array) $this->collsfGuardUserProfiles as $o) {
+			if ($this->collUserBusinessUnits) {
+				foreach ((array) $this->collUserBusinessUnits as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2036,7 +2036,7 @@ abstract class BaseBusinessUnit extends BaseObject  implements Persistent {
 			}
 		} // if ($deep)
 
-		$this->collsfGuardUserProfiles = null;
+		$this->collUserBusinessUnits = null;
 		$this->collJobOrders = null;
 		$this->collTenders = null;
 		$this->collPlans = null;

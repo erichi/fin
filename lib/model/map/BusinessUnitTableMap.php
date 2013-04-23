@@ -48,7 +48,7 @@ class BusinessUnitTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('sfGuardUserProfile', 'sfGuardUserProfile', RelationMap::ONE_TO_MANY, array('id' => 'business_unit_id', ), 'SET NULL', null);
+    $this->addRelation('UserBusinessUnit', 'UserBusinessUnit', RelationMap::ONE_TO_MANY, array('id' => 'business_unit_id', ), 'CASCADE', null);
     $this->addRelation('JobOrder', 'JobOrder', RelationMap::ONE_TO_MANY, array('id' => 'business_unit_id', ), null, null);
     $this->addRelation('Tender', 'Tender', RelationMap::ONE_TO_MANY, array('id' => 'business_unit_id', ), 'SET NULL', null);
     $this->addRelation('Plan', 'Plan', RelationMap::ONE_TO_MANY, array('id' => 'business_unit_id', ), 'SET NULL', null);

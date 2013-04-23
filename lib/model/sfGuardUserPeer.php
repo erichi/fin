@@ -60,9 +60,9 @@ class sfGuardUserPeer extends PluginsfGuardUserPeer
 		$criteria = new Criteria();
 		$criteria->addJoin(sfGuardUserPeer::ID, sfGuardUserPermissionPeer::USER_ID, Criteria::LEFT_JOIN);
 		$criteria->addJoin(sfGuardUserPermissionPeer::PERMISSION_ID,sfGuardPermissionPeer::ID, Criteria::LEFT_JOIN);
-        $criteria->addJoin(sfGuardUserPeer::ID, sfGuardUserProfilePeer::USER_ID, Criteria::LEFT_JOIN);
+        $criteria->addJoin(sfGuardUserPeer::ID, UserBusinessUnitPeer::USER_ID, Criteria::LEFT_JOIN);
 		$criteria->add(sfGuardPermissionPeer::NAME, 'pm', Criteria::EQUAL);
-        $criteria->add(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, $bu, Criteria::EQUAL);
+        $criteria->add(UserBusinessUnitPeer::BUSINESS_UNIT_ID, $bu, Criteria::EQUAL);
 		return sfGuardUserPeer::doSelect($criteria);
 	}
 }

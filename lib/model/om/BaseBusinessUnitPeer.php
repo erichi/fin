@@ -361,8 +361,8 @@ abstract class BaseBusinessUnitPeer {
 	 */
 	public static function clearRelatedInstancePool()
 	{
-		// invalidate objects in sfGuardUserProfilePeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
-		sfGuardUserProfilePeer::clearInstancePool();
+		// invalidate objects in UserBusinessUnitPeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
+		UserBusinessUnitPeer::clearInstancePool();
 
 		// invalidate objects in TenderPeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
 		TenderPeer::clearInstancePool();
@@ -691,6 +691,12 @@ abstract class BaseBusinessUnitPeer {
 		foreach ($objects as $obj) {
 
 
+			// delete related UserBusinessUnit objects
+			$criteria = new Criteria(UserBusinessUnitPeer::DATABASE_NAME);
+			
+			$criteria->add(UserBusinessUnitPeer::BUSINESS_UNIT_ID, $obj->getId());
+			$affectedRows += UserBusinessUnitPeer::doDelete($criteria, $con);
+
 			// delete related CurrentExpenses objects
 			$criteria = new Criteria(CurrentExpensesPeer::DATABASE_NAME);
 			
@@ -719,14 +725,6 @@ abstract class BaseBusinessUnitPeer {
 		// first find the objects that are implicated by the $criteria
 		$objects = BusinessUnitPeer::doSelect($criteria, $con);
 		foreach ($objects as $obj) {
-
-			// set fkey col in related sfGuardUserProfile rows to NULL
-			$selectCriteria = new Criteria(BusinessUnitPeer::DATABASE_NAME);
-			$updateValues = new Criteria(BusinessUnitPeer::DATABASE_NAME);
-			$selectCriteria->add(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, $obj->getId());
-			$updateValues->add(sfGuardUserProfilePeer::BUSINESS_UNIT_ID, null);
-
-					BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 
 			// set fkey col in related Tender rows to NULL
 			$selectCriteria = new Criteria(BusinessUnitPeer::DATABASE_NAME);
