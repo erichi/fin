@@ -40,7 +40,7 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
 						<?php if($et->getCode() == $ce->getExpencesType()->getCode()): ?>
 							<tr class="tax tax_<?php echo $key?>" id="tax_<?php echo $ce->getId() ?>">
 								<td>
-                                    <a href="<?php echo url_for('current_expenses/delRow?id='.$ce->getId().'&business_unit_id='.$business_unit_id);?>" onclick="return confirm('Вы уверены?');">-</a>
+                                    <a href="<?php echo url_for('current_expenses/delRow?id='.$ce->getId().'&business_unit_id='.$business_unit_id);?>" onclick="return confirm('Вы уверены?');">Удалить</a>
                                     <?php echo $ce->getName() ?>
                                 </td>
 								<td><?php echo $ce->getExpencesType()->getName(); ?></td>
