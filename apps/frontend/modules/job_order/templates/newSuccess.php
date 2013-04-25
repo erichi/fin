@@ -56,5 +56,6 @@
             }
 
         });
+        $('#jo_business_unit_id').change();
     })
 </script>

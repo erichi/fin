@@ -213,7 +213,7 @@
                                 <a class="btn btn-mini" href="#">Перенести</a>
                                 <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="<?php echo 'job_order/new?plan_id='.$plan->getId().'&return_to_pr='.$business_unit->getId(); ?>">В "реальные"</a></li>
+                                    <li><a href="<?php echo '/job_order/new?plan_id='.$plan->getId().'&return_to_pr='.$business_unit->getId(); ?>">В "реальные"</a></li>
                                     <li><a href="<?php echo '/business_unit/PlanToTender?plan_id='.$plan->getId().'&bu_id='.$business_unit->getId(); ?>">В тендеры</a></li>
                                 </ul>
                             </div>
