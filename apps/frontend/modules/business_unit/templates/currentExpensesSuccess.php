@@ -13,7 +13,7 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
 	</div>
 	<div id="sf_admin_content">
 
-		<div id="current_expenses_taxes">
+		<div id="current_expenses_taxes" style="position: absolute; width: 100%">
 							<!-- Taxes -->
 
 			<table class="table table-bordered">
@@ -117,7 +117,6 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
         </tr>
     </table>
 </div>
-<a href="#" onclick='recount(types); return false;'>recount</a>
 <script type="text/javascript">
 	var business_unit_id = <?php echo $business_unit_id ?>;
 	var save_field_data_url = "<?php echo url_for('current_expenses/saveTypedData') ?>";
