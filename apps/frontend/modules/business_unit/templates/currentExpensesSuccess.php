@@ -13,7 +13,7 @@ var types = [ '<?php echo implode("', '", $types->getRawValue()); ?>' ];
 	</div>
 	<div id="sf_admin_content">
 
-		<div id="current_expenses_taxes" style="position: absolute; width: 100%">
+		<div id="current_expenses_taxes" style="position: absolute; left: 1px; width: 100%;">
 							<!-- Taxes -->
 
 			<table class="table table-bordered">
