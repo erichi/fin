@@ -1,4 +1,4 @@
-<nobr>
+<div width="100%" style="white-space: nowrap;">
 <?php if($mp->getIsConfirmed()) : ?>
     <?php echo image_tag('/sf/sf_admin/images/tick.png', array('alt' => 'Подтвержден', 'title' => 'Подтвержден')); ?>
 <?php else : ?>
@@ -8,4 +8,4 @@
 <?php echo $mp->getAmount() ?>
 </span>
 <?php if(!$mp->getIsConfirmed()) echo '</a>'; ?>
-</nobr>
+</div>
