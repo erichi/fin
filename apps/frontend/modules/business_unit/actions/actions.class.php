@@ -972,7 +972,7 @@ class business_unitActions extends autoBusiness_unitActions
 			for ($i=0; $i<12; $i++){
 				$set = 'setCurrentSumm';
 				$get = 'getCurrentSumm';
-				$fakebu->$set($i,$bu->$get());
+				$fakebu->$set($i,$bu->$get($i));
 				$overall->$set($i, $fakebu->$get($i) + $overall->$get($i));
 			}
 			$fakebu->setCurrentProfitPercent($bu->getCurrentProfitPercent());
