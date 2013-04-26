@@ -114,7 +114,7 @@ function recount(types)
 			var type_sum_attr = desc_regexp.split(type+'_[^0]{1}[0-9]*').join(type+'_0');
 			var el = $('[desc="'+type_sum_attr+'"]');
 			if(not_confirmed == 0 && confirmed != 0){
-				el.html('<nobr><img src="/sf/sf_admin/images/tick.png" alt="Подтвержден" title="Подтвержден" /><span class="formatInt">'+amount+'</span></nobr>');
+				el.html('<div width="100%" style="white-space: nowrap;"><img src="/sf/sf_admin/images/tick.png" alt="Подтвержден" title="Подтвержден" /><span class="formatInt">'+amount+'</span></div>');
 			}else{
 				el.html('<span class="formatInt">' + amount + '</span>' );
 			}
