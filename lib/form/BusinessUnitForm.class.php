@@ -13,5 +13,6 @@ class BusinessUnitForm extends BaseBusinessUnitForm
   {
   	parent::configure();
   	unset($this['loans']);
+    unset($this['user_business_unit_list']);
   }
 }
