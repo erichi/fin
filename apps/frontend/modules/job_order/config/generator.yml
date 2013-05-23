@@ -13,7 +13,7 @@ generator:
 
     config:
       actions:
-        _new:         { credentials: [[admin, director, fm]] }
+        _new:         { credentials: [[admin, director, fm, pm]] }
       fields:  ~
       list:    
         display:      [=name, business_unit, client]

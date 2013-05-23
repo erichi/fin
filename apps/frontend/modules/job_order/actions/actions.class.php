@@ -15,7 +15,7 @@ class job_orderActions extends autoJob_orderActions
 {
 	public function executeNew(sfWebRequest $request)
 	{
-        $this->forward404Unless($this->getUser()->hasCredential(array('admin','director', 'fm'), false));
+        $this->forward404Unless($this->getUser()->hasCredential(array('admin','director', 'fm', 'pm'), false));
 
 		if ($request->hasParameter('return_to_pr')) {
 			$this->getUser()->setAttribute('return_to_pr', $request->getParameter('return_to_pr'));
@@ -382,7 +382,7 @@ class job_orderActions extends autoJob_orderActions
             $job_order = JobOrderPeer::retrieveByPK($id);
         } elseif ($this->getUser()->hasCredential('pm') && JobOrderPeer::hasManager($id, $this->getUser()->getGuardUser()->getId())){
             $job_order = JobOrderPeer::retrieveByPK($id);
-        } elseif ($this->getUser()->hasCredential(array('director', 'fm'), false)) {
+        } elseif ($this->getUser()->hasCredential(array('director', 'fm', 'pm'), false)) {
             $job_order = JobOrderPeer::retrieveByPK($id);
             if (!$this->getUser()->hasBusinessUnit($job_order->getBusinessUnitId())){
                 unset($job_order);
