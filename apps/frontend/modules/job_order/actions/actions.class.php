@@ -13,6 +13,18 @@ require_once dirname(__FILE__).'/../lib/job_orderGeneratorHelper.class.php';
  */
 class job_orderActions extends autoJob_orderActions
 {
+    public function executeCreate(sfWebRequest $request)
+    {
+        parent::executeCreate($request);
+        $this->all_managers_new = sfGuardUserPeer::retrieveByPermission('pm');
+        $this->job_types = JobTypePeer::doSelect(new Criteria());
+        $this->clients = $this->getClientsArray();
+        $this->jo_managers = array();
+        foreach($request->getPostParameter('jo[manager]', array()) as $managerId){
+            $this->jo_managers[] = sfGuardUserPeer::retrieveByPK($managerId);
+        }
+    }
+
 	public function executeNew(sfWebRequest $request)
 	{
         $this->forward404Unless($this->getUser()->hasCredential(array('admin','director', 'fm', 'pm'), false));
@@ -312,6 +324,7 @@ class job_orderActions extends autoJob_orderActions
   protected function buildCriteria()											// form list of JO
   {
   	$c = parent::buildCriteria();
+
 
   	if ($this->getUser()->hasCredential('pm')) {
   		$c->addJoin(JobOrderPeer::ID, JobOrderManagerPeer::JOB_ORDER_ID, Criteria::LEFT_JOIN);
