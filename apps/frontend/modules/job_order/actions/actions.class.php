@@ -15,6 +15,7 @@ class job_orderActions extends autoJob_orderActions
 {
     public function executeCreate(sfWebRequest $request)
     {
+
         parent::executeCreate($request);
         $this->all_managers_new = sfGuardUserPeer::retrieveByPermission('pm');
         $this->job_types = JobTypePeer::doSelect(new Criteria());
@@ -23,6 +24,36 @@ class job_orderActions extends autoJob_orderActions
         foreach($request->getPostParameter('jo[manager]', array()) as $managerId){
             $this->jo_managers[] = sfGuardUserPeer::retrieveByPK($managerId);
         }
+        $this->income_payments = array();
+        foreach($request->getPostParameter('jo[income_payment]', array()) as $incomePayment){
+            $ipObj = new IncomePayment();
+            $ipObj->setAmount($incomePayment['amount']);
+            $ipObj->setName($incomePayment['name']);
+            $ipObj->setDate($incomePayment['date']);
+            $ipObj->setIsConfirmed($incomePayment['is_confirmed']);
+            $this->income_payments[] = $ipObj;
+        }
+        $this->jobs = array();
+        foreach($request->getPostParameter('jo[outcome_payment]', array()) as $outcomePayment){
+            $job = new Job();
+            $job->setName($outcomePayment['name']);
+            $job->setJobTypeId($outcomePayment['job_type']);
+            $job->setSupplier($outcomePayment['supplier']);
+            $job->setAmount($outcomePayment['amount']);
+            if(!empty($outcomePayment['job_payment'])){
+                foreach($outcomePayment['job_payment'] as $jobPayment){
+                    $jobPaymentObj = new JobPayment();
+                    $jobPaymentObj->setName($jobPayment['name']);
+                    $jobPaymentObj->setDate($jobPayment['date']);
+                    $jobPaymentObj->setAmount($jobPayment['amount']);
+                    $jobPaymentObj->setFilename($jobPayment['file']);
+                    $jobPaymentObj->setIsConfirmed($jobPayment['is_confirmed']);
+                    $job->addJobPayment($jobPaymentObj);
+                }
+            }
+            $this->jobs[] = $job;
+        }
+
     }
 
 	public function executeNew(sfWebRequest $request)
