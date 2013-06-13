@@ -32,6 +32,7 @@ test:
 
 all:
   .settings:
+    default_timezone:       Europe/Moscow
     i18n:                   true
     default_culture:        ru_RU
     
