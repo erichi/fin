@@ -24,3 +24,19 @@
     <?php include_partial('business_unit/list_footer', array('pager' => $pager)) ?>
   </div>
 </div>
+<script type="text/javascript">
+    function IsNumeric(input)
+    {
+        return (input - 0) == input && input.length > 0;
+    }
+
+    $(document).ready(function(){
+        $('.sf_admin_list_td_plan').each(function(){
+            if(IsNumeric($(this).text()) && $(this).text() != 0) {
+                $(this).html('<nobr>'+$.formatNumber($(this).text(), {format:"0,000.00", locale:"ru"})+'</nobr>');
+            }
+        });
+
+    });
+
+</script>
