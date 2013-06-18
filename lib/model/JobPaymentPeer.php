@@ -18,7 +18,9 @@ class JobPaymentPeer extends BaseJobPaymentPeer
 	{
 		$c = new Criteria();
 		$c->add(JobPeer::JOB_ORDER_ID, $id);
-		$jobs = JobPeer::doSelect($c);
+		$c->addJoin(JobPeer::ID, self::JOB_ID);
+		$outs = self::doSelect($c);
+		/*$jobs = JobPeer::doSelect($c);
 		
 		$outs = array();
 		foreach($jobs as $j) {
@@ -29,7 +31,7 @@ class JobPaymentPeer extends BaseJobPaymentPeer
 			foreach($tmp_outs as $o) 
 				$outs[] = $o;
 		
-		}
+		}*/
 		
 		
 		return $outs;
