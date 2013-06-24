@@ -127,8 +127,9 @@ function recount(types)
 			if (isNaN(value)) {
 				value = 0;
 			}
+            //console.log($.trim($(this).text()) + '=' + value);
 			amount_all += value;
-    	});	
+    	});
     	$('[desc="'+type+'_all"]').html('<span class="formatInt">' + amount_all + '</span>');
 
     });	
@@ -174,6 +175,7 @@ function recount(types)
 		if (isNaN(value)) {
 			value = 0;
 		}
+        //console.log($.trim($('[desc="'+type+'_all"]').text()) + '=' + value);
     	sum_of_types += value;
     	
     	var cnt = 0;
@@ -184,16 +186,18 @@ function recount(types)
     		var ex_id = sp[1];
     		if(cnt == 12)
     		{
-   				$('[desc="'+type+'_'+ex_id+'_0"]').html(ex_sum);
+                // row sum
+   				$('[desc="'+type+'_'+ex_id+'_0"]').html('<span class="formatInt">' + ex_sum + '</span>');
 				ex_sum = 0;
 				cnt = 0;
     		}
     		else
     		{
-    			var value = parseInt($.trim($(this).text()));
+    			var value = parseInt($.trim($(this).text()).replace(/[_ ]/g,''));
 				if (isNaN(value)) {
 					value = 0;
 				}
+                //console.log($.trim($(this).text()) + '=' + value);
 				ex_sum += value;
     		}
     	});	
